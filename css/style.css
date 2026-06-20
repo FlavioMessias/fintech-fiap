@@ -1,0 +1,185 @@
+/* ============================================================
+   FINTECH — Registrar Entrada
+   Arquivo: style.css
+   Autor: Flavio Hilario Messias Neto — RM 570553
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+/* ── Reset ─────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* ── Tokens do Tema Escuro ─────────────────────────────── */
+:root {
+  --bg-page: #0d0f0e;
+  --card-bg: #171a18;
+  --field-bg: #1e2220;
+  --field-focus-bg: #252a27;
+  --field-hover-border: rgba(255, 255, 255, 0.16);
+
+  --sidebar-bg: #111412;
+  --sidebar-brand: #22c55e;
+  --sidebar-text: #8a9e90;
+  --sidebar-muted: #556b5c;
+  --sidebar-hover: #1e2220;
+  --sidebar-active: #14532d;
+
+  --mobile-brand: #22c55e;
+  --accent: #16a34a;
+  --accent-hover: #22c55e;
+  --accent-glow: rgba(34, 197, 94, 0.18);
+
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.10);
+
+  --text-primary: #f0f4f1;
+  --text-secondary: #8a9e90;
+  --text-muted: #556b5c;
+
+  --button-secondary-bg: #1e2220;
+  --button-secondary-hover: #252a27;
+  --button-secondary-text: #8a9e90;
+
+  --tip-icon: #22c55e;
+  --tip-bg: rgba(34, 197, 94, 0.06);
+  --tip-border: rgba(34, 197, 94, 0.18);
+  --toast-bg: #171a18;
+  --toast-border: rgba(34, 197, 94, 0.35);
+  --toast-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Tokens do Tema Claro ──────────────────────────────── */
+html.light-theme {
+  --bg-page: #f3f5f4;
+  --card-bg: #ffffff;
+  --field-bg: #e5e7e6;
+  --field-focus-bg: #ffffff;
+  --field-hover-border: rgba(15, 23, 42, 0.22);
+
+  --sidebar-bg: #0f1117;
+  --sidebar-brand: #f9fafb;
+  --sidebar-text: #9ca3af;
+  --sidebar-muted: #9ca3af;
+  --sidebar-hover: rgba(255, 255, 255, 0.06);
+  --sidebar-active: #166534;
+
+  --mobile-brand: #166534;
+  --accent: #166534;
+  --accent-hover: #15803d;
+  --accent-glow: rgba(22, 101, 52, 0.12);
+
+  --border: rgba(15, 23, 42, 0.09);
+  --border-strong: rgba(15, 23, 42, 0.14);
+
+  --text-primary: #101828;
+  --text-secondary: #475467;
+  --text-muted: #667085;
+
+  --button-secondary-bg: #e5e7e6;
+  --button-secondary-hover: #d1d5db;
+  --button-secondary-text: #111827;
+
+  --tip-icon: #166534;
+  --tip-bg: rgb(255, 255, 255);
+  --tip-border: rgba(22, 101, 52, 0.16);
+  --tip-shadow:
+    0 22px 52px rgba(15, 23, 42, 0.18),
+    0 10px 24px rgba(15, 23, 42, 0.11);
+  --card-shadow:
+    0 30px 70px rgba(15, 23, 42, 0.22),
+    0 14px 32px rgba(15, 23, 42, 0.13),
+    0 4px 10px rgba(15, 23, 42, 0.08);
+  --toast-bg: #ffffff;
+  --toast-border: rgba(22, 101, 52, 0.18);
+  --toast-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+}
+
+/* ── Animações e Estados JS ────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.4s ease both;
+}
+
+.card-elevated {
+  box-shadow: var(--card-shadow) !important;
+}
+
+.tip-elevated {
+  box-shadow: var(--tip-shadow) !important;
+}
+
+.toast.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+html.light-theme .theme-icon-moon {
+  display: none;
+}
+
+html.light-theme .theme-icon-sun {
+  display: block;
+}
+
+/* ── Input de Data ─────────────────────────────────────── */
+.date-input {
+  color-scheme: dark;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  filter: brightness(0) invert(92%);
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.date-input::-webkit-calendar-picker-indicator:hover {
+  filter: brightness(0) invert(100%);
+  opacity: 1;
+}
+
+html.light-theme .date-input {
+  color-scheme: light;
+}
+
+html.light-theme .date-input::-webkit-calendar-picker-indicator {
+  filter: brightness(0) invert(35%);
+  opacity: 0.65;
+}
+
+html.light-theme .date-input::-webkit-calendar-picker-indicator:hover {
+  filter: brightness(0) invert(20%);
+  opacity: 1;
+}

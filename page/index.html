@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrar Entrada — Fintech</title>
+
+  <script>
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'light') {
+      document.documentElement.classList.add('light-theme');
+    }
+  </script>
+
+  <!-- Configuração do Tailwind CSS -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="../css/style.css" />
+
+  <script src="../js/script.js" defer></script>
+</head>
+
+<body class="min-h-screen bg-[var(--bg-page)] font-body text-[var(--text-primary)] antialiased">
+  <div id="appShell" class="relative min-h-screen lg:flex">
+
+    <!-- Overlay mobile -->
+    <div id="overlay" class="hidden fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden" role="button"
+      aria-label="Fechar menu lateral" tabindex="0"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+      class="fixed left-0 top-0 z-40 flex h-screen w-[280px] -translate-x-full flex-col bg-[var(--sidebar-bg)] px-4 py-7 transition-transform duration-200 ease-out lg:translate-x-0"
+      aria-label="Menu principal">
+      <!-- Brand -->
+      <div class="border-b border-white/10 pb-7 text-center">
+        <span class="block font-display text-4xl font-extrabold tracking-[0.17em] text-[var(--sidebar-brand)]">
+          FINTECH
+        </span>
+        <p class="mt-1 text-xs tracking-wide text-[var(--sidebar-muted)]">
+          Sua vida financeira sob controle
+        </p>
+      </div>
+
+      <!-- Navegação -->
+      <nav class="mt-6" aria-label="Navegação da aplicação">
+        <ul class="flex flex-col gap-2">
+          <li>
+            <a href="javascript:void(0)"
+              class="flex items-center justify-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-[var(--sidebar-text)] transition-colors duration-200 hover:bg-[var(--sidebar-hover)] hover:text-white">
+              <svg class="h-5 w-5 opacity-80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+              </svg>
+              Dashboard
+            </a>
+          </li>
+
+          <li>
+            <a href="javascript:void(0)" aria-current="page"
+              class="flex items-center justify-center gap-3 rounded-lg bg-[var(--sidebar-active)] px-4 py-3 text-sm font-semibold text-white transition-colors duration-200">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M12 19V5" />
+                <path d="M5 12l7-7 7 7" />
+                <path d="M3 19h18" />
+              </svg>
+              Entradas
+            </a>
+          </li>
+
+          <li>
+            <a href="javascript:void(0)"
+              class="flex items-center justify-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-[var(--sidebar-text)] transition-colors duration-200 hover:bg-[var(--sidebar-hover)] hover:text-white">
+              <svg class="h-5 w-5 opacity-80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M12 5v14" />
+                <path d="M5 12l7 7 7-7" />
+                <path d="M3 5h18" />
+              </svg>
+              Saídas
+            </a>
+          </li>
+
+          <li>
+            <a href="javascript:void(0)"
+              class="flex items-center justify-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-[var(--sidebar-text)] transition-colors duration-200 hover:bg-[var(--sidebar-hover)] hover:text-white">
+              <svg class="h-5 w-5 opacity-80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+              Relatórios
+            </a>
+          </li>
+
+          <li>
+            <a href="javascript:void(0)"
+              class="flex items-center justify-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-[var(--sidebar-text)] transition-colors duration-200 hover:bg-[var(--sidebar-hover)] hover:text-white">
+              <svg class="h-5 w-5 opacity-80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="6" />
+                <circle cx="12" cy="12" r="2" />
+              </svg>
+              Metas
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Footer da sidebar -->
+      <div class="mt-auto flex flex-col gap-2 border-t border-white/10 pt-6">
+        <button type="button" id="themeToggle"
+          class="flex w-full items-center justify-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-[var(--sidebar-text)] transition-colors duration-200 hover:bg-[var(--sidebar-hover)] hover:text-white"
+          aria-pressed="false">
+          <svg class="theme-icon-moon h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+          <svg class="theme-icon-sun hidden h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2" />
+            <path d="M12 20v2" />
+            <path d="M4.93 4.93l1.41 1.41" />
+            <path d="M17.66 17.66l1.41 1.41" />
+            <path d="M2 12h2" />
+            <path d="M20 12h2" />
+            <path d="M4.93 19.07l1.41-1.41" />
+            <path d="M17.66 6.34l1.41-1.41" />
+          </svg>
+          <span id="themeText">Tema escuro</span>
+        </button>
+
+        <a href="javascript:void(0)"
+          class="flex items-center justify-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-[var(--sidebar-text)] transition-colors duration-200 hover:bg-[var(--sidebar-hover)] hover:text-white">
+          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33" />
+            <path d="M14 20.5V21a2 2 0 0 1-4 0v-.09" />
+            <path d="M8.4 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06" />
+            <path d="M4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09" />
+            <path d="M4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06" />
+            <path d="M9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09" />
+            <path d="M15 4.68a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06" />
+            <path d="M19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09" />
+          </svg>
+          Configurações
+        </a>
+
+        <button
+          type="button"
+          aria-label="Abrir menu do usuário"
+          class="flex w-full items-center justify-center gap-3 rounded-lg px-4 py-3 text-sm text-[var(--sidebar-text)] transition-colors duration-200 hover:bg-[var(--sidebar-hover)] hover:text-white">
+          <div
+            class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-green-900 font-display text-xs font-bold text-white">
+            FM
+          </div>
+          <span class="truncate">Flavio Messias</span>
+          <svg class="h-4 w-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Topbar mobile -->
+    <header
+      class="sticky top-0 z-20 flex items-center justify-between border-b border-[var(--border)] bg-[var(--card-bg)] px-5 py-4 lg:hidden">
+      <span class="font-display text-lg font-extrabold tracking-wider text-[var(--mobile-brand)]">
+        FINTECH
+      </span>
+      <button type="button" id="sidebarToggle"
+        class="rounded-lg border border-[var(--border)] p-2 text-[var(--text-secondary)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+        aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="relative w-full lg:ml-[280px]">
+      <section class="mx-auto w-full max-w-5xl px-5 py-8 sm:px-8 lg:px-10 lg:py-16">
+
+        <!-- Cabeçalho da página -->
+        <div class="mb-9 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h1 class="font-display text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+              Registrar Entrada
+            </h1>
+            <p class="mt-1 text-sm text-[var(--text-secondary)]">
+              Cadastre uma nova receita recebida
+            </p>
+          </div>
+
+          <a href="javascript:void(0)"
+            class="inline-flex items-center justify-center gap-2 self-start rounded-lg border border-[var(--border-strong)] bg-[var(--button-secondary-bg)] px-4 py-2 text-sm font-medium text-[var(--button-secondary-text)] shadow-sm transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" aria-hidden="true">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+            Voltar para o Dashboard
+          </a>
+        </div>
+
+        <!-- Card do formulário -->
+        <div
+          class="animate-fade-up card-elevated rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-6 sm:p-9">
+          <h2 class="border-b border-[var(--border)] pb-4 font-display text-xl font-bold text-[var(--text-primary)]">
+            Nova Entrada
+          </h2>
+
+          <form id="entryForm" action="javascript:void(0)" method="post" class="mt-7">
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+              <!-- Valor -->
+              <div>
+                <label for="valor" class="mb-2 block text-sm font-medium text-[var(--text-secondary)]">
+                  Valor da entrada
+                </label>
+                <input id="valor" name="valor" type="text" placeholder="R$ 0,00" inputmode="numeric" autocomplete="off"
+                  maxlength="22" required
+                  class="w-full rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition-colors duration-200 placeholder:text-[var(--text-muted)] hover:border-[var(--field-hover-border)] focus:border-[var(--accent)] focus:bg-[var(--field-focus-bg)] focus:ring-4 focus:ring-[var(--accent-glow)]" />
+              </div>
+
+              <!-- Data -->
+              <div>
+                <label for="data" class="mb-2 block text-sm font-medium text-[var(--text-secondary)]">
+                  Data
+                </label>
+                <input id="data" name="data" type="date" required
+                  class="date-input w-full rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition-colors duration-200 hover:border-[var(--field-hover-border)] focus:border-[var(--accent)] focus:bg-[var(--field-focus-bg)] focus:ring-4 focus:ring-[var(--accent-glow)]" />
+              </div>
+
+              <!-- Origem -->
+              <div>
+                <label for="origem" class="mb-2 block text-sm font-medium text-[var(--text-secondary)]">
+                  Origem da entrada
+                </label>
+                <div class="relative">
+                  <select id="origem" name="origem" required
+                    class="w-full cursor-pointer appearance-none rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-4 py-3 pr-10 text-sm text-[var(--text-primary)] outline-none transition-colors duration-200 hover:border-[var(--field-hover-border)] focus:border-[var(--accent)] focus:bg-[var(--field-focus-bg)] focus:ring-4 focus:ring-[var(--accent-glow)]">
+                    <option value="" disabled selected>Selecione a origem</option>
+                    <option value="salario">Salário</option>
+                    <option value="freelancer">Freelancer</option>
+                    <option value="investimento">Investimento</option>
+                    <option value="beneficios">Benefícios</option>
+                    <option value="outros">Outros</option>
+                  </select>
+                  <svg
+                    class="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-secondary)]"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Forma -->
+              <div>
+                <label for="forma" class="mb-2 block text-sm font-medium text-[var(--text-secondary)]">
+                  Forma de recebimento
+                </label>
+                <div class="relative">
+                  <select id="forma" name="forma" required
+                    class="w-full cursor-pointer appearance-none rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-4 py-3 pr-10 text-sm text-[var(--text-primary)] outline-none transition-colors duration-200 hover:border-[var(--field-hover-border)] focus:border-[var(--accent)] focus:bg-[var(--field-focus-bg)] focus:ring-4 focus:ring-[var(--accent-glow)]">
+                    <option value="" disabled selected>Selecione a forma</option>
+                    <option value="pix">Pix</option>
+                    <option value="conta_bancaria">Conta Bancária</option>
+                    <option value="conta_investimento">Conta Investimento</option>
+                    <option value="dinheiro">Dinheiro</option>
+                  </select>
+                  <svg
+                    class="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-secondary)]"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Descrição -->
+              <div class="md:col-span-2">
+                <label for="descricao" class="mb-2 block text-sm font-medium text-[var(--text-secondary)]">
+                  Descrição
+                  <span class="text-xs font-normal text-[var(--text-muted)]">(Opcional)</span>
+                </label>
+                <textarea id="descricao" name="descricao" rows="4"
+                  placeholder="Ex: salário, projeto freelancer, rendimentos, vendas, etc..."
+                  class="w-full resize-y rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-4 py-3 text-sm leading-6 text-[var(--text-primary)] outline-none transition-colors duration-200 placeholder:text-[var(--text-muted)] hover:border-[var(--field-hover-border)] focus:border-[var(--accent)] focus:bg-[var(--field-focus-bg)] focus:ring-4 focus:ring-[var(--accent-glow)]"></textarea>
+              </div>
+            </div>
+
+            <!-- Ações -->
+            <div
+              class="mt-7 flex flex-col-reverse gap-3 border-t border-[var(--border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
+              <button type="reset"
+                class="inline-flex items-center justify-center rounded-lg border border-[var(--border-strong)] bg-[var(--button-secondary-bg)] px-6 py-3 text-sm font-medium text-[var(--button-secondary-text)] transition-colors duration-200 hover:bg-[var(--button-secondary-hover)]">
+                Cancelar
+              </button>
+
+              <button type="submit"
+                class="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-green-900/20 transition duration-200 hover:-translate-y-0.5 hover:bg-[var(--accent-hover)] hover:shadow-green-900/30 active:translate-y-0">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Salvar entrada
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Dica de organização -->
+        <div
+          class="tip-elevated mt-7 flex items-start gap-3 rounded-xl border border-[var(--tip-border)] bg-[var(--tip-bg)] p-5">
+          <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-[var(--tip-icon)]" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+          <div>
+            <strong class="block text-sm font-semibold text-[var(--text-primary)]">
+              Dica de organização
+            </strong>
+            <p class="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
+              Detalhe bem suas entradas na descrição — isso facilita a visualização posteriormente.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Toast de sucesso -->
+      <div id="toast"
+        class="toast pointer-events-none absolute bottom-6 right-6 z-[200] flex min-w-[300px] max-w-[380px] translate-y-4 items-start gap-3 rounded-xl border border-[var(--toast-border)] bg-[var(--toast-bg)] p-4 text-[var(--text-primary)] opacity-0 shadow-[var(--toast-shadow)] transition duration-200 max-sm:left-5 max-sm:right-5 max-sm:min-w-0 max-sm:max-w-none"
+        role="status" aria-live="polite">
+        <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div>
+          <strong class="block text-sm font-bold">Entrada salva com sucesso!</strong>
+          <p class="mt-0.5 text-xs leading-5 text-[var(--text-secondary)]">
+            Os campos foram limpos para um novo registro.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+
+</html>
