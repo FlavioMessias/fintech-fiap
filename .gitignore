@@ -1,0 +1,20 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+target/
+*.class
+
+# Backend Java
+backend/.idea/
+backend/out/
+backend/*.iml
+backend/target/
+backend/**/*.class
+
+# VS Code
+.vscode/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
