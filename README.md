@@ -27,49 +27,80 @@ fintech-fiap
 │                       └── MetaFinanceira.java
 │
 └── .gitignore
+```
 
-Front-end
+## Front-end
 
-A pasta frontend contém as telas do sistema Fintech desenvolvidas com HTML, CSS e JavaScript.
+A pasta `frontend` contém as telas do sistema Fintech desenvolvidas com:
 
-Backend Java
+- HTML;
+- CSS;
+- JavaScript.
 
-A pasta backend contém o projeto Java desenvolvido para a atividade de Programação Orientada a Objetos.
+## Backend Java
+
+A pasta `backend` contém o projeto Java desenvolvido para a atividade de Programação Orientada a Objetos.
 
 Foram aplicados os seguintes conceitos:
 
-Encapsulamento;
-Construtores;
-Herança;
-Polimorfismo;
-Métodos com lógica real;
-Classe Main para execução do projeto.
-Herança
+- Encapsulamento;
+- Construtores;
+- Herança;
+- Polimorfismo;
+- Métodos com lógica real;
+- Classe `Main` para execução do projeto.
 
-A classe Transacao funciona como superclasse para as classes Entrada e Saida.
+## Classes do Backend
 
+O projeto Java possui as seguintes classes:
+
+- `Usuario`;
+- `Categoria`;
+- `FormaPagamento`;
+- `Transacao`;
+- `Entrada`;
+- `Saida`;
+- `MetaFinanceira`;
+- `Main`.
+
+## Herança
+
+A classe `Transacao` funciona como superclasse para as classes `Entrada` e `Saida`.
+
+```java
 public class Entrada extends Transacao
+```
+
+```java
 public class Saida extends Transacao
-Polimorfismo
+```
 
-O polimorfismo é demonstrado na classe Main, utilizando uma lista de transações:
+## Polimorfismo
 
+O polimorfismo é demonstrado na classe `Main`, utilizando uma lista de transações:
+
+```java
 List<Transacao> transacoes = new ArrayList<>();
 transacoes.add(entrada);
 transacoes.add(saida);
+```
 
-Cada objeto executa sua própria implementação dos métodos sobrescritos.
+Mesmo a lista sendo do tipo `Transacao`, cada objeto executa sua própria implementação dos métodos sobrescritos.
 
-Como executar o backend
+## Como executar o backend
 
 Abra o projeto no IntelliJ IDEA e execute a classe:
 
+```text
 Main.java
+```
 
-Caminho:
+Caminho da classe principal:
 
+```text
 backend/src/br/com/fintech/Main.java
+```
 
-Autor
+## Autor
 
 Flavio Hilario Messias Neto
