@@ -1,27 +1,42 @@
 package br.com.fintech.model;
 
+import java.time.LocalDateTime;
+
 public abstract class Transacao {
 
     private Integer idTransacao;
-    private Double valor;
-    private String descricao;
-    private String dataTransacao;
     private Usuario usuario;
     private Categoria categoria;
-    private FormaPagamento formaPagamento;
+    private FormaMovimentacao formaMovimentacao;
+    private Double valor;
+    private LocalDateTime dataTransacao;
+    private String descricao;
+    private LocalDateTime dataAtualizacao;
+    private String ativo;
 
     public Transacao() {
-
     }
 
-    public Transacao(Integer idTransacao, Double valor, String descricao, String dataTransacao,
-                     Categoria categoria, FormaPagamento formaPagamento) {
+    public Transacao(
+            Integer idTransacao,
+            Usuario usuario,
+            Categoria categoria,
+            FormaMovimentacao formaMovimentacao,
+            Double valor,
+            LocalDateTime dataTransacao,
+            String descricao,
+            LocalDateTime dataAtualizacao,
+            String ativo
+    ) {
         this.idTransacao = idTransacao;
-        setValor(valor);
-        this.descricao = descricao;
-        this.dataTransacao = dataTransacao;
+        this.usuario = usuario;
         this.categoria = categoria;
-        this.formaPagamento = formaPagamento;
+        this.formaMovimentacao = formaMovimentacao;
+        setValor(valor);
+        this.dataTransacao = dataTransacao;
+        this.descricao = descricao;
+        this.dataAtualizacao = dataAtualizacao;
+        this.ativo = ativo;
     }
 
     public abstract Double calcularImpactoSaldo();
@@ -31,10 +46,11 @@ public abstract class Transacao {
                 "\nValor: R$ " + valor +
                 "\nData: " + dataTransacao +
                 "\nCategoria: " + categoria.getNomeCategoria() +
-                "\nForma de pagamento: " + formaPagamento.getNomeFormaPagamento();
+                "\nForma de movimentação: " +
+                formaMovimentacao.getDescricaoForma();
     }
 
-    public Boolean valorValido() {
+    public boolean valorValido() {
         return valor != null && valor > 0;
     }
 
@@ -44,35 +60,6 @@ public abstract class Transacao {
 
     public void setIdTransacao(Integer idTransacao) {
         this.idTransacao = idTransacao;
-    }
-
-    public Double getValor() {
-        return valor;
-    }
-
-    public void setValor(Double valor) {
-        if (valor == null || valor <= 0) {
-            throw new IllegalArgumentException("O valor da transação deve ser maior que zero.");
-        }
-
-        this.valor = valor;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-
-    public String getDataTransacao() {
-        return dataTransacao;
-    }
-
-    public void setDataTransacao(String dataTransacao) {
-        this.dataTransacao = dataTransacao;
     }
 
     public Usuario getUsuario() {
@@ -91,11 +78,57 @@ public abstract class Transacao {
         this.categoria = categoria;
     }
 
-    public FormaPagamento getFormaPagamento() {
-        return formaPagamento;
+    public FormaMovimentacao getFormaMovimentacao() {
+        return formaMovimentacao;
     }
 
-    public void setFormaPagamento(FormaPagamento formaPagamento) {
-        this.formaPagamento = formaPagamento;
+    public void setFormaMovimentacao(FormaMovimentacao formaMovimentacao) {
+        this.formaMovimentacao = formaMovimentacao;
+    }
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        if (valor == null || valor <= 0) {
+            throw new IllegalArgumentException(
+                    "O valor da transação deve ser maior que zero."
+            );
+        }
+
+        this.valor = valor;
+    }
+
+    public LocalDateTime getDataTransacao() {
+        return dataTransacao;
+    }
+
+    public void setDataTransacao(LocalDateTime dataTransacao) {
+        this.dataTransacao = dataTransacao;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public String getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(String ativo) {
+        this.ativo = ativo;
     }
 }
