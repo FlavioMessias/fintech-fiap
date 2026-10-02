@@ -1,62 +1,43 @@
 package br.com.fintech.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class Usuario {
 
     private Integer idUsuario;
     private String nome;
     private String email;
-    private String telefone;
-    private Double saldoAtual;
-    private List<Transacao> transacoes;
-    private List<MetaFinanceira> metas;
+    private String senhaHash;
+    private LocalDateTime dataCadastro;
+    private LocalDateTime dataAtualizacao;
+    private String ativo;
 
     public Usuario() {
-        this.saldoAtual = 0.0;
-        this.transacoes = new ArrayList<>();
-        this.metas = new ArrayList<>();
     }
 
-    public Usuario(Integer idUsuario, String nome, String email, String telefone) {
+    public Usuario(String nome, String email, String senhaHash) {
+        this.nome = nome;
+        this.email = email;
+        this.senhaHash = senhaHash;
+        this.ativo = "S";
+    }
+
+    public Usuario(
+            Integer idUsuario,
+            String nome,
+            String email,
+            String senhaHash,
+            LocalDateTime dataCadastro,
+            LocalDateTime dataAtualizacao,
+            String ativo
+    ) {
         this.idUsuario = idUsuario;
         this.nome = nome;
         this.email = email;
-        this.telefone = telefone;
-        this.saldoAtual = 0.0;
-        this.transacoes = new ArrayList<>();
-        this.metas = new ArrayList<>();
-    }
-
-    public void adicionarTransacao(Transacao transacao) {
-        transacao.setUsuario(this);
-        transacoes.add(transacao);
-        saldoAtual += transacao.calcularImpactoSaldo();
-    }
-
-    public void adicionarMeta(MetaFinanceira meta) {
-        meta.setUsuario(this);
-        metas.add(meta);
-    }
-
-    public Double calcularSaldo() {
-        Double saldo = 0.0;
-
-        for (Transacao transacao : transacoes) {
-            saldo += transacao.calcularImpactoSaldo();
-        }
-
-        this.saldoAtual = saldo;
-        return saldoAtual;
-    }
-
-    public String exibirResumoFinanceiro() {
-        return "Usuário: " + nome +
-                "\nEmail: " + email +
-                "\nSaldo atual: R$ " + saldoAtual +
-                "\nQuantidade de transações: " + transacoes.size() +
-                "\nQuantidade de metas: " + metas.size();
+        this.senhaHash = senhaHash;
+        this.dataCadastro = dataCadastro;
+        this.dataAtualizacao = dataAtualizacao;
+        this.ativo = ativo;
     }
 
     public Integer getIdUsuario() {
@@ -75,7 +56,6 @@ public class Usuario {
         this.nome = nome;
     }
 
-
     public String getEmail() {
         return email;
     }
@@ -84,24 +64,47 @@ public class Usuario {
         this.email = email;
     }
 
-
-    public String getTelefone() {
-        return telefone;
+    public String getSenhaHash() {
+        return senhaHash;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setSenhaHash(String senhaHash) {
+        this.senhaHash = senhaHash;
     }
 
-    public Double getSaldoAtual() {
-        return saldoAtual;
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
     }
 
-    public List<Transacao> getTransacoes() {
-        return new ArrayList<>(transacoes);
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 
-    public List<MetaFinanceira> getMetas() {
-        return new ArrayList<>(metas);
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public String getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(String ativo) {
+        this.ativo = ativo;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "idUsuario=" + idUsuario +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", dataCadastro=" + dataCadastro +
+                ", dataAtualizacao=" + dataAtualizacao +
+                ", ativo='" + ativo + '\'' +
+                '}';
     }
 }

@@ -1,20 +1,65 @@
 package br.com.fintech.model;
 
+import java.time.LocalDateTime;
+
 public class Saida extends Transacao {
 
-    private String tipoDespesa;
-    private Boolean despesaFixa;
+    private String status;
 
     public Saida() {
-
     }
 
-    public Saida(Integer idTransacao, Double valor, String descricao, String dataTransacao,
-                 Categoria categoria, FormaPagamento formaPagamento,
-                 String tipoDespesa, Boolean despesaFixa) {
-        super(idTransacao, valor, descricao, dataTransacao, categoria, formaPagamento);
-        this.tipoDespesa = tipoDespesa;
-        this.despesaFixa = despesaFixa;
+    // Construtor para novos registros
+    public Saida(
+            Usuario usuario,
+            Categoria categoria,
+            FormaMovimentacao formaMovimentacao,
+            Double valor,
+            LocalDateTime dataSaida,
+            String descricao,
+            String status
+    ) {
+        super(
+                null,
+                usuario,
+                categoria,
+                formaMovimentacao,
+                valor,
+                dataSaida,
+                descricao,
+                null,
+                "S"
+        );
+
+        this.status = status;
+    }
+
+    // Construtor para registros recuperados do Oracle
+    public Saida(
+            Integer idSaida,
+            Usuario usuario,
+            Categoria categoria,
+            FormaMovimentacao formaMovimentacao,
+            Double valor,
+            LocalDateTime dataSaida,
+            String descricao,
+            String status,
+            LocalDateTime dataAtualizacao,
+            String ativo
+    ) {
+        super(
+                idSaida,
+                usuario,
+                categoria,
+                formaMovimentacao,
+                valor,
+                dataSaida,
+                descricao,
+                dataAtualizacao,
+                ativo
+        );
+
+        this.status = status;
     }
 
     @Override
@@ -25,25 +70,33 @@ public class Saida extends Transacao {
     @Override
     public String exibirResumo() {
         return "SAÍDA FINANCEIRA" +
-                "\nTipo de despesa: " + tipoDespesa +
-                "\nDespesa fixa: " + despesaFixa +
+                "\nStatus: " + status +
                 "\n" + super.exibirResumo() +
                 "\nImpacto no saldo: R$ " + calcularImpactoSaldo();
     }
 
-    public String getTipoDespesa() {
-        return tipoDespesa;
+    public String getStatus() {
+        return status;
     }
 
-    public void setTipoDespesa(String tipoDespesa) {
-        this.tipoDespesa = tipoDespesa;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public Boolean getDespesaFixa() {
-        return despesaFixa;
-    }
-
-    public void setDespesaFixa(Boolean despesaFixa) {
-        this.despesaFixa = despesaFixa;
+    @Override
+    public String toString() {
+        return "Saida{" +
+                "idSaida=" + getIdTransacao() +
+                ", usuario=" + getUsuario().getIdUsuario() +
+                ", categoria=" + getCategoria().getIdCategoria() +
+                ", formaMovimentacao=" +
+                getFormaMovimentacao().getIdForma() +
+                ", valor=" + getValor() +
+                ", dataSaida=" + getDataTransacao() +
+                ", descricao='" + getDescricao() + '\'' +
+                ", status='" + status + '\'' +
+                ", dataAtualizacao=" + getDataAtualizacao() +
+                ", ativo='" + getAtivo() + '\'' +
+                '}';
     }
 }
