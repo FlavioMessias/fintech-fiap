@@ -3,6 +3,7 @@ package br.com.fiap.fintech.service;
 import br.com.fiap.fintech.model.Usuario;
 import br.com.fiap.fintech.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,9 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private final BCryptPasswordEncoder passwordEncoder =
+            new BCryptPasswordEncoder();
+
     public Usuario cadastrar(Usuario usuario) {
 
         if (usuario.getAtivo() == null) {
@@ -22,6 +26,10 @@ public class UsuarioService {
         }
 
         usuario.setDataCadastro(LocalDateTime.now());
+
+        usuario.setSenhaHash(
+                passwordEncoder.encode(usuario.getSenhaHash())
+        );
 
         return usuarioRepository.save(usuario);
     }
@@ -34,9 +42,12 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
-    public Optional<Usuario> atualizar(Integer id, Usuario usuarioAtualizado) {
+    public Optional<Usuario> atualizar(
+            Integer id,
+            Usuario usuarioAtualizado) {
 
-        Optional<Usuario> usuarioExistente = usuarioRepository.findById(id);
+        Optional<Usuario> usuarioExistente =
+                usuarioRepository.findById(id);
 
         if (usuarioExistente.isEmpty()) {
             return Optional.empty();
@@ -45,12 +56,26 @@ public class UsuarioService {
         Usuario usuario = usuarioExistente.get();
 
         usuario.setNome(usuarioAtualizado.getNome());
-        usuario.setEmail(usuarioAtualizado.getEmail());
-        usuario.setSenhaHash(usuarioAtualizado.getSenhaHash());
-        usuario.setAtivo(usuarioAtualizado.getAtivo());
-        usuario.setDataAtualizacao(LocalDateTime.now());
 
-        return Optional.of(usuarioRepository.save(usuario));
+        usuario.setEmail(usuarioAtualizado.getEmail());
+
+        usuario.setSenhaHash(
+                passwordEncoder.encode(
+                        usuarioAtualizado.getSenhaHash()
+                )
+        );
+
+        usuario.setAtivo(
+                usuarioAtualizado.getAtivo()
+        );
+
+        usuario.setDataAtualizacao(
+                LocalDateTime.now()
+        );
+
+        return Optional.of(
+                usuarioRepository.save(usuario)
+        );
     }
 
     public boolean excluir(Integer id) {
@@ -60,6 +85,34 @@ public class UsuarioService {
         }
 
         usuarioRepository.deleteById(id);
+
         return true;
+    }
+
+    public Optional<Usuario> autenticar(String email, String senha) {
+
+        Optional<Usuario> usuarioEncontrado =
+                usuarioRepository.findByEmail(email);
+
+        if (usuarioEncontrado.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Usuario usuario = usuarioEncontrado.get();
+
+        if (!"S".equals(usuario.getAtivo())) {
+            return Optional.empty();
+        }
+
+        boolean senhaValida = passwordEncoder.matches(
+                senha,
+                usuario.getSenhaHash()
+        );
+
+        if (!senhaValida) {
+            return Optional.empty();
+        }
+
+        return Optional.of(usuario);
     }
 }

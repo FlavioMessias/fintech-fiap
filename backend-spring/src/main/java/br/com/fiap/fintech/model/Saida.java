@@ -1,6 +1,9 @@
 package br.com.fiap.fintech.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,21 +25,28 @@ public class Saida {
     @Column(name = "CD_SAIDA")
     private Integer idSaida;
 
+    @NotNull(message = "O usuário é obrigatório")
     @Column(name = "CD_USUARIO")
     private Integer idUsuario;
 
+    @NotNull(message = "A categoria é obrigatória")
     @Column(name = "CD_CATEGORIA")
     private Integer idCategoria;
 
+    @NotNull(message = "A forma de movimentação é obrigatória")
     @Column(name = "CD_FORMA_MOVIMENTACAO")
     private Integer idFormaMovimentacao;
 
+    @NotNull(message = "O valor é obrigatório")
+    @Positive(message = "O valor deve ser maior que zero")
     @Column(name = "NR_VALOR")
     private BigDecimal valor;
 
+    @NotNull(message = "A data da saída é obrigatória")
     @Column(name = "DT_SAIDA")
     private LocalDateTime dataSaida;
 
+    @NotBlank(message = "A descrição é obrigatória")
     @Column(name = "DS_SAIDA")
     private String descricao;
 

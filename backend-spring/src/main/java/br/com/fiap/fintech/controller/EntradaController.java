@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -17,7 +18,8 @@ public class EntradaController {
     private EntradaService entradaService;
 
     @PostMapping
-    public ResponseEntity<Entrada> cadastrar(@RequestBody Entrada entrada) {
+    public ResponseEntity<Entrada> cadastrar(
+            @Valid @RequestBody Entrada entrada) {
 
         Entrada entradaCadastrada = entradaService.cadastrar(entrada);
 
@@ -45,7 +47,7 @@ public class EntradaController {
     @PutMapping("/{id}")
     public ResponseEntity<Entrada> atualizar(
             @PathVariable Integer id,
-            @RequestBody Entrada entrada) {
+            @Valid @RequestBody Entrada entrada) {
 
         return entradaService.atualizar(id, entrada)
                 .map(ResponseEntity::ok)

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -17,7 +18,8 @@ public class SaidaController {
     private SaidaService saidaService;
 
     @PostMapping
-    public ResponseEntity<Saida> cadastrar(@RequestBody Saida saida) {
+    public ResponseEntity<Saida> cadastrar(
+            @Valid @RequestBody Saida saida) {
 
         Saida saidaCadastrada = saidaService.cadastrar(saida);
 
@@ -45,7 +47,7 @@ public class SaidaController {
     @PutMapping("/{id}")
     public ResponseEntity<Saida> atualizar(
             @PathVariable Integer id,
-            @RequestBody Saida saida) {
+            @Valid @RequestBody Saida saida) {
 
         return saidaService.atualizar(id, saida)
                 .map(ResponseEntity::ok)

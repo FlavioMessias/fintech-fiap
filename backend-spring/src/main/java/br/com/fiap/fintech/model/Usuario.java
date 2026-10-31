@@ -1,8 +1,11 @@
 package br.com.fiap.fintech.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "USUARIO")
@@ -21,12 +24,17 @@ public class Usuario {
     @Column(name = "CD_USUARIO")
     private Integer idUsuario;
 
+    @NotBlank(message = "O nome é obrigatório")
     @Column(name = "NM_USUARIO")
     private String nome;
 
+    @NotBlank(message = "O e-mail é obrigatório")
+    @Email(message = "O e-mail deve ser válido")
     @Column(name = "NM_EMAIL")
     private String email;
 
+    @NotBlank(message = "A senha é obrigatória")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "DS_SENHA_HASH")
     private String senhaHash;
 
