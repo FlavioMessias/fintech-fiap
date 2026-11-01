@@ -1,0 +1,118 @@
+package br.com.fiap.fintech.service;
+
+import br.com.fiap.fintech.model.Usuario;
+import br.com.fiap.fintech.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class UsuarioService {
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    private final BCryptPasswordEncoder passwordEncoder =
+            new BCryptPasswordEncoder();
+
+    public Usuario cadastrar(Usuario usuario) {
+
+        if (usuario.getAtivo() == null) {
+            usuario.setAtivo("S");
+        }
+
+        usuario.setDataCadastro(LocalDateTime.now());
+
+        usuario.setSenhaHash(
+                passwordEncoder.encode(usuario.getSenhaHash())
+        );
+
+        return usuarioRepository.save(usuario);
+    }
+
+    public List<Usuario> listarTodos() {
+        return usuarioRepository.findAll();
+    }
+
+    public Optional<Usuario> buscarPorId(Integer id) {
+        return usuarioRepository.findById(id);
+    }
+
+    public Optional<Usuario> atualizar(
+            Integer id,
+            Usuario usuarioAtualizado) {
+
+        Optional<Usuario> usuarioExistente =
+                usuarioRepository.findById(id);
+
+        if (usuarioExistente.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Usuario usuario = usuarioExistente.get();
+
+        usuario.setNome(usuarioAtualizado.getNome());
+
+        usuario.setEmail(usuarioAtualizado.getEmail());
+
+        usuario.setSenhaHash(
+                passwordEncoder.encode(
+                        usuarioAtualizado.getSenhaHash()
+                )
+        );
+
+        usuario.setAtivo(
+                usuarioAtualizado.getAtivo()
+        );
+
+        usuario.setDataAtualizacao(
+                LocalDateTime.now()
+        );
+
+        return Optional.of(
+                usuarioRepository.save(usuario)
+        );
+    }
+
+    public boolean excluir(Integer id) {
+
+        if (!usuarioRepository.existsById(id)) {
+            return false;
+        }
+
+        usuarioRepository.deleteById(id);
+
+        return true;
+    }
+
+    public Optional<Usuario> autenticar(String email, String senha) {
+
+        Optional<Usuario> usuarioEncontrado =
+                usuarioRepository.findByEmail(email);
+
+        if (usuarioEncontrado.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Usuario usuario = usuarioEncontrado.get();
+
+        if (!"S".equals(usuario.getAtivo())) {
+            return Optional.empty();
+        }
+
+        boolean senhaValida = passwordEncoder.matches(
+                senha,
+                usuario.getSenhaHash()
+        );
+
+        if (!senhaValida) {
+            return Optional.empty();
+        }
+
+        return Optional.of(usuario);
+    }
+}
