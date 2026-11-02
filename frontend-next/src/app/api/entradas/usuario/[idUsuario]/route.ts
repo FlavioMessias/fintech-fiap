@@ -43,3 +43,50 @@ export async function GET(
     );
   }
 }
+
+export async function POST(
+  request: Request,
+  context: RouteContext
+) {
+  const { idUsuario } = await context.params;
+
+  try {
+    const body = await request.text();
+
+    const response = await fetch(
+      `${API_URL}/api/entradas/usuario/${idUsuario}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body,
+      }
+    );
+
+    const data =
+      await response.text();
+
+    return new Response(data, {
+      status: response.status,
+      headers: {
+        "Content-Type":
+          response.headers.get(
+            "content-type"
+          ) ??
+          "application/json",
+      },
+    });
+  } catch {
+    return Response.json(
+      {
+        message:
+          "Não foi possível salvar a entrada.",
+      },
+      {
+        status: 503,
+      }
+    );
+  }
+}

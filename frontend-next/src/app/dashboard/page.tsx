@@ -18,6 +18,10 @@ import {
 
 import AppShell from "@/components/AppShell";
 import type { Entrada } from "@/interfaces/entrada.interface";
+import type {
+  Categoria,
+  FormaMovimentacao,
+} from "@/interfaces/referencia.interface";
 
 interface UsuarioLogado {
   idUsuario: number;
@@ -83,6 +87,14 @@ export default function DashboardPage() {
   const [entradas, setEntradas] =
     useState<Entrada[]>([]);
 
+  const [categorias, setCategorias] =
+  useState<Categoria[]>([]);
+
+const [
+  formasMovimentacao,
+  setFormasMovimentacao,
+] = useState<FormaMovimentacao[]>([]);  
+
   const [carregando, setCarregando] =
     useState(true);
 
@@ -112,28 +124,62 @@ export default function DashboardPage() {
 
       const carregarEntradas = async () => {
         try {
-          const response = await fetch(
-            `/api/entradas/usuario/${usuarioConvertido.idUsuario}`,
-            {
-              cache: "no-store",
-            }
-          );
+const [
+  responseEntradas,
+  responseCategorias,
+  responseFormas,
+] = await Promise.all([
+  fetch(
+    `/api/entradas/usuario/${usuarioConvertido.idUsuario}`,
+    {
+      cache: "no-store",
+    }
+  ),
+  fetch(
+    "/api/categorias",
+    {
+      cache: "no-store",
+    }
+  ),
+  fetch(
+    "/api/formas-movimentacao",
+    {
+      cache: "no-store",
+    }
+  ),
+]);
 
-          if (!response.ok) {
-            throw new Error(
-              "Não foi possível carregar as entradas."
-            );
-          }
+if (
+  !responseEntradas.ok ||
+  !responseCategorias.ok ||
+  !responseFormas.ok
+) {
+  throw new Error(
+    "Não foi possível carregar os dados financeiros."
+  );
+}
 
-          const dados: Entrada[] =
-            await response.json();
+const dadosEntradas: Entrada[] =
+  await responseEntradas.json();
 
-          setEntradas(
-            dados.filter(
-              (entrada) =>
-                entrada.ativo !== "N"
-            )
-          );
+const dadosCategorias: Categoria[] =
+  await responseCategorias.json();
+
+const dadosFormas: FormaMovimentacao[] =
+  await responseFormas.json();
+
+setEntradas(
+  dadosEntradas.filter(
+    (entrada) =>
+      entrada.ativo !== "N"
+  )
+);
+
+setCategorias(dadosCategorias);
+
+setFormasMovimentacao(
+  dadosFormas
+);
         } catch {
           setErro(
             "Não foi possível carregar os dados financeiros."
@@ -160,6 +206,30 @@ export default function DashboardPage() {
         new Date(a.dataEntrada).getTime()
     );
   }, [entradas]);
+
+  const categoriaPorId =
+  useMemo(() => {
+    return new Map(
+      categorias.map(
+        (categoria) => [
+          categoria.idCategoria,
+          categoria.nome,
+        ]
+      )
+    );
+  }, [categorias]);
+
+const formaPorId =
+  useMemo(() => {
+    return new Map(
+      formasMovimentacao.map(
+        (forma) => [
+          forma.idForma,
+          forma.descricao,
+        ]
+      )
+    );
+  }, [formasMovimentacao]);
 
   const totalMesAtual = useMemo(() => {
     if (!hoje) {
@@ -958,8 +1028,10 @@ return (
                         </td>
 
                         <td className="px-5 py-4">
-                          Categoria #
-                          {entrada.idCategoria}
+{categoriaPorId.get(
+  entrada.idCategoria
+) ??
+  `Categoria #${entrada.idCategoria}`}
                         </td>
 
                         <td
@@ -978,10 +1050,10 @@ return (
                         </td>
 
                         <td className="px-5 py-4">
-                          Forma #
-                          {
-                            entrada.idFormaMovimentacao
-                          }
+{formaPorId.get(
+  entrada.idFormaMovimentacao
+) ??
+  `Forma #${entrada.idFormaMovimentacao}`}
                         </td>
 
                         <td
