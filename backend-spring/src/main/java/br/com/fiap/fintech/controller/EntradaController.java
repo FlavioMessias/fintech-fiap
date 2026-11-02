@@ -44,6 +44,15 @@ public class EntradaController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<Entrada>> listarPorUsuario(
+        @PathVariable Integer idUsuario) {
+
+        return ResponseEntity.ok(
+            entradaService.listarPorUsuario(idUsuario)
+        );
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Entrada> atualizar(
             @PathVariable Integer id,

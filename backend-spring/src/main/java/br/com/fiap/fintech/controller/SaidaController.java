@@ -44,6 +44,15 @@ public class SaidaController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<Saida>> listarPorUsuario(
+        @PathVariable Integer idUsuario) {
+
+        return ResponseEntity.ok(
+            saidaService.listarPorUsuario(idUsuario)
+        );
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Saida> atualizar(
             @PathVariable Integer id,

@@ -28,6 +28,10 @@ public class EntradaService {
         return entradaRepository.findAll();
     }
 
+    public List<Entrada> listarPorUsuario(Integer idUsuario) {
+        return entradaRepository.findByIdUsuario(idUsuario);
+}
+
     public Optional<Entrada> buscarPorId(Integer id) {
         return entradaRepository.findById(id);
     }

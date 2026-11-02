@@ -32,6 +32,10 @@ public class SaidaService {
         return saidaRepository.findAll();
     }
 
+    public List<Saida> listarPorUsuario(Integer idUsuario) {
+            return saidaRepository.findByIdUsuario(idUsuario);
+        }
+
     public Optional<Saida> buscarPorId(Integer id) {
         return saidaRepository.findById(id);
     }
