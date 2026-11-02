@@ -2,11 +2,11 @@ package br.com.fiap.fintech.controller;
 
 import br.com.fiap.fintech.model.Entrada;
 import br.com.fiap.fintech.service.EntradaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -17,49 +17,71 @@ public class EntradaController {
     @Autowired
     private EntradaService entradaService;
 
-    @PostMapping
+    @PostMapping("/usuario/{idUsuario}")
     public ResponseEntity<Entrada> cadastrar(
-            @Valid @RequestBody Entrada entrada) {
-
-        Entrada entradaCadastrada = entradaService.cadastrar(entrada);
+            @PathVariable Integer idUsuario,
+            @Valid @RequestBody Entrada entrada
+    ) {
+        Entrada novaEntrada =
+                entradaService.cadastrar(idUsuario, entrada);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(entradaCadastrada);
+                .body(novaEntrada);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Entrada>> listarTodas() {
-
-        List<Entrada> entradas = entradaService.listarTodas();
-
-        return ResponseEntity.ok(entradas);
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<Entrada>> listarPorUsuario(
+            @PathVariable Integer idUsuario
+    ) {
+        return ResponseEntity.ok(
+                entradaService.listarPorUsuario(idUsuario)
+        );
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Entrada> buscarPorId(@PathVariable Integer id) {
-
-        return entradaService.buscarPorId(id)
+    @GetMapping("/usuario/{idUsuario}/{idEntrada}")
+    public ResponseEntity<Entrada> buscarPorId(
+            @PathVariable Integer idUsuario,
+            @PathVariable Integer idEntrada
+    ) {
+        return entradaService
+                .buscarPorIdDoUsuario(
+                        idEntrada,
+                        idUsuario
+                )
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() ->
+                        ResponseEntity.notFound().build()
+                );
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/usuario/{idUsuario}/{idEntrada}")
     public ResponseEntity<Entrada> atualizar(
-            @PathVariable Integer id,
-            @Valid @RequestBody Entrada entrada) {
-
-        return entradaService.atualizar(id, entrada)
+            @PathVariable Integer idUsuario,
+            @PathVariable Integer idEntrada,
+            @Valid @RequestBody Entrada entrada
+    ) {
+        return entradaService
+                .atualizar(
+                        idUsuario,
+                        idEntrada,
+                        entrada
+                )
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() ->
+                        ResponseEntity.notFound().build()
+                );
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Integer id) {
-
-        boolean excluida = entradaService.excluir(id);
-
-        if (!excluida) {
+    @DeleteMapping("/usuario/{idUsuario}/{idEntrada}")
+    public ResponseEntity<Void> excluir(
+            @PathVariable Integer idUsuario,
+            @PathVariable Integer idEntrada
+    ) {
+        if (!entradaService.excluir(
+                idUsuario,
+                idEntrada
+        )) {
             return ResponseEntity.notFound().build();
         }
 
