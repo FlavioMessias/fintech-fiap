@@ -15,13 +15,19 @@ public class SaidaService {
     @Autowired
     private SaidaRepository saidaRepository;
 
-    public Saida cadastrar(Saida saida) {
+    public Saida cadastrar(
+            Integer idUsuario,
+            Saida saida
+    ) {
+        saida.setIdUsuario(idUsuario);
 
-        if (saida.getAtivo() == null) {
+        if (saida.getAtivo() == null ||
+                saida.getAtivo().isBlank()) {
             saida.setAtivo("S");
         }
 
-        if (saida.getStatus() == null) {
+        if (saida.getStatus() == null ||
+                saida.getStatus().isBlank()) {
             saida.setStatus("PAGO");
         }
 
@@ -33,74 +39,84 @@ public class SaidaService {
     }
 
     public List<Saida> listarPorUsuario(Integer idUsuario) {
-            return saidaRepository.findByIdUsuario(idUsuario);
-        }
+        return saidaRepository.findByIdUsuario(idUsuario);
+    }
 
-    public Optional<Saida> buscarPorId(Integer id) {
-        return saidaRepository.findById(id);
+    public Optional<Saida> buscarPorIdDoUsuario(
+            Integer idSaida,
+            Integer idUsuario
+    ) {
+        return saidaRepository
+                .findByIdSaidaAndIdUsuario(
+                        idSaida,
+                        idUsuario
+                );
     }
 
     public Optional<Saida> atualizar(
-            Integer id,
-            Saida saidaAtualizada) {
+            Integer idUsuario,
+            Integer idSaida,
+            Saida dadosAtualizados
+    ) {
+        return saidaRepository
+                .findByIdSaidaAndIdUsuario(
+                        idSaida,
+                        idUsuario
+                )
+                .map(saida -> {
 
-        Optional<Saida> saidaExistente =
-                saidaRepository.findById(id);
+                    saida.setIdCategoria(
+                            dadosAtualizados.getIdCategoria()
+                    );
 
-        if (saidaExistente.isEmpty()) {
-            return Optional.empty();
-        }
+                    saida.setIdFormaMovimentacao(
+                            dadosAtualizados.getIdFormaMovimentacao()
+                    );
 
-        Saida saida = saidaExistente.get();
+                    saida.setValor(
+                            dadosAtualizados.getValor()
+                    );
 
-        saida.setIdUsuario(
-                saidaAtualizada.getIdUsuario()
-        );
+                    saida.setDataSaida(
+                            dadosAtualizados.getDataSaida()
+                    );
 
-        saida.setIdCategoria(
-                saidaAtualizada.getIdCategoria()
-        );
+                    saida.setDescricao(
+                            dadosAtualizados.getDescricao()
+                    );
 
-        saida.setIdFormaMovimentacao(
-                saidaAtualizada.getIdFormaMovimentacao()
-        );
+                    saida.setStatus(
+                            dadosAtualizados.getStatus()
+                    );
 
-        saida.setValor(
-                saidaAtualizada.getValor()
-        );
+                    saida.setAtivo(
+                            dadosAtualizados.getAtivo()
+                    );
 
-        saida.setDataSaida(
-                saidaAtualizada.getDataSaida()
-        );
+                    saida.setDataAtualizacao(
+                            LocalDateTime.now()
+                    );
 
-        saida.setDescricao(
-                saidaAtualizada.getDescricao()
-        );
-
-        saida.setStatus(
-                saidaAtualizada.getStatus()
-        );
-
-        saida.setAtivo(
-                saidaAtualizada.getAtivo()
-        );
-
-        saida.setDataAtualizacao(
-                LocalDateTime.now()
-        );
-
-        return Optional.of(
-                saidaRepository.save(saida)
-        );
+                    return saidaRepository.save(saida);
+                });
     }
 
-    public boolean excluir(Integer id) {
+    public boolean excluir(
+            Integer idUsuario,
+            Integer idSaida
+    ) {
+        Optional<Saida> saida =
+                saidaRepository
+                        .findByIdSaidaAndIdUsuario(
+                                idSaida,
+                                idUsuario
+                        );
 
-        if (!saidaRepository.existsById(id)) {
+        if (saida.isEmpty()) {
             return false;
         }
 
-        saidaRepository.deleteById(id);
+        saidaRepository.delete(saida.get());
 
         return true;
     }

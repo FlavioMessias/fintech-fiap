@@ -26,7 +26,6 @@ public class MetaFinanceira {
     @Column(name = "CD_META")
     private Integer idMeta;
 
-    @NotNull
     @Column(name = "CD_USUARIO")
     private Integer idUsuario;
 

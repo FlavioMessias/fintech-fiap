@@ -16,58 +16,111 @@ public class MetaFinanceiraService {
     @Autowired
     private MetaFinanceiraRepository metaFinanceiraRepository;
 
-    public MetaFinanceira cadastrar(MetaFinanceira meta) {
+    public MetaFinanceira cadastrar(
+            Integer idUsuario,
+            MetaFinanceira meta
+    ) {
+        meta.setIdUsuario(idUsuario);
+
         if (meta.getValorAtual() == null) {
             meta.setValorAtual(BigDecimal.ZERO);
         }
 
-        if (meta.getStatus() == null || meta.getStatus().isBlank()) {
+        if (meta.getStatus() == null ||
+                meta.getStatus().isBlank()) {
             meta.setStatus("ATIVA");
         }
 
         return metaFinanceiraRepository.save(meta);
     }
 
-    public List<MetaFinanceira> listarTodos() {
-        return metaFinanceiraRepository.findAll();
+    public List<MetaFinanceira> listarPorUsuario(
+            Integer idUsuario
+    ) {
+        return metaFinanceiraRepository
+                .findByIdUsuario(idUsuario);
     }
 
-    public List<MetaFinanceira> listarPorUsuario(Integer idUsuario) {
-        return metaFinanceiraRepository.findByIdUsuario(idUsuario);
-    }
-
-    public Optional<MetaFinanceira> buscarPorId(Integer idMeta) {
-        return metaFinanceiraRepository.findById(idMeta);
+    public Optional<MetaFinanceira> buscarPorIdDoUsuario(
+            Integer idMeta,
+            Integer idUsuario
+    ) {
+        return metaFinanceiraRepository
+                .findByIdMetaAndIdUsuario(
+                        idMeta,
+                        idUsuario
+                );
     }
 
     public Optional<MetaFinanceira> atualizar(
+            Integer idUsuario,
             Integer idMeta,
             MetaFinanceira dadosAtualizados
     ) {
-        return metaFinanceiraRepository.findById(idMeta)
+        return metaFinanceiraRepository
+                .findByIdMetaAndIdUsuario(
+                        idMeta,
+                        idUsuario
+                )
                 .map(meta -> {
 
-                    meta.setIdUsuario(dadosAtualizados.getIdUsuario());
-                    meta.setIdTipoMeta(dadosAtualizados.getIdTipoMeta());
-                    meta.setNome(dadosAtualizados.getNome());
-                    meta.setValorObjetivo(dadosAtualizados.getValorObjetivo());
-                    meta.setValorAtual(dadosAtualizados.getValorAtual());
-                    meta.setDataInicio(dadosAtualizados.getDataInicio());
-                    meta.setDataPrazo(dadosAtualizados.getDataPrazo());
-                    meta.setStatus(dadosAtualizados.getStatus());
-                    meta.setIcone(dadosAtualizados.getIcone());
-                    meta.setDataAtualizacao(LocalDateTime.now());
+                    meta.setIdTipoMeta(
+                            dadosAtualizados.getIdTipoMeta()
+                    );
+
+                    meta.setNome(
+                            dadosAtualizados.getNome()
+                    );
+
+                    meta.setValorObjetivo(
+                            dadosAtualizados.getValorObjetivo()
+                    );
+
+                    meta.setValorAtual(
+                            dadosAtualizados.getValorAtual()
+                    );
+
+                    meta.setDataInicio(
+                            dadosAtualizados.getDataInicio()
+                    );
+
+                    meta.setDataPrazo(
+                            dadosAtualizados.getDataPrazo()
+                    );
+
+                    meta.setStatus(
+                            dadosAtualizados.getStatus()
+                    );
+
+                    meta.setIcone(
+                            dadosAtualizados.getIcone()
+                    );
+
+                    meta.setDataAtualizacao(
+                            LocalDateTime.now()
+                    );
 
                     return metaFinanceiraRepository.save(meta);
                 });
     }
 
-    public boolean excluir(Integer idMeta) {
-        if (!metaFinanceiraRepository.existsById(idMeta)) {
+    public boolean excluir(
+            Integer idUsuario,
+            Integer idMeta
+    ) {
+        Optional<MetaFinanceira> meta =
+                metaFinanceiraRepository
+                        .findByIdMetaAndIdUsuario(
+                                idMeta,
+                                idUsuario
+                        );
+
+        if (meta.isEmpty()) {
             return false;
         }
 
-        metaFinanceiraRepository.deleteById(idMeta);
+        metaFinanceiraRepository.delete(meta.get());
+
         return true;
     }
 }

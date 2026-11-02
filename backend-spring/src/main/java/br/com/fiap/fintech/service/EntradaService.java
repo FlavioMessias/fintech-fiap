@@ -15,9 +15,14 @@ public class EntradaService {
     @Autowired
     private EntradaRepository entradaRepository;
 
-    public Entrada cadastrar(Entrada entrada) {
+    public Entrada cadastrar(
+            Integer idUsuario,
+            Entrada entrada
+    ) {
+        entrada.setIdUsuario(idUsuario);
 
-        if (entrada.getAtivo() == null) {
+        if (entrada.getAtivo() == null ||
+                entrada.getAtivo().isBlank()) {
             entrada.setAtivo("S");
         }
 
@@ -32,67 +37,77 @@ public class EntradaService {
         return entradaRepository.findByIdUsuario(idUsuario);
 }
 
-    public Optional<Entrada> buscarPorId(Integer id) {
-        return entradaRepository.findById(id);
+    public Optional<Entrada> buscarPorIdDoUsuario(
+            Integer idEntrada,
+            Integer idUsuario
+    ) {
+        return entradaRepository
+                .findByIdEntradaAndIdUsuario(
+                        idEntrada,
+                        idUsuario
+                );
     }
 
     public Optional<Entrada> atualizar(
-            Integer id,
-            Entrada entradaAtualizada) {
+            Integer idUsuario,
+            Integer idEntrada,
+            Entrada dadosAtualizados
+    ) {
+        return entradaRepository
+                .findByIdEntradaAndIdUsuario(
+                        idEntrada,
+                        idUsuario
+                )
+                .map(entrada -> {
 
-        Optional<Entrada> entradaExistente =
-                entradaRepository.findById(id);
+                    entrada.setIdCategoria(
+                            dadosAtualizados.getIdCategoria()
+                    );
 
-        if (entradaExistente.isEmpty()) {
-            return Optional.empty();
-        }
+                    entrada.setIdFormaMovimentacao(
+                            dadosAtualizados.getIdFormaMovimentacao()
+                    );
 
-        Entrada entrada = entradaExistente.get();
+                    entrada.setValor(
+                            dadosAtualizados.getValor()
+                    );
 
-        entrada.setIdUsuario(
-                entradaAtualizada.getIdUsuario()
-        );
+                    entrada.setDataEntrada(
+                            dadosAtualizados.getDataEntrada()
+                    );
 
-        entrada.setIdCategoria(
-                entradaAtualizada.getIdCategoria()
-        );
+                    entrada.setDescricao(
+                            dadosAtualizados.getDescricao()
+                    );
 
-        entrada.setIdFormaMovimentacao(
-                entradaAtualizada.getIdFormaMovimentacao()
-        );
+                    entrada.setAtivo(
+                            dadosAtualizados.getAtivo()
+                    );
 
-        entrada.setValor(
-                entradaAtualizada.getValor()
-        );
+                    entrada.setDataAtualizacao(
+                            LocalDateTime.now()
+                    );
 
-        entrada.setDataEntrada(
-                entradaAtualizada.getDataEntrada()
-        );
-
-        entrada.setDescricao(
-                entradaAtualizada.getDescricao()
-        );
-
-        entrada.setAtivo(
-                entradaAtualizada.getAtivo()
-        );
-
-        entrada.setDataAtualizacao(
-                LocalDateTime.now()
-        );
-
-        return Optional.of(
-                entradaRepository.save(entrada)
-        );
+                    return entradaRepository.save(entrada);
+                });
     }
 
-    public boolean excluir(Integer id) {
+    public boolean excluir(
+            Integer idUsuario,
+            Integer idEntrada
+    ) {
+        Optional<Entrada> entrada =
+                entradaRepository
+                        .findByIdEntradaAndIdUsuario(
+                                idEntrada,
+                                idUsuario
+                        );
 
-        if (!entradaRepository.existsById(id)) {
+        if (entrada.isEmpty()) {
             return false;
         }
 
-        entradaRepository.deleteById(id);
+        entradaRepository.delete(entrada.get());
 
         return true;
     }

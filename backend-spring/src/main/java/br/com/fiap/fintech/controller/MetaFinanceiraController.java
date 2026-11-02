@@ -17,23 +17,20 @@ public class MetaFinanceiraController {
     @Autowired
     private MetaFinanceiraService metaFinanceiraService;
 
-    @PostMapping
+    @PostMapping("/usuario/{idUsuario}")
     public ResponseEntity<MetaFinanceira> cadastrar(
+            @PathVariable Integer idUsuario,
             @Valid @RequestBody MetaFinanceira meta
     ) {
         MetaFinanceira novaMeta =
-                metaFinanceiraService.cadastrar(meta);
+                metaFinanceiraService.cadastrar(
+                        idUsuario,
+                        meta
+                );
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(novaMeta);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<MetaFinanceira>> listarTodos() {
-        return ResponseEntity.ok(
-                metaFinanceiraService.listarTodos()
-        );
     }
 
     @GetMapping("/usuario/{idUsuario}")
@@ -41,34 +38,54 @@ public class MetaFinanceiraController {
             @PathVariable Integer idUsuario
     ) {
         return ResponseEntity.ok(
-                metaFinanceiraService.listarPorUsuario(idUsuario)
+                metaFinanceiraService
+                        .listarPorUsuario(idUsuario)
         );
     }
 
-    @GetMapping("/{idMeta}")
+    @GetMapping("/usuario/{idUsuario}/{idMeta}")
     public ResponseEntity<MetaFinanceira> buscarPorId(
+            @PathVariable Integer idUsuario,
             @PathVariable Integer idMeta
     ) {
-        return metaFinanceiraService.buscarPorId(idMeta)
+        return metaFinanceiraService
+                .buscarPorIdDoUsuario(
+                        idMeta,
+                        idUsuario
+                )
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() ->
+                        ResponseEntity.notFound().build()
+                );
     }
 
-    @PutMapping("/{idMeta}")
+    @PutMapping("/usuario/{idUsuario}/{idMeta}")
     public ResponseEntity<MetaFinanceira> atualizar(
+            @PathVariable Integer idUsuario,
             @PathVariable Integer idMeta,
             @Valid @RequestBody MetaFinanceira meta
     ) {
-        return metaFinanceiraService.atualizar(idMeta, meta)
+        return metaFinanceiraService
+                .atualizar(
+                        idUsuario,
+                        idMeta,
+                        meta
+                )
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() ->
+                        ResponseEntity.notFound().build()
+                );
     }
 
-    @DeleteMapping("/{idMeta}")
+    @DeleteMapping("/usuario/{idUsuario}/{idMeta}")
     public ResponseEntity<Void> excluir(
+            @PathVariable Integer idUsuario,
             @PathVariable Integer idMeta
     ) {
-        if (!metaFinanceiraService.excluir(idMeta)) {
+        if (!metaFinanceiraService.excluir(
+                idUsuario,
+                idMeta
+        )) {
             return ResponseEntity.notFound().build();
         }
 
