@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
 import "./globals.css";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import AppChrome from "@/components/AppChrome";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +17,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Fintech FIAP",
-  description: "Aplicação de controle financeiro pessoal desenvolvida para a FIAP.",
+  description:
+    "Aplicação de controle financeiro pessoal desenvolvida para a FIAP.",
 };
 
 export default function RootLayout({
@@ -28,15 +29,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-gray-100 text-gray-800 min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-[#f4f6f5] text-[#161b18]`}
       >
-        <Header />
-
-        <main className="flex-grow">
+        <AppChrome>
           {children}
-        </main>
-
-        <Footer />
+        </AppChrome>
       </body>
     </html>
   );
