@@ -25,7 +25,6 @@ public class Entrada {
     @Column(name = "CD_ENTRADA")
     private Integer idEntrada;
 
-    @NotNull(message = "O usuário é obrigatório")
     @Column(name = "CD_USUARIO")
     private Integer idUsuario;
 
