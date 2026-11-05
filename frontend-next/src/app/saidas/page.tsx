@@ -47,9 +47,7 @@ interface UsuarioLogado {
 
 const ITENS_POR_PAGINA = 7;
 
-function formatarMoeda(
-  valor: number
-) {
+function formatarMoeda(valor: number) {
   return new Intl.NumberFormat(
     "pt-BR",
     {
@@ -59,9 +57,7 @@ function formatarMoeda(
   ).format(valor);
 }
 
-function formatarData(
-  data: string
-) {
+function formatarData(data: string) {
   return new Intl.DateTimeFormat(
     "pt-BR"
   ).format(
@@ -81,9 +77,7 @@ function mesmoMes(
   );
 }
 
-function formatarMesAno(
-  data: Date
-) {
+function formatarMesAno(data: Date) {
   const mes =
     new Intl.DateTimeFormat(
       "pt-BR",
@@ -125,9 +119,7 @@ export default function SaidasPage() {
     formasMovimentacao,
     setFormasMovimentacao,
   ] =
-    useState<
-      FormaMovimentacao[]
-    >([]);
+    useState<FormaMovimentacao[]>([]);
 
   const [
     busca,
@@ -198,7 +190,9 @@ export default function SaidasPage() {
     useState(false);
 
   useEffect(() => {
-    setHoje(new Date());
+    setHoje(
+      new Date()
+    );
 
     const usuarioSalvo =
       localStorage.getItem(
@@ -277,7 +271,8 @@ export default function SaidasPage() {
             setSaidas(
               dadosSaidas.filter(
                 (saida) =>
-                  saida.ativo !== "N"
+                  saida.ativo !==
+                  "N"
               )
             );
 
@@ -324,7 +319,9 @@ export default function SaidasPage() {
   ]);
 
   useEffect(() => {
-    setPaginaAtual(1);
+    setPaginaAtual(
+      1
+    );
   }, [
     busca,
     periodo,
@@ -370,7 +367,9 @@ export default function SaidasPage() {
           .trim()
           .toLowerCase();
 
-      return [...saidas]
+      return [
+        ...saidas,
+      ]
         .filter(
           (saida) => {
             if (
@@ -509,13 +508,18 @@ export default function SaidasPage() {
   const limparFiltros =
     () => {
       setBusca("");
+
       setPeriodo(
         "todos"
       );
+
       setCategoriaSelecionada(
         "todas"
       );
-      setPaginaAtual(1);
+
+      setPaginaAtual(
+        1
+      );
     };
 
   const handleExcluir =
@@ -527,8 +531,13 @@ export default function SaidasPage() {
         return;
       }
 
-      setExcluindo(true);
-      setErro(null);
+      setExcluindo(
+        true
+      );
+
+      setErro(
+        null
+      );
 
       try {
         const response =
@@ -569,7 +578,7 @@ export default function SaidasPage() {
       ) {
         setErro(
           error instanceof
-            Error
+          Error
             ? error.message
             : "Não foi possível excluir a saída."
         );
@@ -585,17 +594,7 @@ export default function SaidasPage() {
     !hoje
   ) {
     return (
-      <div
-        className="
-          flex
-          min-h-screen
-          items-center
-          justify-center
-          bg-[#f6f7f8]
-          text-sm
-          text-gray-500
-        "
-      >
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg-page)] text-sm text-[var(--text-secondary)]">
         Carregando saídas...
       </div>
     );
@@ -607,958 +606,624 @@ export default function SaidasPage() {
 
   return (
     <AppShell>
-      <section
-        className="
-          mx-auto
-          max-w-[1280px]
-          pb-8
-          pt-10
-        "
-      >
-        {/* CABEÇALHO */}
-        <header
-          className="
-            flex
-            items-start
-            justify-between
-            px-8
-            pb-8
-          "
-        >
-          <div>
-            <h1
-              className="
-                text-[28px]
-                font-bold
-                tracking-[-0.03em]
-                text-[#171c26]
-              "
-            >
-              Histórico de saídas
-            </h1>
+      <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-200">
+        <section className="mx-auto max-w-[1280px] pb-8 pt-10">
 
-            <p
-              className="
-                mt-1
-                text-sm
-                text-[#77818e]
-              "
-            >
-              Consulte todas as despesas registradas
-            </p>
-          </div>
+          {/* CABEÇALHO */}
 
-          <div
-            className="
-              flex
-              items-center
-              gap-4
-            "
-          >
-            <div
-              className="
-                flex
-                items-center
-                gap-2
-                rounded-lg
-                border
-                border-[#d9dde2]
-                bg-white
-                px-4
-                py-2.5
-                text-sm
-                font-medium
-                text-[#4f5966]
-              "
-            >
-              <CalendarDays
-                size={16}
-              />
+          <header className="flex items-start justify-between px-8 pb-8">
+            <div>
+              <h1 className="text-[28px] font-bold tracking-[-0.03em] text-[var(--text-primary)]">
+                Histórico de saídas
+              </h1>
 
-              {formatarMesAno(
-                hoje
-              )}
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                Consulte todas as despesas registradas
+              </p>
             </div>
 
-            <Link
-              href="/saidas/nova"
-              className="
-                flex
-                items-center
-                gap-2
-                rounded-lg
-                bg-[#176b2d]
-                px-4
-                py-2.5
-                text-sm
-                font-medium
-                text-white
-                transition
-                hover:bg-[#125824]
-              "
-            >
-              <Plus
-                size={16}
-              />
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-4 py-2.5 text-sm font-medium text-[var(--text-secondary)]">
+                <CalendarDays
+                  size={16}
+                />
 
-              Nova saída
-            </Link>
-          </div>
-        </header>
+                {formatarMesAno(
+                  hoje
+                )}
+              </div>
 
-        {erro && (
-          <div
-            className="
-              mx-8
-              mb-5
-              rounded-lg
-              border
-              border-red-200
-              bg-red-50
-              px-4
-              py-3
-              text-sm
-              text-red-700
-            "
-          >
-            {erro}
-          </div>
-        )}
-
-        {/* FILTROS */}
-        <div
-          className="
-            grid
-            grid-cols-1
-            gap-3
-            border-y
-            border-[#e1e4e7]
-            bg-white
-            px-3
-            py-3
-            md:grid-cols-4
-          "
-        >
-          <div
-            className="
-              flex
-              items-center
-              rounded-lg
-              border
-              border-[#d8dde3]
-              bg-white
-              px-3
-            "
-          >
-            <Search
-              size={19}
-              className="
-                text-[#788492]
-              "
-            />
-
-            <input
-              type="text"
-              value={busca}
-              onChange={(
-                event
-              ) =>
-                setBusca(
-                  event
-                    .target
-                    .value
-                )
-              }
-              placeholder="Buscar saída..."
-              className="
-                w-full
-                bg-transparent
-                px-3
-                py-2
-                text-sm
-                outline-none
-                placeholder:text-[#647083]
-              "
-            />
-          </div>
-
-          <select
-            value={periodo}
-            onChange={(
-              event
-            ) =>
-              setPeriodo(
-                event
-                  .target
-                  .value
-              )
-            }
-            className="
-              rounded-lg
-              border
-              border-[#d8dde3]
-              bg-white
-              px-3
-              py-2
-              text-sm
-              text-[#4b5665]
-              outline-none
-            "
-          >
-            <option value="todos">
-              Período: Todos
-            </option>
-
-            <option value="mes-atual">
-              Mês atual
-            </option>
-
-            <option value="ultimos-3-meses">
-              Últimos 3 meses
-            </option>
-          </select>
-
-          <select
-            value={
-              categoriaSelecionada
-            }
-            onChange={(
-              event
-            ) =>
-              setCategoriaSelecionada(
-                event
-                  .target
-                  .value
-              )
-            }
-            className="
-              rounded-lg
-              border
-              border-[#d8dde3]
-              bg-white
-              px-3
-              py-2
-              text-sm
-              text-[#4b5665]
-              outline-none
-            "
-          >
-            <option value="todas">
-              Categoria: Todas
-            </option>
-
-            {categorias.map(
-              (
-                categoria
-              ) => (
-                <option
-                  key={
-                    categoria.idCategoria
-                  }
-                  value={
-                    categoria.idCategoria
-                  }
-                >
-                  {
-                    categoria.nome
-                  }
-                </option>
-              )
-            )}
-          </select>
-
-          <button
-            type="button"
-            onClick={
-              limparFiltros
-            }
-            className="
-              flex
-              items-center
-              justify-center
-              gap-3
-              rounded-lg
-              border
-              border-[#d8dde3]
-              bg-white
-              px-4
-              py-2
-              text-sm
-              font-medium
-              text-[#4b5665]
-              transition
-              hover:bg-[#f5f6f7]
-            "
-          >
-            <RotateCcw
-              size={18}
-            />
-
-            Limpar filtros
-          </button>
-        </div>
-
-        {/* TABELA */}
-        <div
-          className="
-            overflow-x-auto
-            bg-white
-          "
-        >
-          <table
-            className="
-              w-full
-              border-collapse
-            "
-          >
-            <thead>
-              <tr
-                className="
-                  border-b
-                  border-[#40454b]
-                  bg-[#f7f8f9]
-                  text-left
-                  text-[14px]
-                  font-semibold
-                  text-[#171b22]
-                "
+              <Link
+                href="/saidas/nova"
+                className="flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[var(--accent-hover)]"
               >
-                <th className="px-6 py-5">
-                  Data
-                </th>
+                <Plus
+                  size={16}
+                />
 
-                <th className="px-4 py-5">
-                  Descrição
-                </th>
+                Nova saída
+              </Link>
+            </div>
+          </header>
 
-                <th className="px-4 py-5">
-                  Categoria
-                </th>
+          {erro && (
+            <div
+              className="mx-8 mb-5 rounded-lg border px-4 py-3 text-sm"
+              style={{
+                backgroundColor:
+                  "var(--error-bg)",
+                borderColor:
+                  "var(--error-border)",
+                color:
+                  "var(--error-text)",
+              }}
+            >
+              {erro}
+            </div>
+          )}
 
-                <th className="px-4 py-5">
-                  Valor
-                </th>
+          {/* CARD: FILTROS + TABELA + PAGINAÇÃO */}
 
-                <th className="px-4 py-5">
-                  Forma de pagamento
-                </th>
+          <div className="mx-8 overflow-hidden rounded-[14px] border border-[var(--border)] bg-[var(--card-bg)]">
 
-                <th className="px-4 py-5">
-                  Status
-                </th>
+            {/* FILTROS */}
 
-                <th
-                  className="
-                    px-4
-                    py-5
-                    text-center
-                  "
-                >
-                  Ações
-                </th>
-              </tr>
-            </thead>
+            <div className="grid grid-cols-1 gap-3 border-b border-[var(--border)] bg-[var(--field-bg)] px-3 py-3 md:grid-cols-4">
+              <div className="flex items-center rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-3">
+                <Search
+                  size={19}
+                  className="text-[var(--text-secondary)]"
+                />
 
-            <tbody>
-              {saidasPagina.length ===
-              0 ? (
-                <tr>
-                  <td
-                    colSpan={
-                      7
-                    }
-                    className="
-                      px-8
-                      py-16
-                      text-center
-                      text-sm
-                      text-[#77818e]
-                    "
-                  >
-                    Nenhuma saída encontrada.
-                  </td>
-                </tr>
-              ) : (
-                saidasPagina.map(
+                <input
+                  type="text"
+                  value={
+                    busca
+                  }
+                  onChange={(
+                    event
+                  ) =>
+                    setBusca(
+                      event
+                        .target
+                        .value
+                    )
+                  }
+                  placeholder="Buscar saída..."
+                  className="w-full bg-transparent px-3 py-2 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)]"
+                />
+              </div>
+
+              <select
+                value={
+                  periodo
+                }
+                onChange={(
+                  event
+                ) =>
+                  setPeriodo(
+                    event
+                      .target
+                      .value
+                  )
+                }
+                className="rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-3 py-2 text-sm text-[var(--text-secondary)] outline-none"
+              >
+                <option value="todos">
+                  Período: Todos
+                </option>
+
+                <option value="mes-atual">
+                  Mês atual
+                </option>
+
+                <option value="ultimos-3-meses">
+                  Últimos 3 meses
+                </option>
+              </select>
+
+              <select
+                value={
+                  categoriaSelecionada
+                }
+                onChange={(
+                  event
+                ) =>
+                  setCategoriaSelecionada(
+                    event
+                      .target
+                      .value
+                  )
+                }
+                className="rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-3 py-2 text-sm text-[var(--text-secondary)] outline-none"
+              >
+                <option value="todas">
+                  Categoria: Todas
+                </option>
+
+                {categorias.map(
                   (
-                    saida,
-                    indice
+                    categoria
                   ) => (
-                    <tr
+                    <option
                       key={
-                        saida.idSaida
+                        categoria.idCategoria
                       }
-                      className={`
-                        text-[13px]
-                        text-[#20252d]
-                        ${
-                          indice %
-                            2 ===
-                          0
-                            ? "bg-white"
-                            : "bg-[#fafbfb]"
-                        }
-                      `}
+                      value={
+                        categoria.idCategoria
+                      }
                     >
-                      <td className="px-6 py-5">
-                        {formatarData(
-                          saida.dataSaida
-                        )}
-                      </td>
+                      {
+                        categoria.nome
+                      }
+                    </option>
+                  )
+                )}
+              </select>
 
-                      <td className="px-4 py-5">
-                        {saida.descricao ||
-                          "Sem descrição"}
-                      </td>
+              <button
+                type="button"
+                onClick={
+                  limparFiltros
+                }
+                className="flex items-center justify-center gap-3 rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] transition hover:bg-[var(--button-secondary-hover)]"
+              >
+                <RotateCcw
+                  size={18}
+                />
 
-                      <td className="px-4 py-5">
-                        {categoriaPorId.get(
-                          saida.idCategoria
-                        ) ??
-                          `Categoria #${saida.idCategoria}`}
-                      </td>
+                Limpar filtros
+              </button>
+            </div>
 
+            {/* TABELA */}
+
+            <div className="overflow-x-auto bg-[var(--field-bg)]">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b border-[var(--border-strong)] bg-[var(--table-header-bg)] text-left text-[14px] font-semibold text-[var(--text-primary)]">
+                    <th className="px-6 py-5">
+                      Data
+                    </th>
+
+                    <th className="px-4 py-5">
+                      Descrição
+                    </th>
+
+                    <th className="px-4 py-5">
+                      Categoria
+                    </th>
+
+                    <th className="px-4 py-5">
+                      Valor
+                    </th>
+
+                    <th className="px-4 py-5">
+                      Forma de pagamento
+                    </th>
+
+                    <th className="px-4 py-5">
+                      Status
+                    </th>
+
+                    <th className="px-4 py-5 text-center">
+                      Ações
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {saidasPagina.length ===
+                  0 ? (
+                    <tr>
                       <td
-                        className="
-                          px-4
-                          py-5
-                          font-medium
-                          text-[#c24141]
-                        "
+                        colSpan={
+                          7
+                        }
+                        className="bg-[var(--table-row-bg)] px-8 py-16 text-center text-sm text-[var(--text-secondary)]"
                       >
-                        -
-                        {formatarMoeda(
-                          Number(
-                            saida.valor
-                          )
-                        )}
+                        Nenhuma saída encontrada.
                       </td>
-
-                      <td className="px-4 py-5">
-                        {formaPorId.get(
-                          saida.idFormaMovimentacao
-                        ) ??
-                          `Forma #${saida.idFormaMovimentacao}`}
-                      </td>
-
-                      <td className="px-4 py-5">
-                        <span
-                          className={`
-                            inline-flex
-                            rounded-full
-                            px-2.5
-                            py-1
-                            text-xs
-                            font-medium
-                            ${
-                              saida.status ===
-                              "PAGO"
-                                ? "bg-[#eaf7ee] text-[#18723a]"
-                                : "bg-[#fff3d7] text-[#9b6a06]"
-                            }
-                          `}
+                    </tr>
+                  ) : (
+                    saidasPagina.map(
+                      (
+                        saida,
+                        indice
+                      ) => (
+                        <tr
+                          key={
+                            saida.idSaida
+                          }
+                          className="text-[13px] text-[var(--text-primary)]"
+                          style={{
+                            backgroundColor:
+                              indice %
+                                2 ===
+                              0
+                                ? "var(--table-row-bg)"
+                                : "var(--table-row-alt-bg)",
+                          }}
                         >
-                          {saida.status}
-                        </span>
-                      </td>
+                          <td className="px-6 py-5">
+                            {formatarData(
+                              saida.dataSaida
+                            )}
+                          </td>
 
-                      <td className="px-4 py-5">
-                        <div
-                          className="
-                            relative
-                            flex
-                            items-center
-                            justify-center
-                            gap-3
-                          "
-                        >
-                          <Link
-                            href={`/saidas/${saida.idSaida}/editar`}
-                            title="Editar saída"
-                            className="
-                              rounded-md
-                              p-1
-                              transition
-                              hover:bg-[#eef3ef]
-                              hover:text-[#168238]
-                            "
-                          >
-                            <Pencil
-                              size={17}
-                            />
-                          </Link>
+                          <td className="px-4 py-5">
+                            {saida.descricao ||
+                              "Sem descrição"}
+                          </td>
 
-                          <button
-                            type="button"
-                            title="Mais opções"
-                            onClick={() =>
-                              setMenuAberto(
-                                menuAberto ===
-                                  saida.idSaida
-                                  ? null
-                                  : saida.idSaida
+                          <td className="px-4 py-5">
+                            {categoriaPorId.get(
+                              saida.idCategoria
+                            ) ??
+                              `Categoria #${saida.idCategoria}`}
+                          </td>
+
+                          <td className="px-4 py-5 font-medium text-[var(--expense-text)]">
+                            -
+                            {formatarMoeda(
+                              Number(
+                                saida.valor
                               )
-                            }
-                            className="
-                              rounded-md
-                              p-1
-                              transition
-                              hover:bg-[#eef3ef]
-                            "
-                          >
-                            <MoreVertical
-                              size={18}
-                            />
-                          </button>
+                            )}
+                          </td>
 
-                          {menuAberto ===
-                            saida.idSaida && (
-                            <div
-                              className="
-                                absolute
-                                right-5
-                                top-8
-                                z-20
-                                w-36
-                                overflow-hidden
-                                rounded-lg
-                                border
-                                border-[#dce1de]
-                                bg-white
-                                py-1
-                                shadow-[0_8px_24px_rgba(15,23,42,0.12)]
-                              "
+                          <td className="px-4 py-5">
+                            {formaPorId.get(
+                              saida.idFormaMovimentacao
+                            ) ??
+                              `Forma #${saida.idFormaMovimentacao}`}
+                          </td>
+
+                          <td className="px-4 py-5">
+                            <span
+                              className="inline-flex rounded-full px-2.5 py-1 text-xs font-medium"
+                              style={{
+                                backgroundColor:
+                                  saida.status ===
+                                  "PAGO"
+                                    ? "var(--status-paid-bg)"
+                                    : "var(--status-pending-bg)",
+
+                                color:
+                                  saida.status ===
+                                  "PAGO"
+                                    ? "var(--status-paid-text)"
+                                    : "var(--status-pending-text)",
+                              }}
                             >
+                              {
+                                saida.status
+                              }
+                            </span>
+                          </td>
+
+                          <td className="px-4 py-5">
+                            <div className="relative flex items-center justify-center gap-3">
                               <Link
                                 href={`/saidas/${saida.idSaida}/editar`}
-                                className="
-                                  flex
-                                  items-center
-                                  gap-3
-                                  px-4
-                                  py-2.5
-                                  text-sm
-                                  text-[#37413c]
-                                  hover:bg-[#f4f6f5]
-                                "
+                                title="Editar saída"
+                                className="rounded-md p-1 text-[var(--text-primary)] transition hover:bg-[var(--action-hover-bg)] hover:text-[var(--accent)]"
                               >
                                 <Pencil
-                                  size={15}
+                                  size={17}
                                 />
-
-                                Editar
                               </Link>
 
                               <button
                                 type="button"
-                                onClick={() => {
-                                  setSaidaParaExcluir(
-                                    saida
-                                  );
-
+                                title="Mais opções"
+                                onClick={() =>
                                   setMenuAberto(
-                                    null
-                                  );
-                                }}
-                                className="
-                                  flex
-                                  w-full
-                                  items-center
-                                  gap-3
-                                  px-4
-                                  py-2.5
-                                  text-sm
-                                  text-red-600
-                                  hover:bg-red-50
-                                "
+                                    menuAberto ===
+                                      saida.idSaida
+                                      ? null
+                                      : saida.idSaida
+                                  )
+                                }
+                                className="rounded-md p-1 text-[var(--text-primary)] transition hover:bg-[var(--action-hover-bg)] hover:text-[var(--accent)]"
                               >
-                                <Trash2
-                                  size={15}
+                                <MoreVertical
+                                  size={18}
                                 />
-
-                                Excluir
                               </button>
+
+                              {menuAberto ===
+                                saida.idSaida && (
+                                <div
+                                  className="absolute right-5 top-8 z-20 w-36 overflow-hidden rounded-lg border border-[var(--border-strong)] bg-[var(--menu-bg)] py-1"
+                                  style={{
+                                    boxShadow:
+                                      "var(--menu-shadow)",
+                                  }}
+                                >
+                                  <Link
+                                    href={`/saidas/${saida.idSaida}/editar`}
+                                    className="flex items-center gap-3 px-4 py-2.5 text-left text-sm text-[var(--text-primary)] hover:bg-[var(--menu-hover-bg)]"
+                                  >
+                                    <Pencil
+                                      size={15}
+                                    />
+
+                                    Editar
+                                  </Link>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setSaidaParaExcluir(
+                                        saida
+                                      );
+
+                                      setMenuAberto(
+                                        null
+                                      );
+                                    }}
+                                    className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-red-500 hover:bg-red-500/10"
+                                  >
+                                    <Trash2
+                                      size={15}
+                                    />
+
+                                    Excluir
+                                  </button>
+                                </div>
+                              )}
                             </div>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                )
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* PAGINAÇÃO */}
-        <footer
-          className="
-            flex
-            items-center
-            justify-between
-            border-t
-            border-[#d8dce0]
-            bg-white
-            px-7
-            py-3
-          "
-        >
-          <p
-            className="
-              text-xs
-              text-[#707b89]
-            "
-          >
-            Mostrando{" "}
-            {inicioExibicao} a{" "}
-            {fimExibicao} de{" "}
-            {
-              saidasFiltradas.length
-            }{" "}
-            saídas
-          </p>
-
-          <div
-            className="
-              flex
-              items-center
-              gap-2
-            "
-          >
-            <button
-              type="button"
-              disabled={
-                paginaAtual ===
-                1
-              }
-              onClick={() =>
-                setPaginaAtual(
-                  1
-                )
-              }
-              className="
-                disabled:opacity-30
-              "
-            >
-              <ChevronsLeft
-                size={20}
-              />
-            </button>
-
-            <button
-              type="button"
-              disabled={
-                paginaAtual ===
-                1
-              }
-              onClick={() =>
-                setPaginaAtual(
-                  (
-                    pagina
-                  ) =>
-                    pagina -
-                    1
-                )
-              }
-              className="
-                disabled:opacity-30
-              "
-            >
-              <ChevronLeft
-                size={20}
-              />
-            </button>
-
-            {Array.from(
-              {
-                length:
-                  totalPaginas,
-              },
-              (
-                _,
-                indice
-              ) =>
-                indice + 1
-            )
-              .slice(
-                0,
-                5
-              )
-              .map(
-                (
-                  pagina
-                ) => (
-                  <button
-                    key={
-                      pagina
-                    }
-                    type="button"
-                    onClick={() =>
-                      setPaginaAtual(
-                        pagina
+                          </td>
+                        </tr>
                       )
-                    }
-                    className={`
-                      flex
-                      h-7
-                      w-7
-                      items-center
-                      justify-center
-                      rounded-full
-                      text-xs
-                      ${
-                        paginaAtual ===
-                        pagina
-                          ? "bg-[#176b2d] text-white"
-                          : "text-[#22272e] hover:bg-[#eef0f1]"
-                      }
-                    `}
-                  >
-                    {pagina}
-                  </button>
-                )
-              )}
+                    )
+                  )}
+                </tbody>
+              </table>
+            </div>
 
-            <button
-              type="button"
-              disabled={
-                paginaAtual ===
-                totalPaginas
-              }
-              onClick={() =>
-                setPaginaAtual(
+            {/* PAGINAÇÃO */}
+
+            <footer className="flex items-center justify-between border-t border-[var(--border-strong)] bg-[var(--field-bg)] px-7 py-3">
+              <p className="text-xs text-[var(--text-secondary)]">
+                Mostrando{" "}
+                {inicioExibicao} a{" "}
+                {fimExibicao} de{" "}
+                {
+                  saidasFiltradas.length
+                }{" "}
+                saídas
+              </p>
+
+              <div className="flex items-center gap-2 text-[var(--text-primary)]">
+                <button
+                  type="button"
+                  disabled={
+                    paginaAtual ===
+                    1
+                  }
+                  onClick={() =>
+                    setPaginaAtual(
+                      1
+                    )
+                  }
+                  className="disabled:opacity-30"
+                >
+                  <ChevronsLeft
+                    size={20}
+                  />
+                </button>
+
+                <button
+                  type="button"
+                  disabled={
+                    paginaAtual ===
+                    1
+                  }
+                  onClick={() =>
+                    setPaginaAtual(
+                      (
+                        pagina
+                      ) =>
+                        pagina -
+                        1
+                    )
+                  }
+                  className="disabled:opacity-30"
+                >
+                  <ChevronLeft
+                    size={20}
+                  />
+                </button>
+
+                {Array.from(
+                  {
+                    length:
+                      totalPaginas,
+                  },
                   (
-                    pagina
+                    _,
+                    indice
                   ) =>
-                    pagina +
+                    indice +
                     1
                 )
-              }
-              className="
-                disabled:opacity-30
-              "
-            >
-              <ChevronRight
-                size={20}
-              />
-            </button>
+                  .slice(
+                    0,
+                    5
+                  )
+                  .map(
+                    (
+                      pagina
+                    ) => (
+                      <button
+                        key={
+                          pagina
+                        }
+                        type="button"
+                        onClick={() =>
+                          setPaginaAtual(
+                            pagina
+                          )
+                        }
+                        className={`flex h-7 w-7 items-center justify-center rounded-full text-xs ${
+                          paginaAtual ===
+                          pagina
+                            ? "bg-[var(--accent)] text-white"
+                            : "text-[var(--text-primary)] hover:bg-[var(--pagination-hover-bg)]"
+                        }`}
+                      >
+                        {
+                          pagina
+                        }
+                      </button>
+                    )
+                  )}
 
-            <button
-              type="button"
-              disabled={
-                paginaAtual ===
-                totalPaginas
-              }
-              onClick={() =>
-                setPaginaAtual(
-                  totalPaginas
-                )
-              }
-              className="
-                disabled:opacity-30
-              "
-            >
-              <ChevronsRight
-                size={20}
-              />
-            </button>
+                <button
+                  type="button"
+                  disabled={
+                    paginaAtual ===
+                    totalPaginas
+                  }
+                  onClick={() =>
+                    setPaginaAtual(
+                      (
+                        pagina
+                      ) =>
+                        pagina +
+                        1
+                    )
+                  }
+                  className="disabled:opacity-30"
+                >
+                  <ChevronRight
+                    size={20}
+                  />
+                </button>
+
+                <button
+                  type="button"
+                  disabled={
+                    paginaAtual ===
+                    totalPaginas
+                  }
+                  onClick={() =>
+                    setPaginaAtual(
+                      totalPaginas
+                    )
+                  }
+                  className="disabled:opacity-30"
+                >
+                  <ChevronsRight
+                    size={20}
+                  />
+                </button>
+              </div>
+            </footer>
           </div>
-        </footer>
-      </section>
+        </section>
 
-      {/* MODAL EXCLUSÃO */}
-      {saidaParaExcluir && (
-        <div
-          className="
-            fixed
-            inset-0
-            z-50
-            flex
-            items-center
-            justify-center
-            bg-black/40
-            px-4
-          "
-        >
+        {/* MODAL EXCLUSÃO */}
+
+        {saidaParaExcluir && (
           <div
-            className="
-              w-full
-              max-w-[430px]
-              rounded-[14px]
-              bg-white
-              p-6
-              shadow-[0_24px_60px_rgba(0,0,0,0.20)]
-            "
+            className="fixed inset-0 z-50 flex items-center justify-center px-4"
+            style={{
+              backgroundColor:
+                "var(--modal-overlay)",
+            }}
           >
-            <div
-              className="
-                flex
-                items-start
-                justify-between
-              "
-            >
-              <div>
-                <h2
-                  className="
-                    text-lg
-                    font-semibold
-                    text-[#171c26]
-                  "
-                >
-                  Excluir saída
-                </h2>
+            <div className="w-full max-w-[430px] rounded-[14px] bg-[var(--card-bg)] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.20)]">
+              <div className="flex items-start justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-[var(--text-primary)]">
+                    Excluir saída
+                  </h2>
 
-                <p
-                  className="
-                    mt-2
-                    text-sm
-                    text-[#69736d]
-                  "
+                  <p className="mt-2 text-sm text-[var(--text-secondary)]">
+                    Tem certeza que deseja excluir esta saída?
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  disabled={
+                    excluindo
+                  }
+                  onClick={() =>
+                    setSaidaParaExcluir(
+                      null
+                    )
+                  }
+                  className="rounded-md p-1 text-[var(--text-secondary)] hover:bg-[var(--button-secondary-hover)]"
                 >
-                  Tem certeza que deseja excluir esta saída?
+                  <X
+                    size={20}
+                  />
+                </button>
+              </div>
+
+              <div className="mt-5 rounded-lg border border-[var(--border)] bg-[var(--modal-info-bg)] px-4 py-3">
+                <p className="text-sm font-medium text-[var(--text-primary)]">
+                  {saidaParaExcluir.descricao ||
+                    "Saída sem descrição"}
+                </p>
+
+                <p className="mt-1 text-sm font-semibold text-[var(--expense-text)]">
+                  -
+                  {formatarMoeda(
+                    Number(
+                      saidaParaExcluir.valor
+                    )
+                  )}
                 </p>
               </div>
 
-              <button
-                type="button"
-                disabled={
-                  excluindo
-                }
-                onClick={() =>
-                  setSaidaParaExcluir(
-                    null
-                  )
-                }
-                className="
-                  rounded-md
-                  p-1
-                  text-[#7a847e]
-                  hover:bg-[#f2f4f3]
-                "
-              >
-                <X
-                  size={20}
-                />
-              </button>
-            </div>
-
-            <div
-              className="
-                mt-5
-                rounded-lg
-                border
-                border-[#e4e8e5]
-                bg-[#f7f8f7]
-                px-4
-                py-3
-              "
-            >
-              <p
-                className="
-                  text-sm
-                  font-medium
-                  text-[#303833]
-                "
-              >
-                {saidaParaExcluir.descricao ||
-                  "Saída sem descrição"}
+              <p className="mt-4 text-xs text-[var(--text-muted)]">
+                Esta ação não poderá ser desfeita.
               </p>
 
-              <p
-                className="
-                  mt-1
-                  text-sm
-                  font-semibold
-                  text-red-600
-                "
-              >
-                -
-                {formatarMoeda(
-                  Number(
-                    saidaParaExcluir.valor
-                  )
-                )}
-              </p>
-            </div>
+              <div className="mt-6 flex justify-end gap-3">
+                <button
+                  type="button"
+                  disabled={
+                    excluindo
+                  }
+                  onClick={() =>
+                    setSaidaParaExcluir(
+                      null
+                    )
+                  }
+                  className="rounded-lg border border-[var(--form-field-border)] bg-[var(--form-secondary-bg)] px-4 py-2.5 text-sm font-medium text-[var(--button-secondary-text)] transition hover:bg-[var(--form-secondary-hover)]"
+                >
+                  Cancelar
+                </button>
 
-            <p
-              className="
-                mt-4
-                text-xs
-                text-[#8a938e]
-              "
-            >
-              Esta ação não poderá ser desfeita.
-            </p>
+                <button
+                  type="button"
+                  disabled={
+                    excluindo
+                  }
+                  onClick={
+                    handleExcluir
+                  }
+                  className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <Trash2
+                    size={16}
+                  />
 
-            <div
-              className="
-                mt-6
-                flex
-                justify-end
-                gap-3
-              "
-            >
-              <button
-                type="button"
-                disabled={
-                  excluindo
-                }
-                onClick={() =>
-                  setSaidaParaExcluir(
-                    null
-                  )
-                }
-                className="
-                  rounded-lg
-                  border
-                  border-[#d8ddda]
-                  px-4
-                  py-2.5
-                  text-sm
-                  font-medium
-                  text-[#4b554f]
-                  hover:bg-[#f4f6f5]
-                "
-              >
-                Cancelar
-              </button>
-
-              <button
-                type="button"
-                disabled={
-                  excluindo
-                }
-                onClick={
-                  handleExcluir
-                }
-                className="
-                  flex
-                  items-center
-                  gap-2
-                  rounded-lg
-                  bg-red-600
-                  px-4
-                  py-2.5
-                  text-sm
-                  font-medium
-                  text-white
-                  hover:bg-red-700
-                  disabled:opacity-60
-                "
-              >
-                <Trash2
-                  size={16}
-                />
-
-                {excluindo
-                  ? "Excluindo..."
-                  : "Excluir saída"}
-              </button>
+                  {excluindo
+                    ? "Excluindo..."
+                    : "Excluir saída"}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </AppShell>
   );
 }

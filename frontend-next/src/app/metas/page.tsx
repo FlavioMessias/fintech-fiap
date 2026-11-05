@@ -24,13 +24,19 @@ import {
   X,
 } from "lucide-react";
 
-import type { LucideIcon } from "lucide-react";
+import type {
+  LucideIcon,
+} from "lucide-react";
 
 import AppShell from "@/components/AppShell";
 
-import type { MetaFinanceira } from "@/interfaces/meta-financeira.interface";
+import type {
+  MetaFinanceira,
+} from "@/interfaces/meta-financeira.interface";
 
-import type { TipoMeta } from "@/interfaces/tipo-meta.interface";
+import type {
+  TipoMeta,
+} from "@/interfaces/tipo-meta.interface";
 
 interface UsuarioLogado {
   idUsuario: number;
@@ -60,10 +66,8 @@ const ICONES: Record<
 > = {
   shield: Shield,
   plane: Plane,
-  "graduation-cap":
-    GraduationCap,
-  "shopping-cart":
-    ShoppingCart,
+  "graduation-cap": GraduationCap,
+  "shopping-cart": ShoppingCart,
   target: Target,
 };
 
@@ -87,13 +91,19 @@ function formatarData(
   }
 
   const somenteData =
-    data.substring(0, 10);
+    data.substring(
+      0,
+      10
+    );
 
   const [
     ano,
     mes,
     dia,
-  ] = somenteData.split("-");
+  ] =
+    somenteData.split(
+      "-"
+    );
 
   if (
     !ano ||
@@ -112,8 +122,10 @@ function obterLabelStatus(
   return (
     STATUS_META.find(
       (item) =>
-        item.valor === status
-    )?.label ?? status
+        item.valor ===
+        status
+    )?.label ??
+    status
   );
 }
 
@@ -161,27 +173,33 @@ export default function MetasPage() {
     tiposMeta,
     setTiposMeta,
   ] =
-    useState<TipoMeta[]>([]);
+    useState<TipoMeta[]>(
+      []
+    );
 
   const [
     busca,
     setBusca,
-  ] = useState("");
+  ] =
+    useState("");
 
   const [
     filtroTipo,
     setFiltroTipo,
-  ] = useState("TODOS");
+  ] =
+    useState("TODOS");
 
   const [
     filtroStatus,
     setFiltroStatus,
-  ] = useState("TODOS");
+  ] =
+    useState("TODOS");
 
   const [
     carregando,
     setCarregando,
-  ] = useState(true);
+  ] =
+    useState(true);
 
   const [
     erro,
@@ -210,14 +228,20 @@ export default function MetasPage() {
   const [
     excluindo,
     setExcluindo,
-  ] = useState(false);
+  ] =
+    useState(false);
 
   useEffect(() => {
     const carregarDados =
       async () => {
         try {
-          setCarregando(true);
-          setErro(null);
+          setCarregando(
+            true
+          );
+
+          setErro(
+            null
+          );
 
           const usuarioSalvo =
             localStorage.getItem(
@@ -252,6 +276,7 @@ export default function MetasPage() {
                     "no-store",
                 }
               ),
+
               fetch(
                 "/api/tipos-meta",
                 {
@@ -290,11 +315,9 @@ export default function MetasPage() {
           setTiposMeta(
             dadosTipos
           );
-        } catch (error) {
-          console.error(
-            error
-          );
-
+        } catch (
+          error
+        ) {
           setErro(
             error instanceof Error
               ? error.message
@@ -318,7 +341,9 @@ export default function MetasPage() {
           .toLowerCase();
 
       return metas.filter(
-        (meta) => {
+        (
+          meta
+        ) => {
           const correspondeBusca =
             termo.length ===
               0 ||
@@ -358,7 +383,9 @@ export default function MetasPage() {
 
   const metasAtivas =
     metas.filter(
-      (meta) =>
+      (
+        meta
+      ) =>
         meta.status ===
         "ATIVA"
     );
@@ -393,7 +420,9 @@ export default function MetasPage() {
     idTipoMeta: number
   ) {
     return tiposMeta.find(
-      (tipo) =>
+      (
+        tipo
+      ) =>
         tipo.idTipoMeta ===
         idTipoMeta
     );
@@ -401,9 +430,11 @@ export default function MetasPage() {
 
   function limparFiltros() {
     setBusca("");
+
     setFiltroTipo(
       "TODOS"
     );
+
     setFiltroStatus(
       "TODOS"
     );
@@ -418,8 +449,13 @@ export default function MetasPage() {
     }
 
     try {
-      setExcluindo(true);
-      setErro(null);
+      setExcluindo(
+        true
+      );
+
+      setErro(
+        null
+      );
 
       const response =
         await fetch(
@@ -445,7 +481,7 @@ export default function MetasPage() {
               dados.message;
           }
         } catch {
-          // Mantém a mensagem padrão.
+          // Mantém mensagem padrão.
         }
 
         throw new Error(
@@ -454,9 +490,13 @@ export default function MetasPage() {
       }
 
       setMetas(
-        (estadoAtual) =>
+        (
+          estadoAtual
+        ) =>
           estadoAtual.filter(
-            (meta) =>
+            (
+              meta
+            ) =>
               meta.idMeta !==
               metaExcluir.idMeta
           )
@@ -469,21 +509,25 @@ export default function MetasPage() {
       setMenuAberto(
         null
       );
-    } catch (error) {
+    } catch (
+      error
+    ) {
       setErro(
         error instanceof Error
           ? error.message
           : "Não foi possível excluir a meta."
       );
     } finally {
-      setExcluindo(false);
+      setExcluindo(
+        false
+      );
     }
   }
 
   if (carregando) {
     return (
       <AppShell>
-        <div className="flex min-h-[70vh] items-center justify-center text-sm text-[#6c756f]">
+        <div className="flex min-h-screen items-center justify-center bg-[var(--bg-page)] text-sm text-[var(--text-secondary)]">
           Carregando metas...
         </div>
       </AppShell>
@@ -492,518 +536,658 @@ export default function MetasPage() {
 
   return (
     <AppShell>
-      <section className="mx-auto w-full max-w-[1280px] px-6 py-9 lg:px-10">
-        <header className="mb-8 flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
-          <div>
-            <h1 className="text-[28px] font-bold tracking-[-0.03em] text-[#171b19]">
-              Metas financeiras
-            </h1>
+      <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-200">
+        <section className="mx-auto w-full max-w-[1280px] px-6 py-9 lg:px-10">
 
-            <p className="mt-1 text-sm text-[#7b847f]">
-              Acompanhe seus objetivos e veja quanto falta para alcançá-los
-            </p>
-          </div>
+          {/* CABEÇALHO */}
 
-          <Link
-            href="/metas/nova"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#15983a] px-4 text-sm font-medium text-white transition hover:bg-[#117d30]"
-          >
-            <Plus size={17} />
-            Nova meta
-          </Link>
-        </header>
+          <header className="mb-8 flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+            <div>
+              <h1 className="text-[28px] font-bold tracking-[-0.03em] text-[var(--text-primary)]">
+                Metas financeiras
+              </h1>
 
-        {erro && (
-          <div className="mb-6 flex items-start justify-between gap-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            <div className="flex items-start gap-2">
-              <CircleAlert
-                size={18}
-                className="mt-0.5 shrink-0"
-              />
-
-              <span>
-                {erro}
-              </span>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                Acompanhe seus objetivos e veja quanto falta para alcançá-los
+              </p>
             </div>
 
-            <button
-              type="button"
-              onClick={() =>
-                setErro(null)
-              }
-              className="text-red-500 hover:text-red-700"
+            <Link
+              href="/metas/nova"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[var(--accent)] px-4 text-sm font-medium text-white transition hover:bg-[var(--accent-hover)]"
             >
-              <X size={17} />
-            </button>
-          </div>
-        )}
+              <Plus
+                size={17}
+              />
 
-        <div className="mb-6 grid gap-4 md:grid-cols-3">
-          <article className="rounded-xl border border-[#e0e5e2] bg-white p-5 shadow-sm">
-            <p className="text-sm text-[#76807a]">
-              Metas ativas
-            </p>
+              Nova meta
+            </Link>
+          </header>
 
-            <p className="mt-2 text-2xl font-bold text-[#1b211e]">
-              {
-                metasAtivas.length
-              }
-            </p>
-          </article>
+          {/* ERRO */}
 
-          <article className="rounded-xl border border-[#e0e5e2] bg-white p-5 shadow-sm">
-            <p className="text-sm text-[#76807a]">
-              Total dos objetivos
-            </p>
+          {erro && (
+            <div
+              className="mb-6 flex items-start justify-between gap-4 rounded-lg border px-4 py-3 text-sm"
+              style={{
+                backgroundColor:
+                  "var(--error-bg)",
+                borderColor:
+                  "var(--error-border)",
+                color:
+                  "var(--error-text)",
+              }}
+            >
+              <div className="flex items-start gap-2">
+                <CircleAlert
+                  size={18}
+                  className="mt-0.5 shrink-0"
+                />
 
-            <p className="mt-2 text-2xl font-bold text-[#1b211e]">
-              {formatarMoeda(
-                valorObjetivos
-              )}
-            </p>
-          </article>
-
-          <article className="rounded-xl border border-[#e0e5e2] bg-white p-5 shadow-sm">
-            <p className="text-sm text-[#76807a]">
-              Valor acumulado
-            </p>
-
-            <p className="mt-2 text-2xl font-bold text-[#15983a]">
-              {formatarMoeda(
-                valorAcumulado
-              )}
-            </p>
-          </article>
-        </div>
-
-        <div className="mb-6 grid gap-3 rounded-xl border border-[#dde3df] bg-white p-3 shadow-sm lg:grid-cols-[1.3fr_1fr_1fr_auto]">
-          <div className="relative">
-            <Search
-              size={17}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#87918b]"
-            />
-
-            <input
-              type="text"
-              value={busca}
-              onChange={(
-                event
-              ) =>
-                setBusca(
-                  event.target.value
-                )
-              }
-              placeholder="Buscar meta..."
-              className="h-10 w-full rounded-lg border border-[#d8dedb] bg-white pl-10 pr-3 text-sm text-[#272d29] outline-none transition focus:border-[#15983a] focus:ring-2 focus:ring-[#15983a]/10"
-            />
-          </div>
-
-          <select
-            value={
-              filtroTipo
-            }
-            onChange={(
-              event
-            ) =>
-              setFiltroTipo(
-                event.target.value
-              )
-            }
-            className="h-10 rounded-lg border border-[#d8dedb] bg-white px-3 text-sm text-[#4f5953] outline-none focus:border-[#15983a]"
-          >
-            <option value="TODOS">
-              Tipo: Todos
-            </option>
-
-            {tiposMeta.map(
-              (tipo) => (
-                <option
-                  key={
-                    tipo.idTipoMeta
-                  }
-                  value={
-                    tipo.idTipoMeta
-                  }
-                >
-                  {tipo.nome}
-                </option>
-              )
-            )}
-          </select>
-
-          <select
-            value={
-              filtroStatus
-            }
-            onChange={(
-              event
-            ) =>
-              setFiltroStatus(
-                event.target.value
-              )
-            }
-            className="h-10 rounded-lg border border-[#d8dedb] bg-white px-3 text-sm text-[#4f5953] outline-none focus:border-[#15983a]"
-          >
-            <option value="TODOS">
-              Status: Todos
-            </option>
-
-            {STATUS_META.map(
-              (status) => (
-                <option
-                  key={
-                    status.valor
-                  }
-                  value={
-                    status.valor
-                  }
-                >
-                  {
-                    status.label
-                  }
-                </option>
-              )
-            )}
-          </select>
-
-          <button
-            type="button"
-            onClick={
-              limparFiltros
-            }
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[#d8dedb] px-4 text-sm text-[#5f6963] transition hover:bg-[#f6f8f7]"
-          >
-            <RotateCcw
-              size={16}
-            />
-            Limpar filtros
-          </button>
-        </div>
-
-        {metasFiltradas.length ===
-        0 ? (
-          <div className="rounded-xl border border-[#dde3df] bg-white px-6 py-16 text-center shadow-sm">
-            <Target
-              size={36}
-              className="mx-auto text-[#a0aaa4]"
-            />
-
-            <h2 className="mt-4 text-lg font-semibold text-[#252c28]">
-              Nenhuma meta encontrada
-            </h2>
-
-            <p className="mt-2 text-sm text-[#7b857f]">
-              Crie uma meta financeira para acompanhar o progresso dos seus objetivos.
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {metasFiltradas.map(
-              (meta) => {
-                const tipo =
-                  obterTipo(
-                    meta.idTipoMeta
-                  );
-
-                const nomeIcone =
-                  tipo?.icone ??
-                  meta.icone ??
-                  "target";
-
-                const Icone =
-                  ICONES[
-                    nomeIcone
-                  ] ?? Target;
-
-                const objetivo =
-                  Number(
-                    meta.valorObjetivo
-                  );
-
-                const atual =
-                  Number(
-                    meta.valorAtual
-                  );
-
-                const restante =
-                  Math.max(
-                    0,
-                    objetivo -
-                      atual
-                  );
-
-                const percentual =
-                  calcularPercentual(
-                    atual,
-                    objetivo
-                  );
-
-                return (
-                  <article
-                    key={
-                      meta.idMeta
-                    }
-                    className="relative rounded-xl border border-[#dde3df] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex min-w-0 items-center gap-3">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e8f7ed] text-[#15983a]">
-                          <Icone
-                            size={21}
-                          />
-                        </div>
-
-                        <div className="min-w-0">
-                          <p className="truncate text-base font-semibold text-[#222925]">
-                            {
-                              meta.nome
-                            }
-                          </p>
-
-                          <p className="mt-0.5 text-xs text-[#858f89]">
-                            {tipo?.nome ??
-                              "Meta financeira"}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="relative">
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setMenuAberto(
-                              menuAberto ===
-                                meta.idMeta
-                                ? null
-                                : meta.idMeta
-                            )
-                          }
-                          className="flex h-8 w-8 items-center justify-center rounded-md text-[#657069] transition hover:bg-[#f1f4f2]"
-                        >
-                          <EllipsisVertical
-                            size={18}
-                          />
-                        </button>
-
-                        {menuAberto ===
-                          meta.idMeta && (
-                          <div className="absolute right-0 top-9 z-30 w-40 overflow-hidden rounded-lg border border-[#dde3df] bg-white py-1 shadow-lg">
-                            <Link
-                              href={`/metas/${meta.idMeta}/editar`}
-                              className="flex items-center gap-2 px-3 py-2 text-sm text-[#404943] transition hover:bg-[#f5f7f6]"
-                            >
-                              <Pencil
-                                size={15}
-                              />
-                              Editar
-                            </Link>
-
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setMetaExcluir(
-                                  meta
-                                );
-
-                                setMenuAberto(
-                                  null
-                                );
-                              }}
-                              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 transition hover:bg-red-50"
-                            >
-                              <Trash2
-                                size={15}
-                              />
-                              Excluir
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="mt-5 flex items-center justify-between gap-3">
-                      <span
-                        className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium ${
-                          meta.status ===
-                          "ATIVA"
-                            ? "bg-[#e7f7ec] text-[#18823a]"
-                            : meta.status ===
-                                "CONCLUIDA"
-                              ? "bg-[#e8f0ff] text-[#3963a8]"
-                              : "bg-[#f0f1f2] text-[#6a7370]"
-                        }`}
-                      >
-                        {obterLabelStatus(
-                          meta.status
-                        )}
-                      </span>
-
-                      <span className="text-sm font-semibold text-[#15983a]">
-                        {
-                          percentual
-                        }
-                        %
-                      </span>
-                    </div>
-
-                    <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#edf1ee]">
-                      <div
-                        className="h-full rounded-full bg-[#15983a] transition-all"
-                        style={{
-                          width: `${percentual}%`,
-                        }}
-                      />
-                    </div>
-
-                    <div className="mt-5 grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-xs text-[#88918c]">
-                          Valor atual
-                        </p>
-
-                        <p className="mt-1 text-sm font-semibold text-[#202723]">
-                          {formatarMoeda(
-                            atual
-                          )}
-                        </p>
-                      </div>
-
-                      <div>
-                        <p className="text-xs text-[#88918c]">
-                          Objetivo
-                        </p>
-
-                        <p className="mt-1 text-sm font-semibold text-[#202723]">
-                          {formatarMoeda(
-                            objetivo
-                          )}
-                        </p>
-                      </div>
-
-                      <div>
-                        <p className="text-xs text-[#88918c]">
-                          Falta
-                        </p>
-
-                        <p className="mt-1 text-sm font-medium text-[#59635d]">
-                          {formatarMoeda(
-                            restante
-                          )}
-                        </p>
-                      </div>
-
-                      <div>
-                        <p className="text-xs text-[#88918c]">
-                          Prazo
-                        </p>
-
-                        <p className="mt-1 text-sm font-medium text-[#59635d]">
-                          {formatarData(
-                            meta.dataPrazo
-                          )}
-                        </p>
-                      </div>
-                    </div>
-
-                    <Link
-                      href={`/metas/${meta.idMeta}/editar`}
-                      className="mt-5 inline-flex h-9 w-full items-center justify-center gap-2 rounded-lg border border-[#dce2de] text-sm font-medium text-[#505a54] transition hover:border-[#bcdcc5] hover:bg-[#f4fbf6] hover:text-[#15983a]"
-                    >
-                      <Pencil
-                        size={15}
-                      />
-                      Atualizar meta
-                    </Link>
-                  </article>
-                );
-              }
-            )}
-          </div>
-        )}
-      </section>
-
-      {metaExcluir && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4">
-          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h2 className="text-lg font-bold text-[#1d231f]">
-                  Excluir meta
-                </h2>
-
-                <p className="mt-2 text-sm leading-6 text-[#6d7771]">
-                  Tem certeza que deseja excluir esta meta financeira?
-                </p>
+                <span>
+                  {erro}
+                </span>
               </div>
 
               <button
                 type="button"
                 onClick={() =>
-                  setMetaExcluir(
+                  setErro(
                     null
                   )
                 }
-                className="text-[#7b857f] hover:text-[#242a26]"
+                style={{
+                  color:
+                    "var(--error-text)",
+                }}
               >
-                <X size={20} />
+                <X
+                  size={17}
+                />
               </button>
             </div>
+          )}
 
-            <div className="mt-5 rounded-lg bg-[#f5f7f6] p-4">
-              <p className="text-sm font-semibold text-[#252c28]">
-                {
-                  metaExcluir.nome
-                }
+          {/* KPIs */}
+
+          <div className="mb-6 grid gap-4 md:grid-cols-3">
+            <article
+              className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5"
+              style={{
+                boxShadow:
+                  "var(--card-shadow)",
+              }}
+            >
+              <p className="text-sm text-[var(--text-secondary)]">
+                Metas ativas
               </p>
 
-              <p className="mt-1 text-sm text-[#6d7771]">
-                Objetivo:{" "}
+              <p className="mt-2 text-2xl font-bold text-[var(--text-primary)]">
+                {
+                  metasAtivas.length
+                }
+              </p>
+            </article>
+
+            <article
+              className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5"
+              style={{
+                boxShadow:
+                  "var(--card-shadow)",
+              }}
+            >
+              <p className="text-sm text-[var(--text-secondary)]">
+                Total dos objetivos
+              </p>
+
+              <p className="mt-2 text-2xl font-bold text-[var(--text-primary)]">
                 {formatarMoeda(
-                  Number(
-                    metaExcluir.valorObjetivo
-                  )
+                  valorObjetivos
                 )}
               </p>
-            </div>
+            </article>
 
-            <div className="mt-6 flex justify-end gap-3">
-              <button
-                type="button"
-                disabled={
-                  excluindo
+            <article
+              className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5"
+              style={{
+                boxShadow:
+                  "var(--card-shadow)",
+              }}
+            >
+              <p className="text-sm text-[var(--text-secondary)]">
+                Valor acumulado
+              </p>
+
+              <p className="mt-2 text-2xl font-bold text-[var(--accent)]">
+                {formatarMoeda(
+                  valorAcumulado
+                )}
+              </p>
+            </article>
+          </div>
+
+          {/* FILTROS */}
+
+          <div className="mb-6 grid gap-3 rounded-[14px] border border-[var(--border)] bg-[var(--field-bg)] p-3 shadow-sm lg:grid-cols-[1.3fr_1fr_1fr_auto]">
+            <div className="relative">
+              <Search
+                size={17}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]"
+              />
+
+              <input
+                type="text"
+                value={
+                  busca
                 }
-                onClick={() =>
-                  setMetaExcluir(
-                    null
+                onChange={(
+                  event
+                ) =>
+                  setBusca(
+                    event.target.value
                   )
                 }
-                className="h-10 rounded-lg border border-[#d7ddda] px-4 text-sm text-[#56605a] transition hover:bg-[#f6f8f7]"
-              >
-                Cancelar
-              </button>
+                placeholder="Buscar meta..."
+                className="h-10 w-full rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] pl-10 pr-3 text-sm text-[var(--text-primary)] outline-none transition placeholder:text-[var(--text-muted)] focus:border-[var(--accent)]"
+              />
+            </div>
 
-              <button
-                type="button"
-                disabled={
-                  excluindo
-                }
-                onClick={
-                  excluirMeta
-                }
-                className="inline-flex h-10 items-center gap-2 rounded-lg bg-red-600 px-4 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <Trash2
-                  size={16}
-                />
+            <select
+              value={
+                filtroTipo
+              }
+              onChange={(
+                event
+              ) =>
+                setFiltroTipo(
+                  event.target.value
+                )
+              }
+              className="h-10 rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-3 text-sm text-[var(--text-secondary)] outline-none focus:border-[var(--accent)]"
+            >
+              <option value="TODOS">
+                Tipo: Todos
+              </option>
 
-                {excluindo
-                  ? "Excluindo..."
-                  : "Excluir"}
-              </button>
+              {tiposMeta.map(
+                (
+                  tipo
+                ) => (
+                  <option
+                    key={
+                      tipo.idTipoMeta
+                    }
+                    value={
+                      tipo.idTipoMeta
+                    }
+                  >
+                    {
+                      tipo.nome
+                    }
+                  </option>
+                )
+              )}
+            </select>
+
+            <select
+              value={
+                filtroStatus
+              }
+              onChange={(
+                event
+              ) =>
+                setFiltroStatus(
+                  event.target.value
+                )
+              }
+              className="h-10 rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-3 text-sm text-[var(--text-secondary)] outline-none focus:border-[var(--accent)]"
+            >
+              <option value="TODOS">
+                Status: Todos
+              </option>
+
+              {STATUS_META.map(
+                (
+                  status
+                ) => (
+                  <option
+                    key={
+                      status.valor
+                    }
+                    value={
+                      status.valor
+                    }
+                  >
+                    {
+                      status.label
+                    }
+                  </option>
+                )
+              )}
+            </select>
+
+            <button
+              type="button"
+              onClick={
+                limparFiltros
+              }
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[var(--border-strong)] bg-[var(--field-bg)] px-4 text-sm text-[var(--text-secondary)] transition hover:bg-[var(--button-secondary-hover)]"
+            >
+              <RotateCcw
+                size={16}
+              />
+
+              Limpar filtros
+            </button>
+          </div>
+
+          {/* CONTEÚDO */}
+
+          {metasFiltradas.length ===
+          0 ? (
+            <div
+              className="rounded-[14px] border border-[var(--border)] bg-[var(--card-bg)] px-6 py-16 text-center"
+              style={{
+                boxShadow:
+                  "var(--card-shadow)",
+              }}
+            >
+              <Target
+                size={36}
+                className="mx-auto text-[var(--text-muted)]"
+              />
+
+              <h2 className="mt-4 text-lg font-semibold text-[var(--text-primary)]">
+                Nenhuma meta encontrada
+              </h2>
+
+              <p className="mt-2 text-sm text-[var(--text-secondary)]">
+                Crie uma meta financeira para acompanhar o progresso dos seus objetivos.
+              </p>
+            </div>
+          ) : (
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {metasFiltradas.map(
+                (
+                  meta
+                ) => {
+                  const tipo =
+                    obterTipo(
+                      meta.idTipoMeta
+                    );
+
+                  const nomeIcone =
+                    tipo?.icone ??
+                    meta.icone ??
+                    "target";
+
+                  const Icone =
+                    ICONES[
+                      nomeIcone
+                    ] ??
+                    Target;
+
+                  const objetivo =
+                    Number(
+                      meta.valorObjetivo
+                    );
+
+                  const atual =
+                    Number(
+                      meta.valorAtual
+                    );
+
+                  const restante =
+                    Math.max(
+                      0,
+                      objetivo -
+                        atual
+                    );
+
+                  const percentual =
+                    calcularPercentual(
+                      atual,
+                      objetivo
+                    );
+
+                  return (
+                    <article
+                      key={
+                        meta.idMeta
+                      }
+                      className="relative rounded-[14px] border border-[var(--border)] bg-[var(--card-bg)] p-5 transition hover:-translate-y-0.5"
+                      style={{
+                        boxShadow:
+                          "var(--card-shadow)",
+                      }}
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex min-w-0 items-center gap-3">
+                          <div
+                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[var(--accent)]"
+                            style={{
+                              backgroundColor:
+                                "var(--goal-icon-bg)",
+                            }}
+                          >
+                            <Icone
+                              size={21}
+                            />
+                          </div>
+
+                          <div className="min-w-0">
+                            <p className="truncate text-base font-semibold text-[var(--text-primary)]">
+                              {
+                                meta.nome
+                              }
+                            </p>
+
+                            <p className="mt-0.5 text-xs text-[var(--text-muted)]">
+                              {tipo?.nome ??
+                                "Meta financeira"}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="relative">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setMenuAberto(
+                                menuAberto ===
+                                  meta.idMeta
+                                  ? null
+                                  : meta.idMeta
+                              )
+                            }
+                            className="flex h-8 w-8 items-center justify-center rounded-md text-[var(--text-secondary)] transition hover:bg-[var(--action-hover-bg)]"
+                          >
+                            <EllipsisVertical
+                              size={18}
+                            />
+                          </button>
+
+                          {menuAberto ===
+                            meta.idMeta && (
+                            <div
+                              className="absolute right-0 top-9 z-30 w-40 overflow-hidden rounded-lg border border-[var(--border-strong)] bg-[var(--menu-bg)] py-1"
+                              style={{
+                                boxShadow:
+                                  "var(--menu-shadow)",
+                              }}
+                            >
+                              <Link
+                                href={`/metas/${meta.idMeta}/editar`}
+                                className="flex items-center gap-2 px-3 py-2 text-sm text-[var(--text-primary)] transition hover:bg-[var(--menu-hover-bg)]"
+                              >
+                                <Pencil
+                                  size={15}
+                                />
+
+                                Editar
+                              </Link>
+
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setMetaExcluir(
+                                    meta
+                                  );
+
+                                  setMenuAberto(
+                                    null
+                                  );
+                                }}
+                                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-500 transition hover:bg-red-500/10"
+                              >
+                                <Trash2
+                                  size={15}
+                                />
+
+                                Excluir
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* STATUS E PERCENTUAL */}
+
+                      <div className="mt-5 flex items-center justify-between gap-3">
+                        <span
+                          className="inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium"
+                          style={{
+                            backgroundColor:
+                              meta.status ===
+                              "ATIVA"
+                                ? "var(--goal-active-bg)"
+                                : meta.status ===
+                                    "CONCLUIDA"
+                                  ? "var(--goal-completed-bg)"
+                                  : "var(--goal-cancelled-bg)",
+
+                            color:
+                              meta.status ===
+                              "ATIVA"
+                                ? "var(--goal-active-text)"
+                                : meta.status ===
+                                    "CONCLUIDA"
+                                  ? "var(--goal-completed-text)"
+                                  : "var(--goal-cancelled-text)",
+                          }}
+                        >
+                          {obterLabelStatus(
+                            meta.status
+                          )}
+                        </span>
+
+                        <span className="text-sm font-semibold text-[var(--accent)]">
+                          {
+                            percentual
+                          }
+                          %
+                        </span>
+                      </div>
+
+                      {/* PROGRESSO */}
+
+                      <div
+                        className="mt-3 h-2 overflow-hidden rounded-full"
+                        style={{
+                          backgroundColor:
+                            "var(--goal-progress-track)",
+                        }}
+                      >
+                        <div
+                          className="h-full rounded-full bg-[var(--accent)] transition-all"
+                          style={{
+                            width:
+                              `${percentual}%`,
+                          }}
+                        />
+                      </div>
+
+                      {/* VALORES */}
+
+                      <div className="mt-5 grid grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-xs text-[var(--text-muted)]">
+                            Valor atual
+                          </p>
+
+                          <p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
+                            {formatarMoeda(
+                              atual
+                            )}
+                          </p>
+                        </div>
+
+                        <div>
+                          <p className="text-xs text-[var(--text-muted)]">
+                            Objetivo
+                          </p>
+
+                          <p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
+                            {formatarMoeda(
+                              objetivo
+                            )}
+                          </p>
+                        </div>
+
+                        <div>
+                          <p className="text-xs text-[var(--text-muted)]">
+                            Falta
+                          </p>
+
+                          <p className="mt-1 text-sm font-medium text-[var(--text-secondary)]">
+                            {formatarMoeda(
+                              restante
+                            )}
+                          </p>
+                        </div>
+
+                        <div>
+                          <p className="text-xs text-[var(--text-muted)]">
+                            Prazo
+                          </p>
+
+                          <p className="mt-1 text-sm font-medium text-[var(--text-secondary)]">
+                            {formatarData(
+                              meta.dataPrazo
+                            )}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* AÇÃO */}
+
+                      <Link
+                        href={`/metas/${meta.idMeta}/editar`}
+                        className="mt-5 inline-flex h-9 w-full items-center justify-center gap-2 rounded-lg border border-[var(--border-strong)] text-sm font-medium text-[var(--text-secondary)] transition hover:bg-[var(--goal-action-hover-bg)] hover:text-[var(--accent)]"
+                        style={{
+                          borderColor:
+                            "var(--border-strong)",
+                        }}
+                        onMouseEnter={(
+                          event
+                        ) => {
+                          event.currentTarget.style.borderColor =
+                            "var(--goal-action-hover-border)";
+                        }}
+                        onMouseLeave={(
+                          event
+                        ) => {
+                          event.currentTarget.style.borderColor =
+                            "var(--border-strong)";
+                        }}
+                      >
+                        <Pencil
+                          size={15}
+                        />
+
+                        Atualizar meta
+                      </Link>
+                    </article>
+                  );
+                }
+              )}
+            </div>
+          )}
+        </section>
+
+        {/* MODAL EXCLUSÃO */}
+
+        {metaExcluir && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center px-4"
+            style={{
+              backgroundColor:
+                "var(--modal-overlay)",
+            }}
+          >
+            <div className="w-full max-w-md rounded-[14px] bg-[var(--card-bg)] p-6 shadow-2xl">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-bold text-[var(--text-primary)]">
+                    Excluir meta
+                  </h2>
+
+                  <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                    Tem certeza que deseja excluir esta meta financeira?
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setMetaExcluir(
+                      null
+                    )
+                  }
+                  className="text-[var(--text-secondary)] transition hover:text-[var(--text-primary)]"
+                >
+                  <X
+                    size={20}
+                  />
+                </button>
+              </div>
+
+              <div className="mt-5 rounded-lg border border-[var(--border)] bg-[var(--modal-info-bg)] p-4">
+                <p className="text-sm font-semibold text-[var(--text-primary)]">
+                  {
+                    metaExcluir.nome
+                  }
+                </p>
+
+                <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                  Objetivo:{" "}
+                  {formatarMoeda(
+                    Number(
+                      metaExcluir.valorObjetivo
+                    )
+                  )}
+                </p>
+              </div>
+
+              <div className="mt-6 flex justify-end gap-3">
+                <button
+                  type="button"
+                  disabled={
+                    excluindo
+                  }
+                  onClick={() =>
+                    setMetaExcluir(
+                      null
+                    )
+                  }
+                  className="h-10 rounded-lg border border-[var(--form-field-border)] bg-[var(--form-secondary-bg)] px-4 text-sm text-[var(--button-secondary-text)] transition hover:bg-[var(--form-secondary-hover)]"
+                >
+                  Cancelar
+                </button>
+
+                <button
+                  type="button"
+                  disabled={
+                    excluindo
+                  }
+                  onClick={
+                    excluirMeta
+                  }
+                  className="inline-flex h-10 items-center gap-2 rounded-lg bg-red-600 px-4 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <Trash2
+                    size={16}
+                  />
+
+                  {excluindo
+                    ? "Excluindo..."
+                    : "Excluir"}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </AppShell>
   );
 }

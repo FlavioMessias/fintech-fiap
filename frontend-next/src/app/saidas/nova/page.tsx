@@ -53,9 +53,7 @@ export default function NovaSaidaPage() {
     formasMovimentacao,
     setFormasMovimentacao,
   ] =
-    useState<
-      FormaMovimentacao[]
-    >([]);
+    useState<FormaMovimentacao[]>([]);
 
   const [
     valor,
@@ -113,34 +111,44 @@ export default function NovaSaidaPage() {
       null
     );
 
-useEffect(() => {
-  setValor("");
-  setIdCategoria("");
-  setIdFormaMovimentacao("");
-  setDescricao("");
-  setStatus("PAGO");
-  setErro(null);
+  useEffect(() => {
+    setValor("");
+    setIdCategoria("");
+    setIdFormaMovimentacao("");
+    setDescricao("");
+    setStatus("PAGO");
+    setErro(null);
 
-  const agora = new Date();
+    const agora =
+      new Date();
 
-  const ano = agora.getFullYear();
+    const ano =
+      agora.getFullYear();
 
-  const mes = String(
-    agora.getMonth() + 1
-  ).padStart(2, "0");
+    const mes =
+      String(
+        agora.getMonth() + 1
+      ).padStart(
+        2,
+        "0"
+      );
 
-  const dia = String(
-    agora.getDate()
-  ).padStart(2, "0");
+    const dia =
+      String(
+        agora.getDate()
+      ).padStart(
+        2,
+        "0"
+      );
 
-  setDataSaida(
-    `${ano}-${mes}-${dia}`
-  );
-
-  const usuarioSalvo =
-    localStorage.getItem(
-      "usuario_fintech"
+    setDataSaida(
+      `${ano}-${mes}-${dia}`
     );
+
+    const usuarioSalvo =
+      localStorage.getItem(
+        "usuario_fintech"
+      );
 
     if (!usuarioSalvo) {
       router.replace(
@@ -341,9 +349,7 @@ useEffect(() => {
             }
           );
 
-        if (
-          !response.ok
-        ) {
+        if (!response.ok) {
           let mensagem =
             "Não foi possível salvar a saída.";
 
@@ -358,7 +364,7 @@ useEffect(() => {
                 dados.message;
             }
           } catch {
-            // mantém mensagem padrão
+            // Mantém a mensagem padrão.
           }
 
           throw new Error(
@@ -374,7 +380,7 @@ useEffect(() => {
       ) {
         setErro(
           error instanceof
-            Error
+          Error
             ? error.message
             : "Não foi possível salvar a saída."
         );
@@ -390,17 +396,7 @@ useEffect(() => {
     !usuario
   ) {
     return (
-      <div
-        className="
-          flex
-          min-h-screen
-          items-center
-          justify-center
-          bg-[#f4f6f5]
-          text-sm
-          text-[#6c756f]
-        "
-      >
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg-page)] text-sm text-[var(--text-secondary)]">
         Carregando formulário...
       </div>
     );
@@ -408,593 +404,374 @@ useEffect(() => {
 
   return (
     <AppShell>
-      <section
-        className="
-          mx-auto
-          max-w-[980px]
-          px-8
-          pb-12
-          pt-10
-        "
-      >
-        <header
-          className="
-            mb-8
-            flex
-            items-start
-            justify-between
-          "
-        >
-          <div>
-            <h1
-              className="
-                text-[27px]
-                font-bold
-                tracking-[-0.03em]
-                text-[#171c26]
-              "
-            >
-              Registrar Saída
-            </h1>
+      <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-200">
+        <section className="mx-auto max-w-[980px] px-8 pb-12 pt-10">
 
-            <p
-              className="
-                mt-1
-                text-sm
-                text-[#78838e]
-              "
-            >
-              Cadastre uma nova despesa realizada
-            </p>
-          </div>
+          {/* CABEÇALHO */}
 
-          <Link
-            href="/saidas"
-            className="
-              flex
-              items-center
-              gap-2
-              rounded-lg
-              border
-              border-[#d8dde0]
-              bg-white
-              px-4
-              py-2.5
-              text-sm
-              text-[#505a54]
-              transition
-              hover:bg-[#f5f6f5]
-            "
-          >
-            <ArrowLeft
-              size={16}
-            />
-
-            Voltar para Saídas
-          </Link>
-        </header>
-
-        <form
-          onSubmit={
-            handleSubmit
-          }
-          autoComplete="off"
-          className="
-            rounded-[14px]
-            border
-            border-[#dde2df]
-            bg-white
-            p-8
-            shadow-[0_12px_30px_rgba(15,23,42,0.10)]
-          "
-        >
-          <h2
-            className="
-              text-xl
-              font-semibold
-              text-[#181d25]
-            "
-          >
-            Nova Saída
-          </h2>
-
-          <div
-            className="
-              my-5
-              border-t
-              border-[#e7e9e8]
-            "
-          />
-
-          {erro && (
-            <div
-              className="
-                mb-5
-                rounded-lg
-                border
-                border-red-200
-                bg-red-50
-                px-4
-                py-3
-                text-sm
-                text-red-700
-              "
-            >
-              {erro}
-            </div>
-          )}
-
-          <div
-            className="
-              grid
-              grid-cols-1
-              gap-5
-              md:grid-cols-2
-            "
-          >
+          <header className="mb-8 flex items-start justify-between">
             <div>
-              <label
-                htmlFor="valor"
-                className="
-                  mb-2
-                  block
-                  text-sm
-                  font-medium
-                  text-[#36413b]
-                "
-              >
-                Valor da saída
-              </label>
+              <h1 className="text-[27px] font-bold tracking-[-0.03em] text-[var(--text-primary)]">
+                Registrar Saída
+              </h1>
 
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                Cadastre uma nova despesa realizada
+              </p>
+            </div>
+
+            <Link
+              href="/saidas"
+              className="flex items-center gap-2 rounded-lg border border-[var(--border-strong)] bg-[var(--form-back-bg)] px-4 py-2.5 text-sm text-[var(--text-secondary)] transition hover:bg-[var(--form-back-hover)]"
+            >
+              <ArrowLeft
+                size={16}
+              />
+
+              Voltar para Saídas
+            </Link>
+          </header>
+
+          {/* FORMULÁRIO */}
+
+          <form
+            onSubmit={
+              handleSubmit
+            }
+            autoComplete="off"
+            className="rounded-[14px] border border-[var(--border)] bg-[var(--card-bg)] p-8"
+            style={{
+              boxShadow:
+                "var(--form-shadow)",
+            }}
+          >
+            <h2 className="text-xl font-semibold text-[var(--text-primary)]">
+              Nova Saída
+            </h2>
+
+            <div className="my-5 border-t border-[var(--form-divider)]" />
+
+            {erro && (
               <div
-                className="
-                  flex
-                  items-center
-                  rounded-lg
-                  border
-                  border-[#d4dad6]
-                  bg-[#f2f4f3]
-                "
+                className="mb-5 rounded-lg border px-4 py-3 text-sm"
+                style={{
+                  backgroundColor:
+                    "var(--error-bg)",
+                  borderColor:
+                    "var(--error-border)",
+                  color:
+                    "var(--error-text)",
+                }}
               >
-                <span
-                  className="
-                    pl-4
-                    text-sm
-                    text-[#77817b]
-                  "
+                {erro}
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+              {/* VALOR */}
+
+              <div>
+                <label
+                  htmlFor="valor"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
                 >
-                  R$
-                </span>
+                  Valor da saída
+                </label>
+
+                <div className="flex items-center rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] transition focus-within:border-[var(--form-field-focus)]">
+                  <span className="pl-4 text-sm text-[var(--form-muted)]">
+                    R$
+                  </span>
+
+                  <input
+                    id="valor"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    value={
+                      valor
+                    }
+                    onChange={(
+                      event
+                    ) =>
+                      setValor(
+                        event
+                          .target
+                          .value
+                      )
+                    }
+                    placeholder="0,00"
+                    className="w-full bg-transparent px-2 py-3 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--form-muted)]"
+                  />
+                </div>
+              </div>
+
+              {/* DATA */}
+
+              <div>
+                <label
+                  htmlFor="data"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
+                >
+                  Data
+                </label>
 
                 <input
-                  id="valor"
-                  type="number"
-                  min="0.01"
-                  step="0.01"
+                  id="data"
+                  type="date"
                   value={
-                    valor
+                    dataSaida
                   }
                   onChange={(
                     event
                   ) =>
-                    setValor(
+                    setDataSaida(
                       event
                         .target
                         .value
                     )
                   }
-                  placeholder="0,00"
-                  className="
-                    w-full
-                    bg-transparent
-                    px-2
-                    py-3
-                    text-sm
-                    outline-none
-                  "
+                  className="w-full rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition focus:border-[var(--form-field-focus)]"
                 />
+              </div>
+
+              {/* CATEGORIA */}
+
+              <div>
+                <label
+                  htmlFor="categoria"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
+                >
+                  Categoria da saída
+                </label>
+
+                <select
+                  id="categoria"
+                  value={
+                    idCategoria
+                  }
+                  onChange={(
+                    event
+                  ) =>
+                    setIdCategoria(
+                      event
+                        .target
+                        .value
+                    )
+                  }
+                  className="w-full rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition focus:border-[var(--form-field-focus)]"
+                >
+                  <option value="">
+                    Selecione a categoria
+                  </option>
+
+                  {categorias.map(
+                    (
+                      categoria
+                    ) => (
+                      <option
+                        key={
+                          categoria.idCategoria
+                        }
+                        value={
+                          categoria.idCategoria
+                        }
+                      >
+                        {
+                          categoria.nome
+                        }
+                      </option>
+                    )
+                  )}
+                </select>
+              </div>
+
+              {/* FORMA DE PAGAMENTO */}
+
+              <div>
+                <label
+                  htmlFor="forma"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
+                >
+                  Forma de pagamento
+                </label>
+
+                <select
+                  id="forma"
+                  value={
+                    idFormaMovimentacao
+                  }
+                  onChange={(
+                    event
+                  ) =>
+                    setIdFormaMovimentacao(
+                      event
+                        .target
+                        .value
+                    )
+                  }
+                  className="w-full rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition focus:border-[var(--form-field-focus)]"
+                >
+                  <option value="">
+                    Selecione a forma
+                  </option>
+
+                  {formasMovimentacao.map(
+                    (
+                      forma
+                    ) => (
+                      <option
+                        key={
+                          forma.idForma
+                        }
+                        value={
+                          forma.idForma
+                        }
+                      >
+                        {
+                          forma.descricao
+                        }
+                      </option>
+                    )
+                  )}
+                </select>
+              </div>
+
+              {/* STATUS */}
+
+              <div>
+                <label
+                  htmlFor="status"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
+                >
+                  Status
+                </label>
+
+                <select
+                  id="status"
+                  value={
+                    status
+                  }
+                  onChange={(
+                    event
+                  ) =>
+                    setStatus(
+                      event
+                        .target
+                        .value
+                    )
+                  }
+                  className="w-full rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition focus:border-[var(--form-field-focus)]"
+                >
+                  <option value="PAGO">
+                    Pago
+                  </option>
+
+                  <option value="PENDENTE">
+                    Pendente
+                  </option>
+                </select>
               </div>
             </div>
 
-            <div>
+            {/* DESCRIÇÃO */}
+
+            <div className="mt-5">
               <label
-                htmlFor="data"
-                className="
-                  mb-2
-                  block
-                  text-sm
-                  font-medium
-                  text-[#36413b]
-                "
+                htmlFor="descricao"
+                className="mb-2 block text-sm font-medium text-[var(--form-label)]"
               >
-                Data
+                Descrição{" "}
+
+                <span className="font-normal text-[var(--form-muted)]">
+                  (Opcional)
+                </span>
               </label>
 
-              <input
-                id="data"
-                type="date"
+              <textarea
+                id="descricao"
                 value={
-                  dataSaida
+                  descricao
                 }
                 onChange={(
                   event
                 ) =>
-                  setDataSaida(
+                  setDescricao(
                     event
                       .target
                       .value
                   )
                 }
-                className="
-                  w-full
-                  rounded-lg
-                  border
-                  border-[#d4dad6]
-                  bg-[#f2f4f3]
-                  px-4
-                  py-3
-                  text-sm
-                  outline-none
-                  focus:border-[#16803a]
-                "
+                rows={4}
+                maxLength={255}
+                placeholder="Ex: supermercado, aluguel, transporte, assinatura..."
+                className="w-full resize-none rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition placeholder:text-[var(--form-muted)] focus:border-[var(--form-field-focus)]"
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="categoria"
-                className="
-                  mb-2
-                  block
-                  text-sm
-                  font-medium
-                  text-[#36413b]
-                "
-              >
-                Categoria da saída
-              </label>
+            <div className="my-7 border-t border-[var(--form-divider)]" />
 
-              <select
-                id="categoria"
-                value={
-                  idCategoria
-                }
-                onChange={(
-                  event
-                ) =>
-                  setIdCategoria(
-                    event
-                      .target
-                      .value
-                  )
-                }
-                className="
-                  w-full
-                  rounded-lg
-                  border
-                  border-[#d4dad6]
-                  bg-[#f2f4f3]
-                  px-4
-                  py-3
-                  text-sm
-                  outline-none
-                  focus:border-[#16803a]
-                "
-              >
-                <option value="">
-                  Selecione a categoria
-                </option>
+            {/* AÇÕES */}
 
-                {categorias.map(
-                  (
-                    categoria
-                  ) => (
-                    <option
-                      key={
-                        categoria.idCategoria
-                      }
-                      value={
-                        categoria.idCategoria
-                      }
-                    >
-                      {
-                        categoria.nome
-                      }
-                    </option>
-                  )
-                )}
-              </select>
+            <div className="flex items-center justify-between">
+              <Link
+                href="/saidas"
+                className="rounded-lg border border-[var(--form-field-border)] bg-[var(--form-secondary-bg)] px-5 py-2.5 text-sm font-medium text-[var(--button-secondary-text)] transition hover:bg-[var(--form-secondary-hover)]"
+              >
+                Cancelar
+              </Link>
+
+              <button
+                type="submit"
+                disabled={
+                  salvando
+                }
+                className="flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <Check
+                  size={17}
+                />
+
+                {salvando
+                  ? "Salvando..."
+                  : "Salvar saída"}
+              </button>
             </div>
+          </form>
 
-            <div>
-              <label
-                htmlFor="forma"
-                className="
-                  mb-2
-                  block
-                  text-sm
-                  font-medium
-                  text-[#36413b]
-                "
-              >
-                Forma de pagamento
-              </label>
+          {/* DICA */}
 
-              <select
-                id="forma"
-                value={
-                  idFormaMovimentacao
-                }
-                onChange={(
-                  event
-                ) =>
-                  setIdFormaMovimentacao(
-                    event
-                      .target
-                      .value
-                  )
-                }
-                className="
-                  w-full
-                  rounded-lg
-                  border
-                  border-[#d4dad6]
-                  bg-[#f2f4f3]
-                  px-4
-                  py-3
-                  text-sm
-                  outline-none
-                  focus:border-[#16803a]
-                "
-              >
-                <option value="">
-                  Selecione a forma
-                </option>
-
-                {formasMovimentacao.map(
-                  (
-                    forma
-                  ) => (
-                    <option
-                      key={
-                        forma.idForma
-                      }
-                      value={
-                        forma.idForma
-                      }
-                    >
-                      {
-                        forma.descricao
-                      }
-                    </option>
-                  )
-                )}
-              </select>
-            </div>
-
-            <div>
-              <label
-                htmlFor="status"
-                className="
-                  mb-2
-                  block
-                  text-sm
-                  font-medium
-                  text-[#36413b]
-                "
-              >
-                Status
-              </label>
-
-              <select
-                id="status"
-                value={
-                  status
-                }
-                onChange={(
-                  event
-                ) =>
-                  setStatus(
-                    event
-                      .target
-                      .value
-                  )
-                }
-                className="
-                  w-full
-                  rounded-lg
-                  border
-                  border-[#d4dad6]
-                  bg-[#f2f4f3]
-                  px-4
-                  py-3
-                  text-sm
-                  outline-none
-                  focus:border-[#16803a]
-                "
-              >
-                <option value="PAGO">
-                  Pago
-                </option>
-
-                <option value="PENDENTE">
-                  Pendente
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <div className="mt-5">
-            <label
-              htmlFor="descricao"
-              className="
-                mb-2
-                block
-                text-sm
-                font-medium
-                text-[#36413b]
-              "
-            >
-              Descrição{" "}
-              <span
-                className="
-                  font-normal
-                  text-[#8b948f]
-                "
-              >
-                (Opcional)
-              </span>
-            </label>
-
-            <textarea
-              id="descricao"
-              value={
-                descricao
-              }
-              onChange={(
-                event
-              ) =>
-                setDescricao(
-                  event
-                    .target
-                    .value
-                )
-              }
-              rows={4}
-              maxLength={
-                255
-              }
-              placeholder="Ex: supermercado, aluguel, transporte, assinatura..."
-              className="
-                w-full
-                resize-none
-                rounded-lg
-                border
-                border-[#d4dad6]
-                bg-[#f2f4f3]
-                px-4
-                py-3
-                text-sm
-                outline-none
-                placeholder:text-[#8b948f]
-                focus:border-[#16803a]
-              "
-            />
-          </div>
-
-          <div
-            className="
-              my-7
-              border-t
-              border-[#e7e9e8]
-            "
-          />
-
-          <div
-            className="
-              flex
-              items-center
-              justify-between
-            "
+          <aside
+            className="mt-7 flex items-start gap-4 rounded-xl border px-5 py-4"
+            style={{
+              backgroundColor:
+                "var(--expense-tip-bg)",
+              borderColor:
+                "var(--expense-tip-border)",
+            }}
           >
-            <Link
-              href="/saidas"
-              className="
-                rounded-lg
-                border
-                border-[#d6dcda]
-                bg-[#f2f4f3]
-                px-5
-                py-2.5
-                text-sm
-                font-medium
-                text-[#46514b]
-                transition
-                hover:bg-[#e9ecea]
-              "
-            >
-              Cancelar
-            </Link>
+            <CircleAlert
+              size={20}
+              className="mt-0.5 shrink-0"
+              style={{
+                color:
+                  "var(--expense-tip-icon)",
+              }}
+            />
 
-            <button
-              type="submit"
-              disabled={
-                salvando
-              }
-              className="
-                flex
-                items-center
-                gap-2
-                rounded-lg
-                bg-[#17a447]
-                px-5
-                py-2.5
-                text-sm
-                font-medium
-                text-white
-                transition
-                hover:bg-[#148d3e]
-                disabled:cursor-not-allowed
-                disabled:opacity-60
-              "
-            >
-              <Check
-                size={17}
-              />
+            <div>
+              <p className="text-sm font-semibold text-[var(--text-primary)]">
+                Dica de organização
+              </p>
 
-              {salvando
-                ? "Salvando..."
-                : "Salvar saída"}
-            </button>
-          </div>
-        </form>
-
-        <aside
-          className="
-            mt-7
-            flex
-            items-start
-            gap-4
-            rounded-xl
-            border
-            border-[#f0d5ae]
-            bg-[#fffaf2]
-            px-5
-            py-4
-          "
-        >
-          <CircleAlert
-            size={20}
-            className="
-              mt-0.5
-              shrink-0
-              text-[#b7791f]
-            "
-          />
-
-          <div>
-            <p
-              className="
-                text-sm
-                font-semibold
-                text-[#222a25]
-              "
-            >
-              Dica de organização
-            </p>
-
-            <p
-              className="
-                mt-1
-                text-sm
-                text-[#6b756f]
-              "
-            >
-              Categorize suas despesas corretamente para facilitar a análise dos seus gastos nos relatórios.
-            </p>
-          </div>
-        </aside>
-      </section>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                Categorize suas despesas corretamente para facilitar a análise dos seus gastos nos relatórios.
+              </p>
+            </div>
+          </aside>
+        </section>
+      </div>
     </AppShell>
   );
 }

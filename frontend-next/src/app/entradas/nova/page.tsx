@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+
 import {
   FormEvent,
   useEffect,
   useState,
 } from "react";
+
 import {
   useRouter,
 } from "next/navigation";
@@ -45,9 +47,7 @@ export default function NovaEntradaPage() {
     formasMovimentacao,
     setFormasMovimentacao,
   ] =
-    useState<
-      FormaMovimentacao[]
-    >([]);
+    useState<FormaMovimentacao[]>([]);
 
   const [valor, setValor] =
     useState("");
@@ -88,18 +88,27 @@ export default function NovaEntradaPage() {
     );
 
   useEffect(() => {
-    const agora = new Date();
+    const agora =
+      new Date();
 
     const ano =
       agora.getFullYear();
 
-    const mes = String(
-      agora.getMonth() + 1
-    ).padStart(2, "0");
+    const mes =
+      String(
+        agora.getMonth() + 1
+      ).padStart(
+        2,
+        "0"
+      );
 
-    const dia = String(
-      agora.getDate()
-    ).padStart(2, "0");
+    const dia =
+      String(
+        agora.getDate()
+      ).padStart(
+        2,
+        "0"
+      );
 
     setDataEntrada(
       `${ano}-${mes}-${dia}`
@@ -111,7 +120,10 @@ export default function NovaEntradaPage() {
       );
 
     if (!usuarioSalvo) {
-      router.replace("/login");
+      router.replace(
+        "/login"
+      );
+
       return;
     }
 
@@ -140,6 +152,7 @@ export default function NovaEntradaPage() {
                       "no-store",
                   }
                 ),
+
                 fetch(
                   "/api/formas-movimentacao",
                   {
@@ -164,7 +177,9 @@ export default function NovaEntradaPage() {
 
             setCategorias(
               dadosCategorias.filter(
-                (categoria) =>
+                (
+                  categoria
+                ) =>
                   categoria.tipo ===
                   "E"
               )
@@ -172,7 +187,9 @@ export default function NovaEntradaPage() {
 
             setFormasMovimentacao(
               dadosFormas.filter(
-                (forma) =>
+                (
+                  forma
+                ) =>
                   forma.tipo ===
                     "E" ||
                   forma.tipo ===
@@ -258,33 +275,40 @@ export default function NovaEntradaPage() {
           await fetch(
             `/api/entradas/usuario/${usuario.idUsuario}`,
             {
-              method: "POST",
+              method:
+                "POST",
+
               headers: {
                 "Content-Type":
                   "application/json",
               },
-              body: JSON.stringify({
-                idCategoria:
-                  Number(
-                    idCategoria
-                  ),
 
-                idFormaMovimentacao:
-                  Number(
-                    idFormaMovimentacao
-                  ),
+              body:
+                JSON.stringify({
+                  idCategoria:
+                    Number(
+                      idCategoria
+                    ),
 
-                valor:
-                  Number(valor),
+                  idFormaMovimentacao:
+                    Number(
+                      idFormaMovimentacao
+                    ),
 
-                dataEntrada:
-                  `${dataEntrada}T00:00:00`,
+                  valor:
+                    Number(
+                      valor
+                    ),
 
-                descricao:
-                  descricao.trim(),
+                  dataEntrada:
+                    `${dataEntrada}T00:00:00`,
 
-                ativo: "S",
-              }),
+                  descricao:
+                    descricao.trim(),
+
+                  ativo:
+                    "S",
+                }),
             }
           );
 
@@ -303,7 +327,7 @@ export default function NovaEntradaPage() {
                 dados.message;
             }
           } catch {
-            // mantém mensagem padrão
+            // Mantém a mensagem padrão.
           }
 
           throw new Error(
@@ -314,11 +338,10 @@ export default function NovaEntradaPage() {
         router.push(
           "/entradas"
         );
-      } catch (
-        error
-      ) {
+      } catch (error) {
         if (
-          error instanceof Error
+          error instanceof
+          Error
         ) {
           setErro(
             error.message
@@ -329,7 +352,9 @@ export default function NovaEntradaPage() {
           );
         }
       } finally {
-        setSalvando(false);
+        setSalvando(
+          false
+        );
       }
     };
 
@@ -338,17 +363,7 @@ export default function NovaEntradaPage() {
     !usuario
   ) {
     return (
-      <div
-        className="
-          flex
-          min-h-screen
-          items-center
-          justify-center
-          bg-[#f4f6f5]
-          text-sm
-          text-[#6c756f]
-        "
-      >
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg-page)] text-sm text-[var(--text-secondary)]">
         Carregando formulário...
       </div>
     );
@@ -356,544 +371,325 @@ export default function NovaEntradaPage() {
 
   return (
     <AppShell>
-      <section
-        className="
-          mx-auto
-          max-w-[980px]
-          px-8
-          pb-12
-          pt-10
-        "
-      >
-        {/* Cabeçalho */}
-        <header
-          className="
-            mb-8
-            flex
-            items-start
-            justify-between
-          "
-        >
-          <div>
-            <h1
-              className="
-                text-[27px]
-                font-bold
-                tracking-[-0.03em]
-                text-[#171c26]
-              "
-            >
-              Registrar Entrada
-            </h1>
+      <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-200">
+        <section className="mx-auto max-w-[980px] px-8 pb-12 pt-10">
 
-            <p
-              className="
-                mt-1
-                text-sm
-                text-[#78838e]
-              "
-            >
-              Cadastre uma nova receita recebida
-            </p>
-          </div>
+          {/* CABEÇALHO */}
 
-          <Link
-            href="/dashboard"
-            className="
-              flex
-              items-center
-              gap-2
-              rounded-lg
-              border
-              border-[#d8dde0]
-              bg-white
-              px-4
-              py-2.5
-              text-sm
-              text-[#505a54]
-              transition
-              hover:bg-[#f5f6f5]
-            "
-          >
-            <ArrowLeft
-              size={16}
-            />
-
-            Voltar para o Dashboard
-          </Link>
-        </header>
-
-        {/* Formulário */}
-        <form
-          onSubmit={
-            handleSubmit
-          }
-          className="
-            rounded-[14px]
-            border
-            border-[#dde2df]
-            bg-white
-            p-8
-            shadow-[0_12px_30px_rgba(15,23,42,0.10)]
-          "
-        >
-          <h2
-            className="
-              text-xl
-              font-semibold
-              text-[#181d25]
-            "
-          >
-            Nova Entrada
-          </h2>
-
-          <div
-            className="
-              my-5
-              border-t
-              border-[#e7e9e8]
-            "
-          />
-
-          {erro && (
-            <div
-              className="
-                mb-5
-                rounded-lg
-                border
-                border-red-200
-                bg-red-50
-                px-4
-                py-3
-                text-sm
-                text-red-700
-              "
-            >
-              {erro}
-            </div>
-          )}
-
-          <div
-            className="
-              grid
-              grid-cols-1
-              gap-5
-              md:grid-cols-2
-            "
-          >
-            {/* Valor */}
+          <header className="mb-8 flex items-start justify-between">
             <div>
-              <label
-                htmlFor="valor"
-                className="
-                  mb-2
-                  block
-                  text-sm
-                  font-medium
-                  text-[#36413b]
-                "
-              >
-                Valor da entrada
-              </label>
+              <h1 className="text-[27px] font-bold tracking-[-0.03em] text-[var(--text-primary)]">
+                Registrar Entrada
+              </h1>
 
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                Cadastre uma nova receita recebida
+              </p>
+            </div>
+
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-2 rounded-lg border border-[var(--border-strong)] bg-[var(--form-back-bg)] px-4 py-2.5 text-sm text-[var(--text-secondary)] transition hover:bg-[var(--form-back-hover)]"
+            >
+              <ArrowLeft
+                size={16}
+              />
+
+              Voltar para o Dashboard
+            </Link>
+          </header>
+
+          {/* FORMULÁRIO */}
+
+          <form
+            onSubmit={
+              handleSubmit
+            }
+            className="rounded-[14px] border border-[var(--border)] bg-[var(--card-bg)] p-8"
+            style={{
+              boxShadow:
+                "var(--form-shadow)",
+            }}
+          >
+            <h2 className="text-xl font-semibold text-[var(--text-primary)]">
+              Nova Entrada
+            </h2>
+
+            <div className="my-5 border-t border-[var(--form-divider)]" />
+
+            {erro && (
               <div
-                className="
-                  flex
-                  items-center
-                  rounded-lg
-                  border
-                  border-[#d4dad6]
-                  bg-[#f2f4f3]
-                "
+                className="mb-5 rounded-lg border px-4 py-3 text-sm"
+                style={{
+                  backgroundColor:
+                    "var(--error-bg)",
+                  borderColor:
+                    "var(--error-border)",
+                  color:
+                    "var(--error-text)",
+                }}
               >
-                <span
-                  className="
-                    pl-4
-                    text-sm
-                    text-[#77817b]
-                  "
+                {erro}
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+              {/* VALOR */}
+
+              <div>
+                <label
+                  htmlFor="valor"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
                 >
-                  R$
-                </span>
+                  Valor da entrada
+                </label>
+
+                <div className="flex items-center rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] transition focus-within:border-[var(--form-field-focus)]">
+                  <span className="pl-4 text-sm text-[var(--form-muted)]">
+                    R$
+                  </span>
+
+                  <input
+                    id="valor"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    value={
+                      valor
+                    }
+                    onChange={(
+                      event
+                    ) =>
+                      setValor(
+                        event
+                          .target
+                          .value
+                      )
+                    }
+                    placeholder="0,00"
+                    className="w-full bg-transparent px-2 py-3 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--form-muted)]"
+                  />
+                </div>
+              </div>
+
+              {/* DATA */}
+
+              <div>
+                <label
+                  htmlFor="data"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
+                >
+                  Data
+                </label>
 
                 <input
-                  id="valor"
-                  type="number"
-                  min="0.01"
-                  step="0.01"
-                  value={valor}
+                  id="data"
+                  type="date"
+                  value={
+                    dataEntrada
+                  }
                   onChange={(
                     event
                   ) =>
-                    setValor(
+                    setDataEntrada(
                       event
                         .target
                         .value
                     )
                   }
-                  placeholder="0,00"
-                  className="
-                    w-full
-                    bg-transparent
-                    px-2
-                    py-3
-                    text-sm
-                    outline-none
-                  "
+                  className="w-full rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition focus:border-[var(--form-field-focus)]"
                 />
+              </div>
+
+              {/* ORIGEM */}
+
+              <div>
+                <label
+                  htmlFor="categoria"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
+                >
+                  Origem da entrada
+                </label>
+
+                <select
+                  id="categoria"
+                  value={
+                    idCategoria
+                  }
+                  onChange={(
+                    event
+                  ) =>
+                    setIdCategoria(
+                      event
+                        .target
+                        .value
+                    )
+                  }
+                  className="w-full rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition focus:border-[var(--form-field-focus)]"
+                >
+                  <option value="">
+                    Selecione a origem
+                  </option>
+
+                  {categorias.map(
+                    (
+                      categoria
+                    ) => (
+                      <option
+                        key={
+                          categoria.idCategoria
+                        }
+                        value={
+                          categoria.idCategoria
+                        }
+                      >
+                        {
+                          categoria.nome
+                        }
+                      </option>
+                    )
+                  )}
+                </select>
+              </div>
+
+              {/* FORMA */}
+
+              <div>
+                <label
+                  htmlFor="forma"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
+                >
+                  Forma de recebimento
+                </label>
+
+                <select
+                  id="forma"
+                  value={
+                    idFormaMovimentacao
+                  }
+                  onChange={(
+                    event
+                  ) =>
+                    setIdFormaMovimentacao(
+                      event
+                        .target
+                        .value
+                    )
+                  }
+                  className="w-full rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition focus:border-[var(--form-field-focus)]"
+                >
+                  <option value="">
+                    Selecione a forma
+                  </option>
+
+                  {formasMovimentacao.map(
+                    (
+                      forma
+                    ) => (
+                      <option
+                        key={
+                          forma.idForma
+                        }
+                        value={
+                          forma.idForma
+                        }
+                      >
+                        {
+                          forma.descricao
+                        }
+                      </option>
+                    )
+                  )}
+                </select>
               </div>
             </div>
 
-            {/* Data */}
-            <div>
+            {/* DESCRIÇÃO */}
+
+            <div className="mt-5">
               <label
-                htmlFor="data"
-                className="
-                  mb-2
-                  block
-                  text-sm
-                  font-medium
-                  text-[#36413b]
-                "
+                htmlFor="descricao"
+                className="mb-2 block text-sm font-medium text-[var(--form-label)]"
               >
-                Data
+                Descrição{" "}
+
+                <span className="font-normal text-[var(--form-muted)]">
+                  (Opcional)
+                </span>
               </label>
 
-              <input
-                id="data"
-                type="date"
+              <textarea
+                id="descricao"
                 value={
-                  dataEntrada
+                  descricao
                 }
                 onChange={(
                   event
                 ) =>
-                  setDataEntrada(
+                  setDescricao(
                     event
                       .target
                       .value
                   )
                 }
-                className="
-                  w-full
-                  rounded-lg
-                  border
-                  border-[#d4dad6]
-                  bg-[#f2f4f3]
-                  px-4
-                  py-3
-                  text-sm
-                  outline-none
-                  focus:border-[#16803a]
-                "
+                rows={4}
+                maxLength={255}
+                placeholder="Ex: salário, projeto freelancer, rendimentos, vendas, etc..."
+                className="w-full resize-none rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition placeholder:text-[var(--form-muted)] focus:border-[var(--form-field-focus)]"
               />
             </div>
 
-            {/* Origem */}
-            <div>
-              <label
-                htmlFor="categoria"
-                className="
-                  mb-2
-                  block
-                  text-sm
-                  font-medium
-                  text-[#36413b]
-                "
-              >
-                Origem da entrada
-              </label>
+            <div className="my-7 border-t border-[var(--form-divider)]" />
 
-              <select
-                id="categoria"
-                value={
-                  idCategoria
-                }
-                onChange={(
-                  event
-                ) =>
-                  setIdCategoria(
-                    event
-                      .target
-                      .value
-                  )
-                }
-                className="
-                  w-full
-                  rounded-lg
-                  border
-                  border-[#d4dad6]
-                  bg-[#f2f4f3]
-                  px-4
-                  py-3
-                  text-sm
-                  outline-none
-                  focus:border-[#16803a]
-                "
-              >
-                <option value="">
-                  Selecione a origem
-                </option>
+            {/* AÇÕES */}
 
-                {categorias.map(
-                  (
-                    categoria
-                  ) => (
-                    <option
-                      key={
-                        categoria.idCategoria
-                      }
-                      value={
-                        categoria.idCategoria
-                      }
-                    >
-                      {
-                        categoria.nome
-                      }
-                    </option>
-                  )
-                )}
-              </select>
+            <div className="flex items-center justify-between">
+              <Link
+                href="/entradas"
+                className="rounded-lg border border-[var(--form-field-border)] bg-[var(--form-secondary-bg)] px-5 py-2.5 text-sm font-medium text-[var(--button-secondary-text)] transition hover:bg-[var(--form-secondary-hover)]"
+              >
+                Cancelar
+              </Link>
+
+              <button
+                type="submit"
+                disabled={
+                  salvando
+                }
+                className="flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <Check
+                  size={17}
+                />
+
+                {salvando
+                  ? "Salvando..."
+                  : "Salvar entrada"}
+              </button>
             </div>
+          </form>
 
-            {/* Forma */}
-            <div>
-              <label
-                htmlFor="forma"
-                className="
-                  mb-2
-                  block
-                  text-sm
-                  font-medium
-                  text-[#36413b]
-                "
-              >
-                Forma de recebimento
-              </label>
+          {/* DICA */}
 
-              <select
-                id="forma"
-                value={
-                  idFormaMovimentacao
-                }
-                onChange={(
-                  event
-                ) =>
-                  setIdFormaMovimentacao(
-                    event
-                      .target
-                      .value
-                  )
-                }
-                className="
-                  w-full
-                  rounded-lg
-                  border
-                  border-[#d4dad6]
-                  bg-[#f2f4f3]
-                  px-4
-                  py-3
-                  text-sm
-                  outline-none
-                  focus:border-[#16803a]
-                "
-              >
-                <option value="">
-                  Selecione a forma
-                </option>
-
-                {formasMovimentacao.map(
-                  (forma) => (
-                    <option
-                      key={
-                        forma.idForma
-                      }
-                      value={
-                        forma.idForma
-                      }
-                    >
-                      {
-                        forma.descricao
-                      }
-                    </option>
-                  )
-                )}
-              </select>
-            </div>
-          </div>
-
-          {/* Descrição */}
-          <div className="mt-5">
-            <label
-              htmlFor="descricao"
-              className="
-                mb-2
-                block
-                text-sm
-                font-medium
-                text-[#36413b]
-              "
-            >
-              Descrição{" "}
-              <span
-                className="
-                  font-normal
-                  text-[#8b948f]
-                "
-              >
-                (Opcional)
-              </span>
-            </label>
-
-            <textarea
-              id="descricao"
-              value={
-                descricao
-              }
-              onChange={(
-                event
-              ) =>
-                setDescricao(
-                  event
-                    .target
-                    .value
-                )
-              }
-              rows={4}
-              maxLength={255}
-              placeholder="Ex: salário, projeto freelancer, rendimentos, vendas, etc..."
-              className="
-                w-full
-                resize-none
-                rounded-lg
-                border
-                border-[#d4dad6]
-                bg-[#f2f4f3]
-                px-4
-                py-3
-                text-sm
-                outline-none
-                placeholder:text-[#8b948f]
-                focus:border-[#16803a]
-              "
+          <aside className="fin-tip mt-7 flex items-start gap-4 rounded-xl px-5 py-4">
+            <Star
+              size={20}
+              className="fin-tip-icon mt-0.5 shrink-0"
             />
-          </div>
 
-          <div
-            className="
-              my-7
-              border-t
-              border-[#e7e9e8]
-            "
-          />
+            <div>
+              <p className="text-sm font-semibold text-[var(--text-primary)]">
+                Dica de organização
+              </p>
 
-          {/* Ações */}
-          <div
-            className="
-              flex
-              items-center
-              justify-between
-            "
-          >
-            <Link
-              href="/entradas"
-              className="
-                rounded-lg
-                border
-                border-[#d6dcda]
-                bg-[#f2f4f3]
-                px-5
-                py-2.5
-                text-sm
-                font-medium
-                text-[#46514b]
-                transition
-                hover:bg-[#e9ecea]
-              "
-            >
-              Cancelar
-            </Link>
-
-            <button
-              type="submit"
-              disabled={
-                salvando
-              }
-              className="
-                flex
-                items-center
-                gap-2
-                rounded-lg
-                bg-[#17a447]
-                px-5
-                py-2.5
-                text-sm
-                font-medium
-                text-white
-                transition
-                hover:bg-[#148d3e]
-                disabled:cursor-not-allowed
-                disabled:opacity-60
-              "
-            >
-              <Check
-                size={17}
-              />
-
-              {salvando
-                ? "Salvando..."
-                : "Salvar entrada"}
-            </button>
-          </div>
-        </form>
-
-        {/* Dica */}
-        <aside
-          className="
-            mt-7
-            flex
-            items-start
-            gap-4
-            rounded-xl
-            border
-            border-[#b9dfc5]
-            bg-[#f4fbf6]
-            px-5
-            py-4
-          "
-        >
-          <Star
-            size={20}
-            className="
-              mt-0.5
-              shrink-0
-              text-[#18a24a]
-            "
-          />
-
-          <div>
-            <p
-              className="
-                text-sm
-                font-semibold
-                text-[#222a25]
-              "
-            >
-              Dica de organização
-            </p>
-
-            <p
-              className="
-                mt-1
-                text-sm
-                text-[#6b756f]
-              "
-            >
-              Detalhe bem suas entradas na descrição — isso facilita a visualização posteriormente.
-            </p>
-          </div>
-        </aside>
-      </section>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                Detalhe bem suas entradas na descrição — isso facilita a visualização posteriormente.
+              </p>
+            </div>
+          </aside>
+        </section>
+      </div>
     </AppShell>
   );
 }

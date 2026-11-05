@@ -46,7 +46,9 @@ export default function EditarEntradaClient({
   const router = useRouter();
 
   const [usuario, setUsuario] =
-    useState<UsuarioLogado | null>(null);
+    useState<UsuarioLogado | null>(
+      null
+    );
 
   const [categorias, setCategorias] =
     useState<Categoria[]>([]);
@@ -54,7 +56,8 @@ export default function EditarEntradaClient({
   const [
     formasMovimentacao,
     setFormasMovimentacao,
-  ] = useState<FormaMovimentacao[]>([]);
+  ] =
+    useState<FormaMovimentacao[]>([]);
 
   const [valor, setValor] =
     useState("");
@@ -90,22 +93,29 @@ export default function EditarEntradaClient({
   ] = useState(false);
 
   const [erro, setErro] =
-    useState<string | null>(null);
+    useState<string | null>(
+      null
+    );
 
-      useEffect(() => {
+  useEffect(() => {
     const usuarioSalvo =
       localStorage.getItem(
         "usuario_fintech"
       );
 
     if (!usuarioSalvo) {
-      router.replace("/login");
+      router.replace(
+        "/login"
+      );
+
       return;
     }
 
     try {
       const usuarioConvertido: UsuarioLogado =
-        JSON.parse(usuarioSalvo);
+        JSON.parse(
+          usuarioSalvo
+        );
 
       setUsuario(
         usuarioConvertido
@@ -118,29 +128,32 @@ export default function EditarEntradaClient({
               responseEntrada,
               responseCategorias,
               responseFormas,
-            ] = await Promise.all([
-              fetch(
-                `/api/entradas/usuario/${usuarioConvertido.idUsuario}/${idEntrada}`,
-                {
-                  cache:
-                    "no-store",
-                }
-              ),
-              fetch(
-                "/api/categorias",
-                {
-                  cache:
-                    "no-store",
-                }
-              ),
-              fetch(
-                "/api/formas-movimentacao",
-                {
-                  cache:
-                    "no-store",
-                }
-              ),
-            ]);
+            ] =
+              await Promise.all([
+                fetch(
+                  `/api/entradas/usuario/${usuarioConvertido.idUsuario}/${idEntrada}`,
+                  {
+                    cache:
+                      "no-store",
+                  }
+                ),
+
+                fetch(
+                  "/api/categorias",
+                  {
+                    cache:
+                      "no-store",
+                  }
+                ),
+
+                fetch(
+                  "/api/formas-movimentacao",
+                  {
+                    cache:
+                      "no-store",
+                  }
+                ),
+              ]);
 
             if (
               responseEntrada.status ===
@@ -172,7 +185,9 @@ export default function EditarEntradaClient({
 
             setCategorias(
               dadosCategorias.filter(
-                (categoria) =>
+                (
+                  categoria
+                ) =>
                   categoria.tipo ===
                   "E"
               )
@@ -180,7 +195,9 @@ export default function EditarEntradaClient({
 
             setFormasMovimentacao(
               dadosFormas.filter(
-                (forma) =>
+                (
+                  forma
+                ) =>
                   forma.tipo ===
                     "E" ||
                   forma.tipo ===
@@ -241,7 +258,7 @@ export default function EditarEntradaClient({
     idEntrada,
   ]);
 
-    const handleSubmit =
+  const handleSubmit =
     async (
       event: FormEvent
     ) => {
@@ -259,11 +276,14 @@ export default function EditarEntradaClient({
           await fetch(
             `/api/entradas/usuario/${usuario.idUsuario}/${idEntrada}`,
             {
-              method: "PUT",
+              method:
+                "PUT",
+
               headers: {
                 "Content-Type":
                   "application/json",
               },
+
               body:
                 JSON.stringify({
                   idCategoria:
@@ -277,7 +297,9 @@ export default function EditarEntradaClient({
                     ),
 
                   valor:
-                    Number(valor),
+                    Number(
+                      valor
+                    ),
 
                   dataEntrada:
                     `${dataEntrada}T00:00:00`,
@@ -285,7 +307,8 @@ export default function EditarEntradaClient({
                   descricao:
                     descricao.trim(),
 
-                  ativo: "S",
+                  ativo:
+                    "S",
                 }),
             }
           );
@@ -299,22 +322,22 @@ export default function EditarEntradaClient({
         router.push(
           "/entradas"
         );
-      } catch (
-        error
-      ) {
+      } catch (error) {
         setErro(
           error instanceof Error
             ? error.message
             : "Não foi possível atualizar a entrada."
         );
       } finally {
-        setSalvando(false);
+        setSalvando(
+          false
+        );
       }
     };
 
-      if (carregando) {
+  if (carregando) {
     return (
-      <div>
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg-page)] text-sm text-[var(--text-secondary)]">
         Carregando entrada...
       </div>
     );
@@ -324,464 +347,315 @@ export default function EditarEntradaClient({
     return null;
   }
 
-return (
-  <AppShell>
-    <section
-      className="
-        mx-auto
-        max-w-[980px]
-        px-8
-        pb-12
-        pt-10
-      "
-    >
-      <header
-        className="
-          mb-8
-          flex
-          items-start
-          justify-between
-        "
-      >
-        <div>
-          <h1
-            className="
-              text-[27px]
-              font-bold
-              tracking-[-0.03em]
-              text-[#171c26]
-            "
-          >
-            Editar Entrada
-          </h1>
+  return (
+    <AppShell>
+      <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-200">
+        <section className="mx-auto max-w-[980px] px-8 pb-12 pt-10">
 
-          <p
-            className="
-              mt-1
-              text-sm
-              text-[#78838e]
-            "
-          >
-            Atualize os dados da entrada
-          </p>
-        </div>
+          {/* CABEÇALHO */}
 
-        <Link
-          href="/entradas"
-          className="
-            flex
-            items-center
-            gap-2
-            rounded-lg
-            border
-            border-[#d8dde0]
-            bg-white
-            px-4
-            py-2.5
-            text-sm
-            text-[#505a54]
-            transition
-            hover:bg-[#f5f6f5]
-          "
-        >
-          <ArrowLeft size={16} />
-          Voltar para Entradas
-        </Link>
-      </header>
+          <header className="mb-8 flex items-start justify-between">
+            <div>
+              <h1 className="text-[27px] font-bold tracking-[-0.03em] text-[var(--text-primary)]">
+                Editar Entrada
+              </h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="
-          rounded-[14px]
-          border
-          border-[#dde2df]
-          bg-white
-          p-8
-          shadow-[0_12px_30px_rgba(15,23,42,0.10)]
-        "
-      >
-        <h2
-          className="
-            text-xl
-            font-semibold
-            text-[#181d25]
-          "
-        >
-          Atualizar entrada
-        </h2>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                Atualize os dados da entrada
+              </p>
+            </div>
 
-        <div
-          className="
-            my-5
-            border-t
-            border-[#e7e9e8]
-          "
-        />
-
-        {erro && (
-          <div
-            className="
-              mb-5
-              rounded-lg
-              border
-              border-red-200
-              bg-red-50
-              px-4
-              py-3
-              text-sm
-              text-red-700
-            "
-          >
-            {erro}
-          </div>
-        )}
-
-        <div
-          className="
-            grid
-            grid-cols-1
-            gap-5
-            md:grid-cols-2
-          "
-        >
-          <div>
-            <label
-              htmlFor="valor"
-              className="
-                mb-2
-                block
-                text-sm
-                font-medium
-                text-[#36413b]
-              "
+            <Link
+              href="/entradas"
+              className="flex items-center gap-2 rounded-lg border border-[var(--border-strong)] bg-[var(--form-back-bg)] px-4 py-2.5 text-sm text-[var(--text-secondary)] transition hover:bg-[var(--form-back-hover)]"
             >
-              Valor da entrada
-            </label>
+              <ArrowLeft
+                size={16}
+              />
 
-            <div
-              className="
-                flex
-                items-center
-                rounded-lg
-                border
-                border-[#d4dad6]
-                bg-[#f2f4f3]
-              "
-            >
-              <span
-                className="
-                  pl-4
-                  text-sm
-                  text-[#77817b]
-                "
+              Voltar para Entradas
+            </Link>
+          </header>
+
+          {/* FORMULÁRIO */}
+
+          <form
+            onSubmit={
+              handleSubmit
+            }
+            className="rounded-[14px] border border-[var(--border)] bg-[var(--card-bg)] p-8"
+            style={{
+              boxShadow:
+                "var(--form-shadow)",
+            }}
+          >
+            <h2 className="text-xl font-semibold text-[var(--text-primary)]">
+              Atualizar entrada
+            </h2>
+
+            <div className="my-5 border-t border-[var(--form-divider)]" />
+
+            {erro && (
+              <div
+                className="mb-5 rounded-lg border px-4 py-3 text-sm"
+                style={{
+                  backgroundColor:
+                    "var(--error-bg)",
+                  borderColor:
+                    "var(--error-border)",
+                  color:
+                    "var(--error-text)",
+                }}
               >
-                R$
-              </span>
+                {erro}
+              </div>
+            )}
 
-              <input
-                id="valor"
-                type="number"
-                min="0.01"
-                step="0.01"
-                value={valor}
-                onChange={(event) =>
-                  setValor(event.target.value)
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+              {/* VALOR */}
+
+              <div>
+                <label
+                  htmlFor="valor"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
+                >
+                  Valor da entrada
+                </label>
+
+                <div className="flex items-center rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] transition focus-within:border-[var(--form-field-focus)]">
+                  <span className="pl-4 text-sm text-[var(--form-muted)]">
+                    R$
+                  </span>
+
+                  <input
+                    id="valor"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    value={
+                      valor
+                    }
+                    onChange={(
+                      event
+                    ) =>
+                      setValor(
+                        event.target.value
+                      )
+                    }
+                    className="w-full bg-transparent px-2 py-3 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--form-muted)]"
+                  />
+                </div>
+              </div>
+
+              {/* DATA */}
+
+              <div>
+                <label
+                  htmlFor="data"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
+                >
+                  Data
+                </label>
+
+                <input
+                  id="data"
+                  type="date"
+                  value={
+                    dataEntrada
+                  }
+                  onChange={(
+                    event
+                  ) =>
+                    setDataEntrada(
+                      event.target.value
+                    )
+                  }
+                  className="w-full rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition focus:border-[var(--form-field-focus)]"
+                />
+              </div>
+
+              {/* ORIGEM */}
+
+              <div>
+                <label
+                  htmlFor="categoria"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
+                >
+                  Origem da entrada
+                </label>
+
+                <select
+                  id="categoria"
+                  value={
+                    idCategoria
+                  }
+                  onChange={(
+                    event
+                  ) =>
+                    setIdCategoria(
+                      event.target.value
+                    )
+                  }
+                  className="w-full rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition focus:border-[var(--form-field-focus)]"
+                >
+                  <option value="">
+                    Selecione a origem
+                  </option>
+
+                  {categorias.map(
+                    (
+                      categoria
+                    ) => (
+                      <option
+                        key={
+                          categoria.idCategoria
+                        }
+                        value={
+                          categoria.idCategoria
+                        }
+                      >
+                        {
+                          categoria.nome
+                        }
+                      </option>
+                    )
+                  )}
+                </select>
+              </div>
+
+              {/* FORMA */}
+
+              <div>
+                <label
+                  htmlFor="forma"
+                  className="mb-2 block text-sm font-medium text-[var(--form-label)]"
+                >
+                  Forma de recebimento
+                </label>
+
+                <select
+                  id="forma"
+                  value={
+                    idFormaMovimentacao
+                  }
+                  onChange={(
+                    event
+                  ) =>
+                    setIdFormaMovimentacao(
+                      event.target.value
+                    )
+                  }
+                  className="w-full rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition focus:border-[var(--form-field-focus)]"
+                >
+                  <option value="">
+                    Selecione a forma
+                  </option>
+
+                  {formasMovimentacao.map(
+                    (
+                      forma
+                    ) => (
+                      <option
+                        key={
+                          forma.idForma
+                        }
+                        value={
+                          forma.idForma
+                        }
+                      >
+                        {
+                          forma.descricao
+                        }
+                      </option>
+                    )
+                  )}
+                </select>
+              </div>
+            </div>
+
+            {/* DESCRIÇÃO */}
+
+            <div className="mt-5">
+              <label
+                htmlFor="descricao"
+                className="mb-2 block text-sm font-medium text-[var(--form-label)]"
+              >
+                Descrição{" "}
+
+                <span className="font-normal text-[var(--form-muted)]">
+                  (Opcional)
+                </span>
+              </label>
+
+              <textarea
+                id="descricao"
+                value={
+                  descricao
                 }
-                className="
-                  w-full
-                  bg-transparent
-                  px-2
-                  py-3
-                  text-sm
-                  outline-none
-                "
+                onChange={(
+                  event
+                ) =>
+                  setDescricao(
+                    event.target.value
+                  )
+                }
+                rows={4}
+                maxLength={255}
+                className="w-full resize-none rounded-lg border border-[var(--form-field-border)] bg-[var(--form-field-bg)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition placeholder:text-[var(--form-muted)] focus:border-[var(--form-field-focus)]"
               />
             </div>
-          </div>
 
-          <div>
-            <label
-              htmlFor="data"
-              className="
-                mb-2
-                block
-                text-sm
-                font-medium
-                text-[#36413b]
-              "
-            >
-              Data
-            </label>
+            <div className="my-7 border-t border-[var(--form-divider)]" />
 
-            <input
-              id="data"
-              type="date"
-              value={dataEntrada}
-              onChange={(event) =>
-                setDataEntrada(event.target.value)
-              }
-              className="
-                w-full
-                rounded-lg
-                border
-                border-[#d4dad6]
-                bg-[#f2f4f3]
-                px-4
-                py-3
-                text-sm
-                outline-none
-                focus:border-[#16803a]
-              "
+            {/* AÇÕES */}
+
+            <div className="flex items-center justify-between">
+              <Link
+                href="/entradas"
+                className="rounded-lg border border-[var(--form-field-border)] bg-[var(--form-secondary-bg)] px-5 py-2.5 text-sm font-medium text-[var(--button-secondary-text)] transition hover:bg-[var(--form-secondary-hover)]"
+              >
+                Cancelar
+              </Link>
+
+              <button
+                type="submit"
+                disabled={
+                  salvando
+                }
+                className="flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <Check
+                  size={17}
+                />
+
+                {salvando
+                  ? "Salvando..."
+                  : "Salvar alterações"}
+              </button>
+            </div>
+          </form>
+
+          {/* DICA */}
+
+          <aside className="fin-tip mt-7 flex items-start gap-4 rounded-xl px-5 py-4">
+            <Star
+              size={20}
+              className="fin-tip-icon mt-0.5 shrink-0"
             />
-          </div>
 
-          <div>
-            <label
-              htmlFor="categoria"
-              className="
-                mb-2
-                block
-                text-sm
-                font-medium
-                text-[#36413b]
-              "
-            >
-              Origem da entrada
-            </label>
+            <div>
+              <p className="text-sm font-semibold text-[var(--text-primary)]">
+                Dica de organização
+              </p>
 
-            <select
-              id="categoria"
-              value={idCategoria}
-              onChange={(event) =>
-                setIdCategoria(event.target.value)
-              }
-              className="
-                w-full
-                rounded-lg
-                border
-                border-[#d4dad6]
-                bg-[#f2f4f3]
-                px-4
-                py-3
-                text-sm
-                outline-none
-              "
-            >
-              <option value="">
-                Selecione a origem
-              </option>
-
-              {categorias.map((categoria) => (
-                <option
-                  key={categoria.idCategoria}
-                  value={categoria.idCategoria}
-                >
-                  {categoria.nome}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label
-              htmlFor="forma"
-              className="
-                mb-2
-                block
-                text-sm
-                font-medium
-                text-[#36413b]
-              "
-            >
-              Forma de recebimento
-            </label>
-
-            <select
-              id="forma"
-              value={idFormaMovimentacao}
-              onChange={(event) =>
-                setIdFormaMovimentacao(
-                  event.target.value
-                )
-              }
-              className="
-                w-full
-                rounded-lg
-                border
-                border-[#d4dad6]
-                bg-[#f2f4f3]
-                px-4
-                py-3
-                text-sm
-                outline-none
-              "
-            >
-              <option value="">
-                Selecione a forma
-              </option>
-
-              {formasMovimentacao.map((forma) => (
-                <option
-                  key={forma.idForma}
-                  value={forma.idForma}
-                >
-                  {forma.descricao}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="mt-5">
-          <label
-            htmlFor="descricao"
-            className="
-              mb-2
-              block
-              text-sm
-              font-medium
-              text-[#36413b]
-            "
-          >
-            Descrição{" "}
-            <span
-              className="
-                font-normal
-                text-[#8b948f]
-              "
-            >
-              (Opcional)
-            </span>
-          </label>
-
-          <textarea
-            id="descricao"
-            value={descricao}
-            onChange={(event) =>
-              setDescricao(event.target.value)
-            }
-            rows={4}
-            maxLength={255}
-            className="
-              w-full
-              resize-none
-              rounded-lg
-              border
-              border-[#d4dad6]
-              bg-[#f2f4f3]
-              px-4
-              py-3
-              text-sm
-              outline-none
-            "
-          />
-        </div>
-
-        <div
-          className="
-            my-7
-            border-t
-            border-[#e7e9e8]
-          "
-        />
-
-        <div
-          className="
-            flex
-            items-center
-            justify-between
-          "
-        >
-          <Link
-            href="/entradas"
-            className="
-              rounded-lg
-              border
-              border-[#d6dcda]
-              bg-[#f2f4f3]
-              px-5
-              py-2.5
-              text-sm
-              font-medium
-              text-[#46514b]
-            "
-          >
-            Cancelar
-          </Link>
-
-          <button
-            type="submit"
-            disabled={salvando}
-            className="
-              flex
-              items-center
-              gap-2
-              rounded-lg
-              bg-[#17a447]
-              px-5
-              py-2.5
-              text-sm
-              font-medium
-              text-white
-              transition
-              hover:bg-[#148d3e]
-              disabled:opacity-60
-            "
-          >
-            <Check size={17} />
-
-            {salvando
-              ? "Salvando..."
-              : "Salvar alterações"}
-          </button>
-        </div>
-      </form>
-
-      <aside
-        className="
-          mt-7
-          flex
-          items-start
-          gap-4
-          rounded-xl
-          border
-          border-[#b9dfc5]
-          bg-[#f4fbf6]
-          px-5
-          py-4
-        "
-      >
-        <Star
-          size={20}
-          className="
-            mt-0.5
-            shrink-0
-            text-[#18a24a]
-          "
-        />
-
-        <div>
-          <p
-            className="
-              text-sm
-              font-semibold
-              text-[#222a25]
-            "
-          >
-            Dica de organização
-          </p>
-
-          <p
-            className="
-              mt-1
-              text-sm
-              text-[#6b756f]
-            "
-          >
-            Detalhe bem suas entradas na descrição — isso facilita a visualização posteriormente.
-          </p>
-        </div>
-      </aside>
-    </section>
-  </AppShell>
-);}
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                Detalhe bem suas entradas na descrição — isso facilita a visualização posteriormente.
+              </p>
+            </div>
+          </aside>
+        </section>
+      </div>
+    </AppShell>
+  );
+}

@@ -1,26 +1,638 @@
 @import "tailwindcss";
 
+/* =========================================================
+   FINTECH — DESIGN TOKENS
+   Tema padrão: escuro
+   ========================================================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Página e superfícies */
+  --bg-page: #0d0f0e;
+  --card-bg: #171a18;
+  --field-bg: #1e2220;
+  --field-focus-bg: #252a27;
+  --field-hover-border: rgba(255, 255, 255, 0.16);
+
+  /* Sidebar */
+  --sidebar-bg: #111412;
+  --sidebar-brand: #22c55e;
+  --sidebar-text: #8a9e90;
+  --sidebar-muted: #556b5c;
+  --sidebar-hover: #1e2220;
+  --sidebar-active: #14532d;
+
+  /* Identidade */
+  --mobile-brand: #22c55e;
+  --accent: #16a34a;
+  --accent-hover: #22c55e;
+  --accent-glow: rgba(34, 197, 94, 0.18);
+
+  /* Bordas */
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.10);
+
+  /* Tipografia */
+  --text-primary: #f0f4f1;
+  --text-secondary: #8a9e90;
+  --text-muted: #556b5c;
+
+  /* Botões secundários */
+  --button-secondary-bg: #1e2220;
+  --button-secondary-hover: #252a27;
+  --button-secondary-text: #8a9e90;
+
+  /* Dicas / informações */
+  --tip-icon: #22c55e;
+  --tip-bg: rgba(34, 197, 94, 0.06);
+  --tip-border: rgba(34, 197, 94, 0.18);
+
+  /* Toasts */
+  --toast-bg: #171a18;
+  --toast-border: rgba(34, 197, 94, 0.35);
+  --toast-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.35);
+
+  /* Dashboard */
+  --section-header-bg: #1e2220;
+  --grid-line: rgba(255, 255, 255, 0.07);
+
+  --card-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.28);
+
+  /* Erros */
+  --error-bg: rgba(239, 68, 68, 0.08);
+  --error-border: rgba(248, 113, 113, 0.28);
+  --error-text: #f87171;
+
+  /* Compatibilidade Tailwind */
+  --background: var(--bg-page);
+  --foreground: var(--text-primary);
+
+/* Entradas / tabelas / menus */
+
+--table-header-bg: #1e2220;
+--table-row-bg: #171a18;
+--table-row-alt-bg: #191d1b;
+--table-row-hover-bg: #1e2421;
+
+--menu-bg: #171a18;
+--menu-hover-bg: #1e2220;
+
+--menu-shadow:
+  0 8px 24px rgba(0, 0, 0, 0.28);
+
+--modal-info-bg: #1e2220;
+--modal-overlay: rgba(0, 0, 0, 0.58);
+
+--action-hover-bg: rgba(34, 197, 94, 0.08);
+
+--pagination-hover-bg: #252a27;
+
+/* Formulários */
+
+--form-field-bg: #1e2220;
+--form-field-border: rgba(255, 255, 255, 0.10);
+--form-field-focus: #22c55e;
+
+--form-label: #8a9e90;
+--form-muted: #556b5c;
+
+--form-divider: rgba(255, 255, 255, 0.07);
+
+--form-secondary-bg: #1e2220;
+--form-secondary-hover: #252a27;
+
+--form-back-bg: #1e2220;
+--form-back-hover: #252a27;
+
+--form-shadow:
+  0 12px 30px rgba(0, 0, 0, 0.28);
+
+  /* Saídas */
+
+--expense-text: #f87171;
+
+--status-paid-bg: rgba(34, 197, 94, 0.16);
+--status-paid-text: #86efac;
+--status-paid-border: rgba(34, 197, 94, 0.24);
+
+--status-pending-bg: rgba(245, 158, 11, 0.14);
+--status-pending-text: #fbbf24;
+
+/* Dica de despesas */
+
+--expense-tip-bg: rgba(245, 158, 11, 0.06);
+--expense-tip-border: rgba(245, 158, 11, 0.20);
+--expense-tip-icon: #fbbf24;
+
+/* Investimentos */
+
+--investment-positive: #4ade80;
+
+--investment-icon-bg: rgba(34, 197, 94, 0.12);
+
+--investment-active-bg: rgba(34, 197, 94, 0.24);
+--investment-active-text: #4ade80;
+
+--investment-redeemed-bg: rgba(148, 163, 184, 0.18);
+--investment-redeemed-text: #cbd5e1;
+
+--investment-expired-bg: rgba(245, 158, 11, 0.24);
+--investment-expired-text: #fbbf24;
+
+/* Metas */
+
+--goal-icon-bg: rgba(34, 197, 94, 0.12);
+
+/* Metas - badges */
+
+--goal-active-bg: rgba(34, 197, 94, 0.28);
+--goal-active-text: #86efac;
+
+--goal-completed-bg: rgba(59, 130, 246, 0.24);
+--goal-completed-text: #93c5fd;
+
+--goal-cancelled-bg: rgba(148, 163, 184, 0.22);
+--goal-cancelled-text: #d1d5db;
+
+--goal-progress-track: #252a27;
+
+--goal-action-hover-bg: rgba(34, 197, 94, 0.08);
+--goal-action-hover-border: rgba(34, 197, 94, 0.28);
+
+/* Relatórios */
+
+--report-positive: #4ade80;
+--report-negative: #f87171;
+
+--report-positive-bg: rgba(34, 197, 94, 0.14);
+--report-negative-bg: rgba(239, 68, 68, 0.12);
+--report-neutral-bg: #1e2220;
+
+--report-track: #252a27;
+
+--report-summary-bg: rgba(34, 197, 94, 0.06);
+--report-summary-border: rgba(34, 197, 94, 0.18);
 }
+
+
+
+/* =========================================================
+   TEMA CLARO
+   ========================================================= */
+
+html.light-theme {
+  /* Página e superfícies */
+  --bg-page: #f3f5f4;
+  --card-bg: #ffffff;
+  --field-bg: #e5e7e6;
+  --field-focus-bg: #ffffff;
+  --field-hover-border: rgba(15, 23, 42, 0.22);
+
+  /* Sidebar */
+  --sidebar-bg: #0f1117;
+  --sidebar-brand: #f9fafb;
+  --sidebar-text: #9ca3af;
+  --sidebar-muted: #9ca3af;
+  --sidebar-hover: rgba(255, 255, 255, 0.06);
+  --sidebar-active: #166534;
+
+  /* Identidade */
+  --mobile-brand: #166534;
+  --accent: #166534;
+  --accent-hover: #15803d;
+  --accent-glow: rgba(22, 101, 52, 0.12);
+
+  /* Bordas */
+  --border: rgba(15, 23, 42, 0.09);
+  --border-strong: rgba(15, 23, 42, 0.14);
+
+  /* Tipografia */
+  --text-primary: #101828;
+  --text-secondary: #475467;
+  --text-muted: #667085;
+
+  /* Botões secundários */
+  --button-secondary-bg: #e5e7e6;
+  --button-secondary-hover: #d1d5db;
+  --button-secondary-text: #111827;
+
+  /* Dicas */
+  --tip-icon: #166534;
+  --tip-bg: #ffffff;
+  --tip-border: rgba(22, 101, 52, 0.16);
+
+  --tip-shadow:
+    0 22px 52px rgba(15, 23, 42, 0.18),
+    0 10px 24px rgba(15, 23, 42, 0.11);
+
+  /* Dashboard */
+  --section-header-bg: #dddddd;
+  --grid-line: #edf0f2;
+
+  --card-shadow:
+    0 8px 20px rgba(15, 23, 42, 0.10);
+
+  /* Erros */
+  --error-bg: #fef2f2;
+  --error-border: #fecaca;
+  --error-text: #b91c1c;
+
+  /* Tabelas */
+  --table-header-bg: #f7f8f9;
+  --table-row-bg: #ffffff;
+  --table-row-alt-bg: #fafbfb;
+  --table-row-hover-bg: #f5f6f7;
+
+  --menu-bg: #ffffff;
+  --menu-hover-bg: #f4f6f5;
+
+  --menu-shadow:
+    0 8px 24px rgba(15, 23, 42, 0.12);
+
+  --modal-info-bg: #f7f8f7;
+  --modal-overlay: rgba(0, 0, 0, 0.40);
+
+  --action-hover-bg: #eef3ef;
+  --pagination-hover-bg: #eef0f1;
+
+  /* FORMULÁRIOS - IMPORTANTE */
+  --form-field-bg: #f2f4f3;
+  --form-field-border: #d4dad6;
+  --form-field-focus: #16803a;
+
+  --form-label: #36413b;
+  --form-muted: #8b948f;
+
+  --form-divider: #e7e9e8;
+
+  --form-secondary-bg: #f2f4f3;
+  --form-secondary-hover: #e9ecea;
+
+  --form-back-bg: #ffffff;
+  --form-back-hover: #f5f6f5;
+
+  --form-shadow:
+    0 12px 30px rgba(15, 23, 42, 0.10);
+
+  /* Compatibilidade */
+  --background: var(--bg-page);
+  --foreground: var(--text-primary);
+
+  /* Saídas */
+
+--expense-text: #c24141;
+
+--status-paid-bg: #dff4e5;
+--status-paid-text: #166534;
+--status-paid-border: #b9dfc5;
+
+--status-pending-bg: #fff3d7;
+--status-pending-text: #9b6a06;
+
+/* Dica de despesas */
+
+--expense-tip-bg: #fffaf2;
+--expense-tip-border: #f0d5ae;
+--expense-tip-icon: #b7791f;
+
+/* Investimentos */
+
+--investment-positive: #18823a;
+
+--investment-icon-bg: #e8f7ed;
+
+--investment-active-bg: #509b4d55;
+--investment-active-text: #18823ab3;
+
+--investment-redeemed-bg: rgba(185, 193, 203, 0.54);
+--investment-redeemed-text: #59636d;
+
+--investment-expired-bg: #fff1d7;
+--investment-expired-text: #9a6700;
+
+/* Metas */
+
+--goal-icon-bg: #e8f7ed;
+
+/* Metas - badges */
+
+--goal-active-bg: rgba(17, 136, 17, 0.311);
+--goal-active-text: #020b00c8;
+
+--goal-completed-bg: rgba(59, 130, 246, 0.24);
+--goal-completed-text: #000000d0;
+
+--goal-cancelled-bg: rgba(18, 20, 23, 0.36);
+--goal-cancelled-text: #000000ad;
+
+--goal-progress-track: #edf1ee;
+
+--goal-action-hover-bg: #f4fbf6;
+--goal-action-hover-border: #bcdcc5;
+
+/* Relatórios */
+
+--report-positive: #16823a;
+--report-negative: #d34b4b;
+
+--report-positive-bg: #e7f7ec;
+--report-negative-bg: #fef2f2;
+--report-neutral-bg: #eef2ef;
+
+--report-track: #edf1ee;
+
+--report-summary-bg: #f4fbf6;
+--report-summary-border: #cce7d4;
+}
+
+/* =========================================================
+   TAILWIND THEME
+   ========================================================= */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* =========================================================
+   BASE GLOBAL
+   ========================================================= */
+
+html {
+  min-height: 100%;
+  background-color: var(--bg-page);
+  color-scheme: dark;
+}
+
+html.light-theme {
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+
+  background-color: var(--bg-page) !important;
+  color: var(--text-primary);
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Não definimos font-family aqui.
+   O layout.tsx já controla Geist Sans / Geist Mono. */
+
+button,
+a,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* =========================================================
+   SUPERFÍCIES
+   ========================================================= */
+
+.fin-page {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+}
+
+.fin-card {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.fin-surface {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+}
+
+.fin-section-header {
+  background-color: var(--section-header-bg);
+  color: var(--text-primary);
+}
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
+
+.fin-field {
+  background-color: var(--field-bg);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.fin-field:hover {
+  border-color: var(--field-hover-border);
+}
+
+.fin-field:focus {
+  background-color: var(--field-focus-bg);
+  border-color: var(--accent);
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px var(--accent-glow);
+}
+
+.fin-field::placeholder {
+  color: var(--text-muted);
+}
+
+select.fin-field option {
+  background-color: var(--field-bg);
+  color: var(--text-primary);
+}
+
+/* Datas, selects e campos nativos */
+
+input,
+select,
+textarea {
+  color-scheme: inherit;
+}
+
+/* =========================================================
+   TIPOGRAFIA
+   ========================================================= */
+
+.fin-text-primary {
+  color: var(--text-primary);
+}
+
+.fin-text-secondary {
+  color: var(--text-secondary);
+}
+
+.fin-text-muted {
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   BOTÕES
+   ========================================================= */
+
+.fin-button-primary {
+  background-color: var(--accent);
+  color: #ffffff;
+
+  transition:
+    background-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.fin-button-primary:hover {
+  background-color: var(--accent-hover);
+}
+
+.fin-button-secondary {
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: 1px solid var(--border-strong);
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.fin-button-secondary:hover {
+  background-color: var(--button-secondary-hover);
+  border-color: var(--field-hover-border);
+}
+
+/* =========================================================
+   DICAS / INFORMAÇÕES
+   ========================================================= */
+
+.fin-tip {
+  background-color: var(--tip-bg);
+  border: 1px solid var(--tip-border);
+  color: var(--text-secondary);
+}
+
+.fin-tip-icon {
+  color: var(--tip-icon);
+}
+
+html.light-theme .fin-tip {
+  box-shadow: var(--tip-shadow);
+}
+
+/* =========================================================
+   ERROS
+   ========================================================= */
+
+.fin-error {
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-border);
+  color: var(--error-text);
+}
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.fin-card-shadow {
+  box-shadow: var(--card-shadow);
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.fin-sidebar {
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+}
+
+.fin-sidebar-brand {
+  color: var(--sidebar-brand);
+}
+
+.fin-sidebar-link {
+  color: var(--sidebar-text);
+}
+
+.fin-sidebar-link:hover {
+  background-color: var(--sidebar-hover);
+  color: #ffffff;
+}
+
+.fin-sidebar-link-active {
+  background-color: var(--sidebar-active);
+  color: #ffffff;
+}
+
+/* =========================================================
+   TABELAS
+   ========================================================= */
+
+.fin-table {
+  color: var(--text-primary);
+}
+
+.fin-table thead {
+  color: var(--text-primary);
+}
+
+.fin-table tbody tr {
+  border-color: var(--grid-line);
+}
+
+.fin-table-secondary {
+  color: var(--text-secondary);
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--bg-page);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--border-strong);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-muted);
+}
+
+/* Firefox */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--border-strong)
+    var(--bg-page);
+}
+
+/* =========================================================
+   SELEÇÃO DE TEXTO
+   ========================================================= */
+
+::selection {
+  background-color: var(--accent-glow);
+  color: var(--text-primary);
 }

@@ -1,8 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import {
+  usePathname,
+  useRouter,
+} from "next/navigation";
+
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import {
   LayoutDashboard,
@@ -11,10 +18,14 @@ import {
   TrendingUp,
   FileChartColumn,
   Target,
-  Settings,
   Sun,
+  Moon,
   LogOut,
 } from "lucide-react";
+
+import {
+  useTheme,
+} from "@/components/ThemeProvider";
 
 interface UsuarioLogado {
   idUsuario: number;
@@ -57,54 +68,127 @@ const itensNavegacao = [
 ];
 
 export default function Sidebar() {
-  const pathname = usePathname();
-  const router = useRouter();
+  const pathname =
+    usePathname();
 
-  const [usuario, setUsuario] =
-    useState<UsuarioLogado | null>(null);
+  const router =
+    useRouter();
 
+  const {
+    theme,
+    toggleTheme,
+  } = useTheme();
+
+  const [
+    usuario,
+    setUsuario,
+  ] =
+    useState<UsuarioLogado | null>(
+      null
+    );
+
+  const [
+    mounted,
+    setMounted,
+  ] =
+    useState(false);
+
+  /*
+   * Tudo que depende do navegador é executado
+   * somente depois da primeira hidratação.
+   *
+   * Dessa forma:
+   *
+   * servidor:
+   * mounted = false
+   *
+   * primeiro render do navegador:
+   * mounted = false
+   *
+   * depois do useEffect:
+   * mounted = true
+   */
   useEffect(() => {
+    setMounted(
+      true
+    );
+
     const usuarioSalvo =
-      localStorage.getItem("usuario_fintech");
+      localStorage.getItem(
+        "usuario_fintech"
+      );
 
     if (!usuarioSalvo) {
       return;
     }
 
     try {
-      setUsuario(JSON.parse(usuarioSalvo));
+      const usuarioConvertido: UsuarioLogado =
+        JSON.parse(
+          usuarioSalvo
+        );
+
+      setUsuario(
+        usuarioConvertido
+      );
     } catch {
-      setUsuario(null);
+      setUsuario(
+        null
+      );
     }
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("usuario_fintech");
-    router.push("/login");
-  };
+  const handleLogout =
+    () => {
+      localStorage.removeItem(
+        "usuario_fintech"
+      );
 
-  const iniciais = usuario?.nome
-    ? usuario.nome
-        .trim()
-        .split(/\s+/)
-        .slice(0, 2)
-        .map((nome) => nome.charAt(0))
-        .join("")
-        .toUpperCase()
-    : "FM";
+      router.push(
+        "/login"
+      );
+    };
+
+  const iniciais =
+    usuario?.nome
+      ? usuario.nome
+          .trim()
+          .split(/\s+/)
+          .slice(
+            0,
+            2
+          )
+          .map(
+            (
+              nome
+            ) =>
+              nome.charAt(
+                0
+              )
+          )
+          .join("")
+          .toUpperCase()
+      : "U";
 
   return (
     <aside
       className="
-        fixed left-0 top-0 z-40
-        hidden h-screen w-[248px]
+        fixed
+        left-0
+        top-0
+        z-40
+        hidden
+        h-screen
+        w-[248px]
         flex-col
-        border-r border-[#20252d]
+        border-r
+        border-[#20252d]
         bg-[#0d1016]
         md:flex
       "
     >
       {/* LOGO */}
+
       <div className="px-7 pb-7 pt-7">
         <Link
           href="/dashboard"
@@ -133,6 +217,7 @@ export default function Sidebar() {
       <div className="mx-4 border-t border-[#252b33]" />
 
       {/* NAVEGAÇÃO */}
+
       <nav
         className="
           mt-7
@@ -144,15 +229,26 @@ export default function Sidebar() {
         "
       >
         {itensNavegacao.map(
-          ({ nome, href, Icone }) => {
+          ({
+            nome,
+            href,
+            Icone,
+          }) => {
             const ativo =
-              pathname === href ||
-              pathname.startsWith(`${href}/`);
+              pathname ===
+                href ||
+              pathname.startsWith(
+                `${href}/`
+              );
 
             return (
               <Link
-                key={href}
-                href={href}
+                key={
+                  href
+                }
+                href={
+                  href
+                }
                 className={`
                   flex
                   h-[46px]
@@ -170,11 +266,17 @@ export default function Sidebar() {
                 `}
               >
                 <Icone
-                  size={19}
-                  strokeWidth={1.7}
+                  size={
+                    19
+                  }
+                  strokeWidth={
+                    1.7
+                  }
                 />
 
-                {nome}
+                {
+                  nome
+                }
               </Link>
             );
           }
@@ -182,6 +284,7 @@ export default function Sidebar() {
       </nav>
 
       {/* RODAPÉ */}
+
       <div
         className="
           border-t
@@ -191,8 +294,24 @@ export default function Sidebar() {
           pt-5
         "
       >
+        {/* TEMA */}
+
         <button
           type="button"
+          onClick={
+            toggleTheme
+          }
+          disabled={
+            !mounted
+          }
+          aria-label={
+            mounted
+              ? theme ===
+                "dark"
+                ? "Ativar tema claro"
+                : "Ativar tema escuro"
+              : "Alternar tema"
+          }
           className="
             flex
             w-full
@@ -200,105 +319,97 @@ export default function Sidebar() {
             gap-3
             rounded-lg
             border
-            border-[#343b44]
-            px-5
-            py-3
-            text-sm
-            text-[#d1d5db]
-            transition
-            hover:bg-[#171c23]
-          "
-        >
-          <Sun size={18} strokeWidth={1.6} />
-
-          Tema escuro
-        </button>
-
-        <Link
-          href="/configuracoes"
-          className="
-            mt-2
-            flex
-            items-center
-            gap-3
-            rounded-lg
+            border-[#252b33]
             px-5
             py-3
             text-sm
             text-[#a5abb4]
+            transition
             hover:bg-[#171c23]
             hover:text-white
+            disabled:cursor-default
           "
         >
-          <Settings size={18} strokeWidth={1.6} />
+          {mounted ? (
+            theme ===
+            "dark" ? (
+              <Sun
+                size={
+                  18
+                }
+                strokeWidth={
+                  1.6
+                }
+              />
+            ) : (
+              <Moon
+                size={
+                  18
+                }
+                strokeWidth={
+                  1.6
+                }
+              />
+            )
+          ) : (
+            <span
+              aria-hidden="true"
+              className="h-[18px] w-[18px] shrink-0"
+            />
+          )}
 
-          Configurações
-        </Link>
+          <span>
+            {mounted
+              ? theme ===
+                "dark"
+                ? "Tema claro"
+                : "Tema escuro"
+              : "Tema"}
+          </span>
+        </button>
 
-        <div
-          className="
-            mt-3
-            flex
-            items-center
-            gap-3
-            rounded-lg
-            border
-            border-[#252b33]
-            px-4
-            py-3
-          "
-        >
+        {/* CONTA */}
+
+        <div className="mt-3 flex items-center gap-3 rounded-lg border border-[#252b33] px-4 py-3">
           <Link
             href="/minha-conta"
-            className="
-              flex
-              min-w-0
-              flex-1
-              items-center
-              gap-3
-            "
+            title="Minha conta"
+            className="flex min-w-0 flex-1 items-center gap-3"
           >
-            <div
-              className="
-                flex
-                h-8
-                w-8
-                shrink-0
-                items-center
-                justify-center
-                rounded-full
-                bg-[#15983b]
-                text-[11px]
-                font-semibold
-                text-white
-              "
-            >
-              {iniciais}
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#15983b] text-[11px] font-semibold text-white">
+              {
+                iniciais
+              }
             </div>
 
-            <span
-              className="
-                truncate
-                text-xs
-                text-[#d4d7dc]
-              "
-            >
-              {usuario?.nome ?? "Flavio Messias"}
-            </span>
+            <div className="min-w-0">
+              <span className="block truncate text-xs text-[#d4d7dc]">
+                {usuario?.nome ??
+                  "Usuário"}
+              </span>
+
+              <span className="mt-0.5 block text-[10px] text-[#7f8791]">
+                Minha conta
+              </span>
+            </div>
           </Link>
 
           <button
             type="button"
-            onClick={handleLogout}
+            onClick={
+              handleLogout
+            }
             title="Sair"
-            className="
-              text-[#8c949e]
-              hover:text-white
-            "
+            aria-label="Sair da conta"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-[#8c949e] transition hover:bg-[#171c23] hover:text-white"
           >
             <LogOut
-              size={16}
-              strokeWidth={1.6}
+              size={
+                16
+              }
+              strokeWidth={
+                1.6
+              }
             />
           </button>
         </div>

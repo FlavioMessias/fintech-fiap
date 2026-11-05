@@ -1,7 +1,12 @@
 "use client";
 
-import { ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import type {
+  ReactNode,
+} from "react";
+
+import {
+  usePathname,
+} from "next/navigation";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -18,31 +23,64 @@ const rotasAutenticadas = [
   "/metas",
   "/relatorios",
   "/minha-conta",
-  "/configuracoes",
 ];
 
-export default function AppChrome({ children }: AppChromeProps) {
-  const pathname = usePathname();
+const rotasPublicasComChrome = [
+  "/",
+];
 
-  const areaAutenticada = rotasAutenticadas.some(
-    (rota) =>
-      pathname === rota ||
-      pathname.startsWith(`${rota}/`)
-  );
+export default function AppChrome({
+  children,
+}: AppChromeProps) {
+  const pathname =
+    usePathname();
 
-  if (areaAutenticada) {
-    return <>{children}</>;
+  const areaAutenticada =
+    rotasAutenticadas.some(
+      (
+        rota
+      ) =>
+        pathname ===
+          rota ||
+        pathname.startsWith(
+          `${rota}/`
+        )
+    );
+
+  if (
+    areaAutenticada
+  ) {
+    return (
+      <>
+        {children}
+      </>
+    );
+  }
+
+  const rotaPublicaComChrome =
+    rotasPublicasComChrome.includes(
+      pathname
+    );
+
+  if (
+    rotaPublicaComChrome
+  ) {
+    return (
+      <>
+        <Header />
+
+        <main className="flex-grow">
+          {children}
+        </main>
+
+        <Footer />
+      </>
+    );
   }
 
   return (
     <>
-      <Header />
-
-      <main className="flex-grow">
-        {children}
-      </main>
-
-      <Footer />
+      {children}
     </>
   );
 }

@@ -4,6 +4,7 @@ import { Suspense } from "react";
 
 import "./globals.css";
 
+import ThemeProvider from "@/components/ThemeProvider";
 import AppChrome from "@/components/AppChrome";
 
 const geistSans = Geist({
@@ -28,22 +29,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-[#f4f6f5] text-[#161b18]`}
-      >
-        <Suspense
-          fallback={
-            <main className="min-h-screen bg-[#f4f6f5]">
-              {children}
-            </main>
-          }
-        >
-          <AppChrome>
+<html
+  lang="pt-BR"
+  suppressHydrationWarning
+>
+  <body
+    className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-[#f4f6f5] text-[#161b18]`}
+  >
+    <ThemeProvider>
+      <Suspense
+        fallback={
+          <main className="min-h-screen bg-[#f4f6f5]">
             {children}
-          </AppChrome>
-        </Suspense>
-      </body>
-    </html>
+          </main>
+        }
+      >
+        <AppChrome>
+          {children}
+        </AppChrome>
+      </Suspense>
+    </ThemeProvider>
+  </body>
+</html>
   );
 }

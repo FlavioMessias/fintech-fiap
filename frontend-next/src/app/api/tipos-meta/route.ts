@@ -1,50 +1,43 @@
-import { NextRequest, NextResponse } from "next/server";
+import {
+  connection,
+} from "next/server";
 
 const API_URL =
-  process.env.API_URL ?? "http://localhost:8080";
+  process.env.API_URL ??
+  "http://localhost:8080";
 
-export async function GET(
-  _request: NextRequest
-) {
+export async function GET() {
+  await connection();
+
   try {
-    const response = await fetch(
-      `${API_URL}/api/tipos-meta`,
-      {
-        method: "GET",
-        cache: "no-store",
-      }
-    );
-
-    const text = await response.text();
-
-    if (!response.ok) {
-      return new NextResponse(
-        text || null,
+    const response =
+      await fetch(
+        `${API_URL}/api/tipos-meta`,
         {
-          status:
-            response.status,
+          method: "GET",
+          cache: "no-store",
         }
       );
-    }
 
-    return new NextResponse(
-      text,
+    const data =
+      await response.json();
+
+    return Response.json(
+      data,
       {
         status:
           response.status,
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
       }
     );
-  } catch (error) {
+  } catch (
+    error
+  ) {
     console.error(
       "Erro ao consultar tipos de meta:",
       error
     );
 
-    return NextResponse.json(
+    return Response.json(
       {
         message:
           "Não foi possível consultar os tipos de meta.",
