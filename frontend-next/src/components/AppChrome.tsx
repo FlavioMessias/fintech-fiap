@@ -62,21 +62,19 @@ export default function AppChrome({
       pathname
     );
 
-  if (
-    rotaPublicaComChrome
-  ) {
-    return (
-      <>
-        <Header />
+  if (rotaPublicaComChrome) {
+  return (
+    <div className="flex min-h-screen flex-col bg-[var(--bg-page)]">
+      <Header />
 
-        <main className="flex-grow">
-          {children}
-        </main>
+      <main className="flex flex-1 flex-col">
+        {children}
+      </main>
 
-        <Footer />
-      </>
-    );
-  }
+      <Footer />
+    </div>
+  );
+}
 
   return (
     <>
